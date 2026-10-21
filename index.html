@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#080c12">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="荣耀">
+<meta name="description" content="荣耀 · 第十区 —— 全职高手同人实时战斗文字游戏">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<title>荣耀 · 第十区</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== 标题界面 ===================== -->
+<section class="screen show" id="scr-title">
+  <div class="title-bg"></div>
+  <div class="title-inner">
+    <h1 class="logo">荣<span>耀</span></h1>
+    <p class="logo-sub">G L O R Y &nbsp;·&nbsp; 第 十 区</p>
+    <p class="welcome">欢迎来到荣耀，愿你的荣耀永不散场</p>
+    <p class="logo-line">十年荣耀，不过是一场游戏。</p>
+    <div class="title-btns">
+      <button class="btn btn-main" id="btn-new">新 的 一 局</button>
+      <button class="btn" id="btn-load">继 续 上 次</button>
+    </div>
+    <p class="title-tip">实时战斗 · 7 派系 26 职业<span class="kbd-only"> · 键盘 1–9</span></p>
+  </div>
+</section>
+
+<!-- ===================== 创建角色 ===================== -->
+<section class="screen" id="scr-create">
+  <div class="create-inner">
+    <h2 class="create-h">建 立 角 色</h2>
+
+    <div class="name-row">
+      <label for="inp-name">角色名</label>
+      <input id="inp-name" maxlength="8" placeholder="输入名字" autocomplete="off" spellcheck="false">
+    </div>
+
+    <div class="school-tabs" id="school-tabs"></div>
+    <div class="class-grid" id="class-grid"></div>
+
+    <div class="create-body">
+      <div class="portrait-frame" id="c-portrait"></div>
+      <div class="class-detail" id="class-detail"></div>
+    </div>
+
+    <div class="create-actions">
+      <button class="btn" id="btn-back">返 回</button>
+      <button class="btn btn-main" id="btn-enter" disabled>进 入 荣 耀</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 游戏主界面 ===================== -->
+<section class="screen" id="scr-game">
+  <header class="topbar">
+    <div class="topbar-l"><span class="chapter" id="tb-chapter">序章</span></div>
+    <div class="topbar-r">
+      <span class="chip" id="tb-name">—</span>
+      <span class="chip chip-dim" id="tb-class">—</span>
+      <span class="chip chip-fame" id="tb-fame">知名度 0</span>
+      <span class="chip chip-gold" id="tb-gold">0</span>
+      <button class="icon-btn" id="btn-panel" title="角色面板">☰</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main class="stage" id="stage">
+      <div class="art art-night" id="art">
+        <div class="art-char" id="art-char"></div>
+      </div>
+      <div class="story">
+        <article class="prose" id="prose"></article>
+        <nav class="choices" id="choices"></nav>
+      </div>
+    </main>
+
+    <aside class="panel" id="panel">
+      <div class="p-head">
+        <div class="p-portrait" id="p-portrait"></div>
+        <div class="p-top">
+          <div class="p-name" id="p-name">—</div>
+          <div class="p-meta" id="p-meta">Lv.1</div>
+        </div>
+      </div>
+      <div class="p-bars" id="p-bars"></div>
+      <div class="p-tabs" id="p-tabs">
+        <button data-tab="attr" class="on">属性</button>
+        <button data-tab="bag">背包</button>
+        <button data-tab="skill">技能</button>
+        <button data-tab="sys">系统</button>
+      </div>
+      <div class="p-body" id="p-body"></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ===================== 实时战斗 ===================== -->
+<section class="overlay" id="overlay" hidden>
+  <div class="battle">
+    <header class="battle-h">
+      <div class="foe-id">
+        <div class="foe-name" id="foe-name">—</div>
+        <div class="foe-lv" id="foe-lv">Lv.1</div>
+      </div>
+      <div class="foe-bar"><i id="foe-hp"></i><b id="foe-hptext"></b></div>
+      <div class="cast-bar" id="foe-cast" style="opacity:0"><i></i><span></span></div>
+    </header>
+
+    <div class="battle-log" id="battle-log"></div>
+
+    <div class="self-row">
+      <div class="self-avatar" id="self-avatar"></div>
+      <div class="self-bars" id="self-bars"></div>
+    </div>
+    <div class="cast-bar mine idle" id="self-cast"><i></i><span>可行动</span></div>
+
+    <div class="combo-strip" id="combo-strip"></div>
+    <div class="battle-actions" id="battle-actions"></div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script src="classes.js"></script>
+<script src="sanren.js"></script>
+<script src="portraits.js"></script>
+<script src="data.js"></script>
+<script src="combat.js"></script>
+<script src="engine.js"></script>
+</body>
+</html>

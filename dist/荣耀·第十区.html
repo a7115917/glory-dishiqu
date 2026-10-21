@@ -1,0 +1,3994 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#080c12">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="荣耀">
+<meta name="description" content="荣耀 · 第十区 —— 全职高手同人实时战斗文字游戏">
+<title>荣耀 · 第十区</title>
+<!-- 单文件离线版：所有样式与脚本已内联，可直接双击运行或发到手机 -->
+<style>
+/* ==========================================================================
+   荣耀 · 第十区   —  样式表
+   ========================================================================== */
+
+:root{
+  --bg:        #06090f;
+  --bg-2:      #0a0f18;
+  --panel:     #0c121c;
+  --panel-2:   #101825;
+  --line:      #1a2635;
+  --line-2:    #26384d;
+  --txt:       #c7d3e3;
+  --txt-dim:   #78899f;
+  --txt-mute:  #4d5d72;
+  --accent:    #4fe3c8;
+  --accent-d:  #1f8f7e;
+  --gold:      #dcaa52;
+  --danger:    #e2574c;
+  --hp:        #cf4a44;
+  --mp:        #3f86d8;
+  --xp:        #c9a13c;
+
+  --serif: "Noto Serif SC","Source Han Serif SC","Songti SC","STSong",SimSun,serif;
+  --sans:  "PingFang SC","HarmonyOS Sans SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+  --mono:  ui-monospace,"Cascadia Mono",Consolas,"Courier New",monospace;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+html,body{
+  height:100%;
+  background:var(--bg);
+  color:var(--txt);
+  font-family:var(--sans);
+  font-size:15px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+
+button{ font-family:inherit; font-size:inherit; color:inherit; cursor:pointer; border:0; background:none; }
+input{ font-family:inherit; font-size:inherit; color:inherit; }
+::-webkit-scrollbar{ width:8px; height:8px; }
+::-webkit-scrollbar-thumb{ background:#1e2c3d; border-radius:4px; }
+::-webkit-scrollbar-track{ background:transparent; }
+
+/* ------------------------------------------------------------------ 屏幕 */
+.screen{ display:none; position:fixed; inset:0; }
+.screen.show{ display:flex; }
+
+/* ------------------------------------------------------------ 标题界面 */
+#scr-title{
+  align-items:center; justify-content:center;
+  background:radial-gradient(ellipse at 50% 0%, #12243a 0%, #06090f 62%);
+}
+.title-bg{
+  position:absolute; inset:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(79,227,200,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,227,200,.045) 1px, transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse at 50% 40%, #000 0%, transparent 76%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 40%, #000 0%, transparent 76%);
+  animation:drift 24s linear infinite;
+}
+@keyframes drift{ to{ background-position:64px 64px, 64px 64px; } }
+
+.title-inner{ position:relative; text-align:center; padding:0 24px; }
+
+.logo{
+  font-family:var(--serif);
+  font-size:clamp(64px,13vw,112px);
+  font-weight:700;
+  letter-spacing:.14em;
+  line-height:1;
+  color:#e8f2ff;
+  text-shadow:0 0 42px rgba(79,227,200,.34), 0 0 2px rgba(255,255,255,.5);
+  margin-right:-.14em;
+}
+.logo span{ color:var(--accent); }
+
+.logo-sub{
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:.44em;
+  color:var(--txt-mute);
+  margin-top:18px;
+  margin-right:-.44em;
+}
+.welcome{
+  display:inline-block;
+  font-family:var(--serif);
+  font-size:clamp(14px,1.5vw,17px);
+  font-weight:600;
+  letter-spacing:.14em;
+  color:#0a0e15;
+  margin-top:34px;
+  padding:7px 22px;
+  border-radius:2px;
+  background:linear-gradient(180deg,#f2d485 0%,#dcae52 52%,#bb8c30 100%);
+  box-shadow:0 0 0 1px rgba(255,232,175,.55) inset,
+             0 0 34px rgba(216,169,74,.35),
+             0 10px 30px rgba(0,0,0,.45);
+  text-shadow:0 1px 0 rgba(255,240,200,.45);
+  animation:welFade .9s ease both;
+}
+@keyframes welFade{
+  from{ opacity:0; transform:translateY(8px); }
+  to{ opacity:1; transform:none; }
+}
+.logo-line{
+  font-family:var(--serif);
+  font-size:13px;
+  color:var(--txt-mute);
+  margin-top:12px;
+  letter-spacing:.1em;
+}
+
+.title-btns{ display:flex; gap:14px; justify-content:center; margin-top:44px; flex-wrap:wrap; }
+.title-tip{
+  margin-top:34px; font-size:12px; color:var(--txt-mute);
+  font-family:var(--mono); letter-spacing:.1em;
+}
+
+/* -------------------------------------------------------------- 按钮 */
+.btn{
+  padding:11px 30px;
+  border:1px solid var(--line-2);
+  border-radius:3px;
+  background:rgba(255,255,255,.02);
+  color:var(--txt-dim);
+  font-size:14px;
+  letter-spacing:.16em;
+  transition:.18s;
+}
+.btn:hover{ border-color:var(--accent-d); color:var(--txt); background:rgba(79,227,200,.06); }
+.btn:disabled{ opacity:.28; cursor:not-allowed; }
+.btn-main{
+  border-color:var(--accent-d);
+  color:var(--accent);
+  background:rgba(79,227,200,.08);
+  box-shadow:0 0 24px rgba(79,227,200,.1) inset;
+}
+.btn-main:hover{ background:rgba(79,227,200,.16); color:#b8fff1; }
+
+/* -------------------------------------------------------- 创建角色界面 */
+#scr-create{
+  align-items:center; justify-content:center;
+  overflow-y:auto;
+  background:radial-gradient(ellipse at 50% 0%, #101d2e 0%, #06090f 60%);
+}
+.create-inner{ width:min(940px,92vw); padding:44px 0; }
+
+.create-h{
+  font-family:var(--serif); font-size:26px; font-weight:400;
+  letter-spacing:.3em; color:var(--txt); text-align:center;
+  margin-bottom:34px; margin-right:-.3em;
+}
+
+.name-row{
+  display:flex; align-items:center; gap:14px;
+  max-width:420px; margin:0 auto 30px;
+}
+.name-row label{ font-size:13px; color:var(--txt-dim); white-space:nowrap; letter-spacing:.1em; }
+.name-row input{
+  flex:1; padding:10px 14px;
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:3px; outline:none; transition:.18s;
+}
+.name-row input:focus{ border-color:var(--accent-d); box-shadow:0 0 0 3px rgba(79,227,200,.08); }
+
+.class-grid{
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:12px; margin-bottom:20px;
+}
+.class-card{
+  padding:16px 14px;
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:4px; text-align:left; transition:.18s;
+  position:relative;
+}
+.class-card:hover{ border-color:var(--line-2); background:var(--panel-2); }
+.class-card.on{
+  border-color:var(--accent-d);
+  background:linear-gradient(180deg, rgba(79,227,200,.1), rgba(79,227,200,.02));
+  box-shadow:0 0 0 1px rgba(79,227,200,.25), 0 0 28px rgba(79,227,200,.08);
+}
+.cc-cat{ font-family:var(--mono); font-size:10px; color:var(--txt-mute); letter-spacing:.18em; }
+.cc-name{ font-family:var(--serif); font-size:19px; color:var(--txt); margin:5px 0 3px; }
+.class-card.on .cc-name{ color:var(--accent); }
+.cc-tag{ font-size:11px; color:var(--txt-mute); }
+
+.class-detail{
+  min-height:96px;
+  padding:16px 18px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-left:2px solid var(--accent-d);
+  border-radius:3px;
+  font-family:var(--serif);
+  font-size:14px;
+  line-height:1.85;
+  color:var(--txt-dim);
+}
+.class-detail b{ color:var(--accent); font-weight:400; }
+.class-detail em{ font-style:normal; color:var(--gold); }
+
+.create-actions{ display:flex; gap:12px; justify-content:center; margin-top:26px; }
+
+/* -------------------------------------------------------- 游戏主界面 */
+#scr-game{ flex-direction:column; background:var(--bg); }
+
+.topbar{
+  height:52px; flex:0 0 52px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 18px;
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg, #0b1119, #080c13);
+}
+.chapter{
+  font-family:var(--serif); font-size:14px; letter-spacing:.2em;
+  color:var(--txt-dim);
+}
+.topbar-r{ display:flex; align-items:center; gap:8px; }
+.chip{
+  font-family:var(--mono); font-size:12px;
+  padding:3px 10px; border-radius:2px;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--line);
+  color:var(--txt-dim);
+}
+.chip-dim{ color:var(--txt-mute); }
+.chip-gold{ color:var(--gold); border-color:rgba(220,170,82,.28); background:rgba(220,170,82,.07); }
+.icon-btn{
+  width:32px; height:32px; border-radius:3px;
+  border:1px solid var(--line); color:var(--txt-dim);
+  display:grid; place-items:center; font-size:14px; transition:.18s;
+}
+.icon-btn:hover{ border-color:var(--accent-d); color:var(--accent); }
+
+.layout{
+  flex:1; min-height:0;
+  display:grid; grid-template-columns:minmax(0,1fr) 336px;
+}
+
+/* ---------------------------------------------------------------- 舞台 */
+.stage{
+  overflow-y:auto; padding:26px 34px 60px;
+  scroll-behavior:smooth;
+}
+.art{
+  height:150px; border-radius:5px; margin-bottom:24px;
+  position:relative; overflow:hidden;
+  border:1px solid var(--line);
+  transition:background .6s;
+}
+.art::after{
+  content:""; position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at 50% 120%, transparent 30%, rgba(6,9,15,.86) 100%),
+    linear-gradient(90deg, rgba(6,9,15,.9) 0%, transparent 46%);
+  pointer-events:none;
+}
+.art-char{
+  position:absolute; right:20px; bottom:-56px;
+  width:195px; height:254px;
+  opacity:.92;
+  pointer-events:none;
+  filter:drop-shadow(0 0 12px var(--pc, #4fe3c8)) drop-shadow(0 18px 44px rgba(0,0,0,.9));
+  mask-image:linear-gradient(180deg, #000 70%, transparent 100%);
+  -webkit-mask-image:linear-gradient(180deg, #000 70%, transparent 100%);
+}
+.art-char::before{
+  content:""; position:absolute; inset:-8% 2% 6% 2%; z-index:-1;
+  background:var(--pc, #4fe3c8);
+  opacity:.2;
+  border-radius:50%;
+  filter:blur(30px);
+}
+.art-night{ background:linear-gradient(165deg,#0c1b2e 0%,#0a1220 55%,#060a11 100%); }
+.art-lake { background:linear-gradient(165deg,#102a2b 0%,#0d1f24 55%,#07100f 100%); }
+.art-city { background:linear-gradient(165deg,#251d0f 0%,#181309 55%,#0a0805 100%); }
+.art-tomb { background:linear-gradient(165deg,#1a1a26 0%,#12121b 55%,#08080d 100%); }
+.art-arena{ background:linear-gradient(165deg,#2a1220 0%,#1a0b14 55%,#0a0510 100%); }
+.art-snow { background:linear-gradient(165deg,#16263a 0%,#101b2b 55%,#080d15 100%); }
+
+.story{ max-width:760px; }
+
+.prose{
+  font-family:var(--serif);
+  font-size:16px;
+  line-height:2.05;
+  color:#bcc9db;
+  white-space:pre-wrap;
+  word-break:break-word;
+  letter-spacing:.02em;
+  min-height:40px;
+}
+.prose .sys{
+  font-family:var(--mono);
+  font-size:13px;
+  color:var(--accent);
+  background:rgba(79,227,200,.07);
+  border-left:2px solid var(--accent-d);
+  padding:1px 8px;
+  border-radius:2px;
+  letter-spacing:0;
+  display:inline-block;
+  margin:1px 0;
+}
+
+/* -------------------------------------------------------------- 选项 */
+.choices{ margin-top:34px; display:flex; flex-direction:column; gap:9px; }
+
+.choice{
+  display:flex; align-items:baseline; gap:14px;
+  width:100%; text-align:left;
+  padding:13px 18px;
+  background:linear-gradient(90deg, rgba(255,255,255,.035), rgba(255,255,255,.01));
+  border:1px solid var(--line);
+  border-left:2px solid var(--line-2);
+  border-radius:3px;
+  transition:.16s;
+  animation:rise .32s backwards;
+}
+.choice:nth-child(1){ animation-delay:.02s; }
+.choice:nth-child(2){ animation-delay:.07s; }
+.choice:nth-child(3){ animation-delay:.12s; }
+.choice:nth-child(4){ animation-delay:.17s; }
+.choice:nth-child(5){ animation-delay:.22s; }
+.choice:nth-child(6){ animation-delay:.27s; }
+.choice:nth-child(7){ animation-delay:.32s; }
+@keyframes rise{ from{ opacity:0; transform:translateY(7px);} to{ opacity:1; transform:none;} }
+
+.choice:hover:not(:disabled){
+  border-color:var(--accent-d);
+  border-left-color:var(--accent);
+  background:linear-gradient(90deg, rgba(79,227,200,.1), rgba(79,227,200,.015));
+  padding-left:24px;
+}
+.choice:disabled{ opacity:.4; cursor:not-allowed; }
+
+.choice .num{
+  font-family:var(--mono); font-size:11px; color:var(--txt-mute);
+  flex:0 0 auto; padding-top:2px;
+}
+.choice:hover:not(:disabled) .num{ color:var(--accent); }
+.choice .txt{ flex:1; font-size:15px; color:var(--txt); }
+.choice .hint{
+  font-family:var(--mono); font-size:11px; color:var(--txt-mute);
+  flex:0 0 auto;
+}
+.choice .lock{
+  font-family:var(--mono); font-size:11px; color:var(--danger);
+  flex:0 0 auto;
+}
+
+/* ---------------------------------------------------------------- 面板 */
+.panel{
+  border-left:1px solid var(--line);
+  background:var(--panel);
+  display:flex; flex-direction:column;
+  min-height:0;
+}
+.p-head{
+  display:flex; gap:12px; align-items:center;
+  padding:14px 16px; border-bottom:1px solid var(--line);
+}
+.p-top{ padding:0; border:0; }
+.p-name{ font-family:var(--serif); font-size:17px; color:var(--txt); }
+.p-meta{ font-family:var(--mono); font-size:11px; color:var(--txt-mute); margin-top:2px; letter-spacing:.08em; }
+
+.p-bars{ padding:12px 16px; display:flex; flex-direction:column; gap:7px; border-bottom:1px solid var(--line); }
+.bar{
+  position:relative; height:16px; border-radius:2px;
+  background:#0a1017; border:1px solid var(--line);
+  overflow:hidden;
+}
+.bar i{
+  position:absolute; inset:0 auto 0 0; width:0;
+  background:linear-gradient(90deg,#3a2a2a,#6b2f2b);
+  transition:width .35s ease;
+}
+.bar.hp i{ background:linear-gradient(90deg,#6d2823,#cf4a44); }
+.bar.mp i{ background:linear-gradient(90deg,#22355c,#3f86d8); }
+.bar.xp i{ background:linear-gradient(90deg,#4a3a12,#c9a13c); }
+.bar b{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-size:10px; font-weight:400;
+  color:#dbe6f5; text-shadow:0 1px 2px rgba(0,0,0,.9); letter-spacing:.05em;
+}
+
+.p-tabs{ display:flex; border-bottom:1px solid var(--line); }
+.p-tabs button{
+  flex:1; padding:9px 0; font-size:12px; color:var(--txt-mute);
+  border-bottom:2px solid transparent; transition:.16s; letter-spacing:.1em;
+}
+.p-tabs button:hover{ color:var(--txt-dim); }
+.p-tabs button.on{ color:var(--accent); border-bottom-color:var(--accent); background:rgba(79,227,200,.04); }
+
+.p-body{ flex:1; overflow-y:auto; padding:14px 16px 24px; font-size:13px; }
+
+/* 属性行 */
+.stat-row{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:7px 0; border-bottom:1px dashed rgba(38,56,77,.5);
+}
+.stat-row .k{ color:var(--txt-dim); font-size:12.5px; }
+.stat-row .v{ font-family:var(--mono); color:var(--txt); font-size:13px; }
+.stat-row .v small{ color:var(--txt-mute); font-size:11px; }
+.stat-row.sub .k{ color:var(--txt-mute); font-size:11.5px; padding-left:10px; }
+.stat-row.sub .v{ color:var(--txt-dim); font-size:12px; }
+
+.plus{
+  width:20px; height:20px; line-height:17px; text-align:center;
+  border:1px solid var(--line-2); border-radius:2px;
+  color:var(--accent); font-size:14px;
+}
+.plus:hover{ background:rgba(79,227,200,.14); }
+.plus:disabled{ opacity:.22; cursor:not-allowed; }
+
+.free-pt{
+  margin:10px 0 4px; padding:8px 10px;
+  background:rgba(220,170,82,.08);
+  border:1px solid rgba(220,170,82,.25);
+  border-radius:2px;
+  color:var(--gold); font-size:12px;
+  font-family:var(--mono); letter-spacing:.06em;
+}
+.sec-title{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.2em;
+  color:var(--txt-mute); margin:16px 0 4px;
+}
+.sec-title:first-child{ margin-top:0; }
+
+/* 背包 */
+.item-row{
+  display:flex; align-items:center; gap:10px;
+  padding:8px 0; border-bottom:1px dashed rgba(38,56,77,.5);
+}
+.item-row .nm{ flex:1; color:var(--txt); font-size:13px; }
+.item-row .nm small{ display:block; color:var(--txt-mute); font-size:11px; }
+.item-row .ct{ font-family:var(--mono); color:var(--txt-dim); font-size:11.5px; }
+.mini{
+  padding:3px 9px; border:1px solid var(--line-2); border-radius:2px;
+  font-size:11px; color:var(--txt-dim); transition:.16s;
+}
+.mini:hover{ border-color:var(--accent-d); color:var(--accent); }
+.mini.on{ border-color:var(--gold); color:var(--gold); }
+
+/* 技能 */
+.skill-row{
+  padding:9px 0; border-bottom:1px dashed rgba(38,56,77,.5);
+}
+.skill-row .sn{ display:flex; justify-content:space-between; align-items:baseline; }
+.skill-row .sn b{ font-weight:400; color:var(--txt); font-size:13px; }
+.skill-row .sn span{ font-family:var(--mono); font-size:10.5px; color:var(--txt-mute); }
+.skill-row p{ font-size:11.5px; color:var(--txt-mute); margin-top:3px; line-height:1.55; }
+
+.empty{ color:var(--txt-mute); font-size:12px; padding:16px 0; text-align:center; }
+
+/* ---------------------------------------------------------------- 战斗 */
+.overlay{
+  position:fixed; inset:0; z-index:60;
+  background:rgba(3,5,9,.86);
+  backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);
+  display:flex; align-items:center; justify-content:center;
+  padding:20px;
+  animation:fade .22s;
+}
+@keyframes fade{ from{opacity:0} to{opacity:1} }
+.overlay[hidden]{ display:none; }
+
+.battle{
+  width:min(660px,100%);
+  max-height:92vh;
+  display:flex; flex-direction:column;
+  background:linear-gradient(180deg,#0d1520,#070b11);
+  border:1px solid var(--line-2);
+  border-radius:5px;
+  box-shadow:0 30px 90px rgba(0,0,0,.75), 0 0 0 1px rgba(79,227,200,.06);
+  overflow-y:auto;
+}
+
+.battle-h{
+  padding:16px 20px;
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg, rgba(226,87,76,.07), transparent);
+}
+.foe-id{ display:flex; align-items:baseline; gap:10px; margin-bottom:9px; }
+.foe-name{ font-family:var(--serif); font-size:17px; color:#f0d9d6; }
+.foe-lv{ font-family:var(--mono); font-size:11px; color:var(--txt-mute); }
+.foe-bar{
+  position:relative; height:14px; border-radius:2px; overflow:hidden;
+  background:#0a1017; border:1px solid var(--line);
+}
+.foe-bar i{
+  position:absolute; inset:0 auto 0 0; width:100%;
+  background:linear-gradient(90deg,#6d2823,#cf4a44);
+  transition:width .3s ease;
+}
+.foe-bar b{
+  position:absolute; inset:0; display:grid; place-items:center;
+  font-family:var(--mono); font-size:10px; font-weight:400; color:#e6d5d3;
+  text-shadow:0 1px 2px #000;
+}
+
+.battle-log{
+  flex:1; min-height:110px; max-height:220px;
+  overflow-y:auto; padding:14px 20px;
+  font-size:13px; line-height:1.85;
+  font-family:var(--serif);
+  color:var(--txt-dim);
+  display:flex; flex-direction:column; gap:1px;
+}
+.log-line{ animation:rise .22s backwards; }
+.log-line.dmg{ color:#d8b3af; }
+.log-line.crit{ color:#ffb9a5; }
+.log-line.hurt{ color:#e2574c; }
+.log-line.heal{ color:#7fd8a8; }
+.log-line.good{ color:var(--accent); }
+.log-line.mute{ color:var(--txt-mute); }
+.log-line.sys{ font-family:var(--mono); font-size:11.5px; color:var(--gold); }
+
+.self-bars{ padding:12px 20px 4px; display:flex; gap:10px; }
+.self-bars .bar{ flex:1; }
+
+.battle-actions{
+  padding:14px 20px 18px;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(146px,1fr));
+  gap:8px;
+  border-top:1px solid var(--line);
+  margin-top:10px;
+}
+.act-btn{
+  padding:11px 12px;
+  border:1px solid var(--line);
+  border-radius:3px;
+  background:rgba(255,255,255,.025);
+  text-align:left;
+  transition:.15s;
+  position:relative;
+  overflow:hidden;
+}
+.act-btn:hover:not(:disabled){ border-color:var(--accent-d); background:rgba(79,227,200,.09); }
+.act-btn:disabled{ opacity:.32; cursor:not-allowed; }
+.act-btn .an{ display:block; font-size:13.5px; color:var(--txt); }
+.act-btn .ac{
+  display:block; font-family:var(--mono); font-size:10.5px;
+  color:var(--txt-mute); margin-top:2px;
+}
+.act-btn.skill .an{ color:#b8fff1; }
+.act-btn.danger .an{ color:#e9a09a; }
+
+/* ---------------------------------------------------------------- 提示 */
+.toast{
+  position:fixed; left:50%; bottom:34px;
+  transform:translate(-50%,16px);
+  padding:9px 20px;
+  background:#101a26; border:1px solid var(--line-2);
+  border-radius:3px;
+  font-size:13px; color:var(--txt);
+  opacity:0; pointer-events:none;
+  transition:.24s;
+  z-index:90;
+  box-shadow:0 12px 34px rgba(0,0,0,.6);
+}
+.toast.show{ opacity:1; transform:translate(-50%,0); }
+
+/* ------------------------------------------------------------ 角色立绘 */
+.pt-svg{ display:block; width:100%; height:100%; }
+
+.create-body{ display:flex; gap:16px; align-items:stretch; }
+.portrait-frame{
+  flex:0 0 190px;
+  border:1px solid var(--line);
+  border-radius:4px;
+  overflow:hidden;
+  background:var(--panel);
+  position:relative;
+  box-shadow:0 0 50px rgba(0,0,0,.55) inset;
+}
+.class-detail{ flex:1; }
+
+.p-portrait{
+  flex:0 0 64px; width:64px; height:64px;
+  border-radius:3px; overflow:hidden;
+  border:1px solid var(--line-2);
+  background:#0a1017;
+  box-shadow:0 0 22px rgba(0,0,0,.6) inset;
+}
+
+/* 战斗：玩家头像 + 血蓝条 */
+.self-row{ display:flex; gap:11px; align-items:center; padding:12px 20px 4px; }
+.self-row .self-bars{ flex:1; padding:0; gap:8px; }
+.self-avatar{
+  flex:0 0 46px; width:46px; height:46px;
+  border:1px solid var(--line-2); border-radius:3px;
+  overflow:hidden; background:#0a1017;
+}
+
+/* 连招条 */
+.combo-strip{
+  display:flex; align-items:center; gap:5px; flex-wrap:wrap;
+  padding:9px 20px 0;
+  font-family:var(--mono); font-size:11px; color:var(--txt-mute);
+  margin-top:10px; border-top:1px solid rgba(26,38,53,.65);
+  min-height:30px;
+}
+.combo-strip.live{ color:var(--gold); }
+.cb-tag{ letter-spacing:.16em; }
+.combo-strip.live .cb-tag{ color:var(--gold); }
+.cb-step{
+  padding:2px 8px; border-radius:2px;
+  border:1px solid transparent; transition:.2s;
+}
+.cb-step.on{
+  color:var(--gold); border-color:rgba(220,170,82,.35);
+  background:rgba(220,170,82,.09);
+}
+.cb-step.next{
+  color:#08100f; background:var(--gold); border-color:var(--gold);
+  font-weight:700;
+}
+.cb-arrow{ opacity:.55; }
+.cb-count{
+  margin-left:6px; padding:1px 9px;
+  color:var(--gold); border:1px solid rgba(220,170,82,.45);
+  border-radius:10px; font-weight:700;
+  animation:pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.5} }
+
+.act-btn.next{
+  border-color:rgba(220,170,82,.6);
+  background:linear-gradient(180deg, rgba(220,170,82,.13), rgba(220,170,82,.03));
+  box-shadow:0 0 0 1px rgba(220,170,82,.14) inset, 0 0 18px rgba(220,170,82,.07);
+}
+.act-btn.next .an{ color:var(--gold); }
+.act-btn.next .ac{ color:rgba(220,170,82,.75); }
+
+.log-line.combo{ color:var(--gold); font-weight:600; }
+
+.chainpos{ color:var(--txt-mute); margin-top:4px !important; }
+.chainpos span{ color:var(--accent); }
+.chain-path{
+  display:flex; gap:6px; align-items:center; flex-wrap:wrap;
+  font-size:11.5px; color:var(--txt-dim);
+  padding:8px 10px; margin:6px 0 8px;
+  background:rgba(220,170,82,.05);
+  border:1px solid rgba(220,170,82,.18);
+  border-radius:3px;
+}
+.chain-path .ar{ color:var(--txt-mute); }
+.chain-note{ font-size:11px; color:var(--txt-mute); line-height:1.65; }
+
+/* ------------------------------------------------------------ 派系标签 */
+.school-tabs{ display:flex; gap:6px; justify-content:center; margin-bottom:14px; flex-wrap:wrap; }
+.school-tabs button{
+  padding:6px 15px; font-size:12.5px; color:var(--txt-mute);
+  border:1px solid var(--line); border-radius:2px;
+  background:rgba(255,255,255,.02); letter-spacing:.08em; transition:.16s;
+}
+.school-tabs button:hover{ color:var(--txt-dim); border-color:var(--line-2); }
+.school-tabs button.on{
+  color:var(--accent); border-color:var(--accent-d);
+  background:rgba(79,227,200,.08);
+}
+.cd-school{ color:var(--txt-mute); font-size:12px; }
+
+/* ------------------------------------------------------------ 实时战斗 */
+.cast-bar{
+  position:relative; height:15px; border-radius:2px; overflow:hidden;
+  background:#1a0d10; border:1px solid #3a1a1e; transition:opacity .18s;
+}
+.cast-bar i{
+  position:absolute; left:0; top:0; bottom:0; width:0;
+  background:linear-gradient(90deg,#7a2a2a,#e2574c);
+  transition:width .1s linear;
+}
+.cast-bar span{
+  position:absolute; inset:0; display:grid; place-items:center;
+  font-family:var(--mono); font-size:10px; color:#f0c8c4; letter-spacing:.06em;
+}
+#foe-cast{ margin-top:8px; }
+#self-cast{ margin:6px 20px 0; }
+
+.cast-bar.mine{ background:#0d1420; border-color:#23405e; }
+.cast-bar.mine i{ background:linear-gradient(90deg,#2b5a8a,#4fb8e8); }
+.cast-bar.mine span{ color:#bde4ff; }
+.cast-bar.rec{ background:#141005; border-color:#4a3a12; }
+.cast-bar.rec i{ background:linear-gradient(90deg,#6a5420,#c9a13c); }
+.cast-bar.rec span{ color:#e8d29a; }
+.cast-bar.warn{ background:#1e0b0b; border-color:#7a2a2a; }
+.cast-bar.warn i{ background:linear-gradient(90deg,#a03028,#e2574c); }
+.cast-bar.warn span{ color:#ffc0b8; font-weight:600; }
+.cast-bar.stun i{ background:#5a2a2a; }
+.cast-bar.stun span{ color:#c08080; }
+.cast-bar.idle{ background:#0a1017; border-color:var(--line); }
+.cast-bar.idle i{ width:0 !important; }
+.cast-bar.idle span{ color:var(--txt-mute); }
+
+.act-btn .cdmask{
+  position:absolute; left:0; top:0; bottom:0; width:0;
+  background:rgba(4,7,11,.68); pointer-events:none;
+  border-right:1px solid rgba(120,160,200,.18);
+}
+.act-btn .an, .act-btn .ac{ position:relative; z-index:1; }
+
+.cb-penalty{
+  margin-left:8px; font-size:10.5px; color:var(--danger);
+  letter-spacing:.05em;
+}
+
+.chip-fame{ color:#8fd0ff; border-color:rgba(143,208,255,.28); background:rgba(143,208,255,.07); }
+.stat-row .k em{
+  font-style:normal; color:var(--accent); font-size:9.5px;
+  border:1px solid var(--accent-d); border-radius:2px;
+  padding:0 3px; margin-left:4px; vertical-align:1px;
+}
+
+/* ---------------------------------------------------------------- 响应 */
+@media (max-width: 900px){
+  .layout{ grid-template-columns:1fr; }
+  .panel{
+    position:fixed; top:52px; right:0; bottom:0; width:320px;
+    transform:translateX(100%); transition:transform .24s;
+    z-index:50; box-shadow:-20px 0 50px rgba(0,0,0,.6);
+  }
+  .panel.open{ transform:none; }
+  .stage{ padding:18px 18px 50px; }
+  .class-grid{ grid-template-columns:repeat(2,1fr); }
+  .art{ height:110px; }
+  .create-body{ flex-direction:column; }
+  .portrait-frame{ flex:0 0 auto; width:150px; align-self:center; }
+}
+@media (max-width: 520px){
+  .battle-actions{ grid-template-columns:1fr; }
+  .prose{ font-size:15px; line-height:1.95; }
+  .chip-dim{ display:none; }
+}
+
+/* ------------------------------------------------------------ 散人技能库 */
+.sfilter{ display:flex; flex-wrap:wrap; gap:4px; margin:6px 0 8px; }
+.sfilter .mini{ font-size:10.5px; padding:2px 7px; }
+.p-body .item-row .nm{ min-width:0; }
+.p-body .item-row .nm small{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* ------------------------------------------------------------ 千机伞形态 */
+.form-row{
+  grid-column:1/-1;
+  display:flex; flex-wrap:wrap; gap:5px;
+  padding-bottom:8px; margin-bottom:2px;
+  border-bottom:1px dashed rgba(38,56,77,.6);
+}
+.form-chip{
+  padding:3px 10px; font-size:11.5px;
+  border:1px solid var(--line); border-radius:2px;
+  color:var(--txt-mute); background:rgba(255,255,255,.02);
+  transition:.15s; letter-spacing:.05em;
+}
+.form-chip:hover{ color:var(--txt-dim); border-color:var(--line-2); }
+.form-chip.on{
+  color:#0a0e15; background:var(--gold); border-color:var(--gold);
+  font-weight:700;
+}
+
+.form-card{
+  padding:8px 10px; margin-bottom:6px;
+  border:1px solid var(--line); border-left:2px solid var(--line-2);
+  border-radius:3px; cursor:pointer; transition:.15s;
+}
+.form-card:hover{ border-color:var(--line-2); background:rgba(255,255,255,.03); }
+.form-card.on{ border-left-color:var(--gold); background:rgba(220,170,82,.07); }
+.fc-h{ display:flex; align-items:baseline; gap:8px; }
+.fc-h b{ font-weight:400; color:var(--txt); font-size:12.5px; }
+.fc-h span{ color:var(--txt-mute); font-size:11px; }
+.fc-h em{ margin-left:auto; font-style:normal; font-size:10px; color:var(--gold);
+  border:1px solid rgba(220,170,82,.4); border-radius:2px; padding:0 4px; }
+.fc-sk{ margin-top:4px; font-size:10.5px; color:var(--txt-mute); line-height:1.6; }
+
+/* ======================================================================
+   手机端最终覆盖（必须放在最后，优先级最高）
+   ====================================================================== */
+button, .choice, .act-btn, .form-chip, .mini, .plus{
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+body{ overscroll-behavior:none; }
+
+@media (max-width: 620px){
+  /* 顶栏：全部压成一行 */
+  .topbar{ height:46px; flex:0 0 46px; padding:0 10px; }
+  .chapter{
+    font-size:11px; letter-spacing:.08em; max-width:32vw;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .topbar-r{ gap:5px; }
+  .chip{ font-size:10.5px; padding:2px 6px; white-space:nowrap; letter-spacing:0; }
+  .chip-dim{ display:none; }
+  .icon-btn{ width:30px; height:30px; font-size:13px; }
+
+  .stage{ padding:12px 13px calc(70px + env(safe-area-inset-bottom)); }
+  .art{ height:92px; margin-bottom:16px; border-radius:4px; }
+  .art-char{ width:115px; height:150px; right:6px; bottom:-30px; }
+  .prose{ font-size:15px; line-height:1.95; }
+  .choices{ margin-top:24px; gap:8px; }
+  .choice{ padding:12px 14px; gap:10px; }
+  .choice .txt{ font-size:14px; }
+  .choice .hint{ font-size:10px; }
+  .choice:hover:not(:disabled){ padding-left:14px; }
+
+  /* 面板变抽屉 */
+  .panel{ top:46px; width:86vw; max-width:330px; }
+  .p-head{ padding:11px 13px; }
+  .p-portrait{ flex:0 0 54px; width:54px; height:54px; }
+  .p-body{ padding:11px 13px 30px; }
+
+  /* 战斗 */
+  .overlay{ padding:0; align-items:stretch; }
+  .battle{
+    width:100%; height:100%; max-width:none; max-height:100%;
+    border-radius:0; border:0;
+  }
+  .battle-h{ padding:12px 14px; }
+  .foe-name{ font-size:15px; }
+  .battle-log{
+    flex:1; min-height:70px; max-height:none;
+    padding:10px 14px; font-size:12px; line-height:1.7;
+    justify-content:flex-end;
+  }
+  .self-row{ padding:9px 14px 3px; gap:9px; }
+  .self-avatar{ flex:0 0 40px; width:40px; height:40px; }
+  #self-cast{ margin:5px 14px 0; }
+  .combo-strip{ padding:7px 14px 0; font-size:10px; gap:4px; min-height:26px; }
+  .cb-step{ padding:1px 6px; }
+  .battle-actions{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:6px; padding:10px 12px calc(12px + env(safe-area-inset-bottom));
+  }
+  .act-btn{ padding:8px 10px; min-height:44px; }
+  .act-btn .an{ font-size:12px; }
+  .act-btn .ac{ font-size:9.5px; margin-top:1px; }
+  .form-row{ gap:4px; padding-bottom:7px; }
+  .form-chip{ font-size:10.5px; padding:3px 8px; min-height:30px; }
+
+  /* 建档 */
+  .create-inner{ width:94vw; padding:22px 0 40px; }
+  .create-h{ font-size:21px; margin-bottom:20px; }
+  .name-row{ margin-bottom:16px; }
+  .school-tabs{ gap:5px; margin-bottom:12px; }
+  .school-tabs button{ font-size:11px; padding:5px 10px; letter-spacing:.04em; }
+  .class-grid{ grid-template-columns:repeat(2,1fr); gap:8px; }
+  .class-card{ padding:11px 11px; }
+  .cc-name{ font-size:16px; }
+  .cc-tag{ font-size:10px; }
+  .create-body{ flex-direction:column; gap:10px; }
+  .portrait-frame{ width:132px; align-self:center; }
+  .class-detail{ padding:12px 13px; font-size:13px; line-height:1.7; min-height:0; }
+  .create-actions{ margin-top:18px; gap:9px; }
+  .btn{ padding:11px 22px; font-size:13px; }
+
+  /* 标题页 */
+  .logo{ font-size:clamp(56px,22vw,90px); }
+  .welcome{ font-size:12.5px; padding:6px 14px; letter-spacing:.1em; margin-top:24px; }
+  .title-btns{ margin-top:32px; }
+  .title-tip{ font-size:10.5px; }`n  .kbd-only{ display:none; }
+}
+
+/* 横屏手机：战斗区更矮 */
+@media (max-height: 500px){
+  .battle-log{ min-height:50px; max-height:70px; }
+  .art{ height:70px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== 标题界面 ===================== -->
+<section class="screen show" id="scr-title">
+  <div class="title-bg"></div>
+  <div class="title-inner">
+    <h1 class="logo">荣<span>耀</span></h1>
+    <p class="logo-sub">G L O R Y &nbsp;·&nbsp; 第 十 区</p>
+    <p class="welcome">欢迎来到荣耀，愿你的荣耀永不散场</p>
+    <p class="logo-line">十年荣耀，不过是一场游戏。</p>
+    <div class="title-btns">
+      <button class="btn btn-main" id="btn-new">新 的 一 局</button>
+      <button class="btn" id="btn-load">继 续 上 次</button>
+    </div>
+    <p class="title-tip">实时战斗 · 7 派系 26 职业<span class="kbd-only"> · 键盘 1–9</span></p>
+  </div>
+</section>
+
+<!-- ===================== 创建角色 ===================== -->
+<section class="screen" id="scr-create">
+  <div class="create-inner">
+    <h2 class="create-h">建 立 角 色</h2>
+
+    <div class="name-row">
+      <label for="inp-name">角色名</label>
+      <input id="inp-name" maxlength="8" placeholder="输入名字" autocomplete="off" spellcheck="false">
+    </div>
+
+    <div class="school-tabs" id="school-tabs"></div>
+    <div class="class-grid" id="class-grid"></div>
+
+    <div class="create-body">
+      <div class="portrait-frame" id="c-portrait"></div>
+      <div class="class-detail" id="class-detail"></div>
+    </div>
+
+    <div class="create-actions">
+      <button class="btn" id="btn-back">返 回</button>
+      <button class="btn btn-main" id="btn-enter" disabled>进 入 荣 耀</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 游戏主界面 ===================== -->
+<section class="screen" id="scr-game">
+  <header class="topbar">
+    <div class="topbar-l"><span class="chapter" id="tb-chapter">序章</span></div>
+    <div class="topbar-r">
+      <span class="chip" id="tb-name">—</span>
+      <span class="chip chip-dim" id="tb-class">—</span>
+      <span class="chip chip-fame" id="tb-fame">知名度 0</span>
+      <span class="chip chip-gold" id="tb-gold">0</span>
+      <button class="icon-btn" id="btn-panel" title="角色面板">☰</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main class="stage" id="stage">
+      <div class="art art-night" id="art">
+        <div class="art-char" id="art-char"></div>
+      </div>
+      <div class="story">
+        <article class="prose" id="prose"></article>
+        <nav class="choices" id="choices"></nav>
+      </div>
+    </main>
+
+    <aside class="panel" id="panel">
+      <div class="p-head">
+        <div class="p-portrait" id="p-portrait"></div>
+        <div class="p-top">
+          <div class="p-name" id="p-name">—</div>
+          <div class="p-meta" id="p-meta">Lv.1</div>
+        </div>
+      </div>
+      <div class="p-bars" id="p-bars"></div>
+      <div class="p-tabs" id="p-tabs">
+        <button data-tab="attr" class="on">属性</button>
+        <button data-tab="bag">背包</button>
+        <button data-tab="skill">技能</button>
+        <button data-tab="sys">系统</button>
+      </div>
+      <div class="p-body" id="p-body"></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ===================== 实时战斗 ===================== -->
+<section class="overlay" id="overlay" hidden>
+  <div class="battle">
+    <header class="battle-h">
+      <div class="foe-id">
+        <div class="foe-name" id="foe-name">—</div>
+        <div class="foe-lv" id="foe-lv">Lv.1</div>
+      </div>
+      <div class="foe-bar"><i id="foe-hp"></i><b id="foe-hptext"></b></div>
+      <div class="cast-bar" id="foe-cast" style="opacity:0"><i></i><span></span></div>
+    </header>
+
+    <div class="battle-log" id="battle-log"></div>
+
+    <div class="self-row">
+      <div class="self-avatar" id="self-avatar"></div>
+      <div class="self-bars" id="self-bars"></div>
+    </div>
+    <div class="cast-bar mine idle" id="self-cast"><i></i><span>可行动</span></div>
+
+    <div class="combo-strip" id="combo-strip"></div>
+    <div class="battle-actions" id="battle-actions"></div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ==========================================================================
+   荣耀 · 第十区  —  职业表
+   7 大派系 / 26 个可选职业 / 106 个技能
+   --------------------------------------------------------------------------
+   技能字段（时间单位 = tick，1 tick = 200ms）：
+     cast  前摇：出手前的准备时间，此时被打中会被「打断」
+     rec   后摇：收招硬直，此时是「破绽」，受到伤害 +45%
+     cd    冷却：多少 tick 后才能再放
+     power 伤害系数（%）
+     util  辅助技，不参与连招链
+   ========================================================================== */
+
+const CLASSES = {
+
+  /* ---------------------------------------------------------------- 散人 */
+  sanren: {
+    name: '散人', school: '散人', color: '#e8c25c', main: 'agi',
+    role: '全能 · 自由连招', body: 'sanren', weapon: { t: 'umbrella' },
+    base: { str: 6, agi: 7, int: 5, con: 5 },
+    freeChain: true,
+    desc: '二十四个职业，每个都学一点，也都不精。但连招可以把不同职业的招式串起来——没有固定套路，所以也没有人知道下一招是什么。前提是，你得记得住一百多个技能。\n技能库共 120 个低阶技能，战斗前自选 10 个装配。',
+    skills: []
+  },
+
+  /* -------------------------------------------------------------- 剑士系 */
+  jianke: {
+    name: '剑客', school: '剑士系', color: '#63b7f0', main: 'str',
+    role: '爆发 · 连招', body: 'sword', weapon: { t: 'blade', len: 74, w: 4.5 },
+    base: { str: 7, agi: 6, int: 3, con: 5 },
+    desc: '最正统的剑士。招式干净，输出连贯，没有任何花活。高手和菜鸟的差距，全在「快半拍」上。',
+    skills: [
+      { id: 'jk_moon', name: '银光落刃', mp: 8, cast: 2, rec: 3, cd: 16, power: 120, desc: '剑光斜落，一道银线。' },
+      { id: 'jk_draw', name: '拔刀斩', mp: 12, cast: 2, rec: 3, cd: 26, power: 165, desc: '蓄力拔刀，破空而至。' },
+      { id: 'jk_step', name: '剑影步', mp: 10, cast: 1, rec: 2, cd: 45, util: true, buff: { dodge: 30 }, desc: '身法虚化，闪避 +30%。' },
+      { id: 'jk_phantom', name: '幻影无形剑', mp: 26, cast: 5, rec: 6, cd: 58, power: 295, pierce: 0.3, desc: '剑客的顶点，无形无相。' }
+    ]
+  },
+
+  kuangjian: {
+    name: '狂剑士', school: '剑士系', color: '#e0563f', main: 'str',
+    role: '越残越强', body: 'sword', weapon: { t: 'blade', len: 82, w: 15 },
+    base: { str: 9, agi: 4, int: 2, con: 7 },
+    rage: true,
+    desc: '大开大合，不讲章法。血量越低，伤害越高——残血的时候才是狂剑士真正开始的时候。',
+    skills: [
+      { id: 'kj_blood', name: '血气之刃', mp: 9, cast: 2, rec: 3, cd: 16, power: 125, desc: '刀身带血，越痛越快。' },
+      { id: 'kj_crack', name: '崩山裂地斩', mp: 16, cast: 3, rec: 5, cd: 30, power: 180, desc: '砸地，地裂。' },
+      { id: 'kj_rage', name: '暴走', mp: 14, cast: 1, rec: 2, cd: 50, util: true, buff: { power: 35 }, desc: '进入暴走，伤害 +35%。' },
+      { id: 'kj_hell', name: '血魔·弑天', mp: 28, cast: 6, rec: 7, cd: 62, power: 310, selfDmg: 0.06, desc: '以血换血，自损 6%。' }
+    ]
+  },
+
+  mojian: {
+    name: '魔剑士', school: '剑士系', color: '#8f7cf0', main: 'int',
+    role: '剑 + 法', body: 'sword', weapon: { t: 'blade', len: 72, w: 6, rune: true },
+    base: { str: 6, agi: 4, int: 8, con: 4 },
+    desc: '剑上带元素。近身是剑客，远一点是法师。两样都不极致，但两样都能用。',
+    skills: [
+      { id: 'mj_frost', name: '冰霜剑气', mp: 10, cast: 2, rec: 3, cd: 18, power: 130, scale: 'int', desc: '剑气凝霜，附带减速。' },
+      { id: 'mj_ripple', name: '裂波斩', mp: 14, cast: 2, rec: 3, cd: 28, power: 170, scale: 'int', desc: '剑气成波，撕裂空气。' },
+      { id: 'mj_mastery', name: '魔剑精通', mp: 12, cast: 1, rec: 2, cd: 45, util: true, buff: { power: 25 }, desc: '剑上附魔，伤害 +25%。' },
+      { id: 'mj_storm', name: '剑气风暴', mp: 30, cast: 5, rec: 6, cd: 60, power: 300, scale: 'int', desc: '剑气成风，四散切割。' }
+    ]
+  },
+
+  zhangui: {
+    name: '鬼剑士·斩鬼', school: '剑士系', color: '#b04ae0', main: 'str',
+    role: '鬼气 · 主 C', body: 'sword', weapon: { t: 'blade', len: 68, w: 5, curve: 14, glow: '#b04ae0' },
+    base: { str: 8, agi: 6, int: 4, con: 5 },
+    desc: '同一个鬼剑士，加点不同就是两个职业。斩鬼把鬼气全灌进刀里，一刀比一刀重——是纯粹的输出机器。',
+    skills: [
+      { id: 'zg_slash', name: '鬼斩', mp: 9, cast: 2, rec: 3, cd: 16, power: 130, desc: '刀上缠着鬼气。' },
+      { id: 'zg_moon', name: '月光斩', mp: 13, cast: 2, rec: 3, cd: 26, power: 170, desc: '月牙形的刀光。' },
+      { id: 'zg_shadow', name: '鬼影闪', mp: 11, cast: 1, rec: 2, cd: 45, util: true, buff: { dodge: 35 }, desc: '化影而行，闪避 +35%。' },
+      { id: 'zg_kazan', name: '鬼神·卡赞', mp: 30, cast: 5, rec: 7, cd: 64, power: 320, desc: '请鬼神附身，一击定生死。' }
+    ]
+  },
+
+  zhengui: {
+    name: '鬼剑士·阵鬼', school: '剑士系', color: '#6ee0a8', main: 'int',
+    role: '阵法 · 辅助', body: 'sword', weapon: { t: 'blade', len: 64, w: 4, curve: 8, glow: '#6ee0a8' },
+    base: { str: 5, agi: 5, int: 8, con: 6 },
+    desc: '同样是鬼剑士，阵鬼不挥刀，只布阵。鬼阵铺满地面的时候，敌人的每一步都在扣血。团战里的毒瘤，单刷时的慢刀子。',
+    skills: [
+      { id: 'zg2_frost', name: '冰霜鬼阵', mp: 10, cast: 2, rec: 3, cd: 20, power: 115, scale: 'int', desc: '阵内结霜，持续侵蚀。' },
+      { id: 'zg2_erode', name: '侵蚀鬼阵', mp: 14, cast: 2, rec: 4, cd: 30, power: 155, scale: 'int', desc: '鬼气侵蚀，防御 -20%。' },
+      { id: 'zg2_calm', name: '镇魂', mp: 12, cast: 1, rec: 2, cd: 45, util: true, heal: 0.12, desc: '镇魂安神，回复 12% 生命。' },
+      { id: 'zg2_arr', name: '鬼神之阵', mp: 32, cast: 5, rec: 6, cd: 62, power: 285, scale: 'int', desc: '万鬼同阵，天地皆暗。' }
+    ]
+  },
+
+  /* -------------------------------------------------------------- 法师系 */
+  zhanfa: {
+    name: '战斗法师', school: '法师系', color: '#ff8a3d', main: 'str',
+    role: '近战法系', body: 'mage', weapon: { t: 'spear', len: 92 },
+    base: { str: 7, agi: 6, int: 6, con: 5 },
+    desc: '提着战矛冲进人堆里的法师。斗者意志攒满之后，一矛能把人捅穿——法师里最不像法师的那个。',
+    skills: [
+      { id: 'zf_dragon', name: '龙牙', mp: 8, cast: 2, rec: 3, cd: 14, power: 120, desc: '矛尖如龙牙，突刺。' },
+      { id: 'zf_sky', name: '天击', mp: 9, cast: 1, rec: 3, cd: 20, power: 110, desc: '上挑，把人挑离地面。' },
+      { id: 'zf_will', name: '斗者意志', mp: 12, cast: 1, rec: 2, cd: 45, util: true, buff: { power: 30 }, desc: '意志燃烧，伤害 +30%。' },
+      { id: 'zf_dragon2', name: '怒龙穿心', mp: 28, cast: 5, rec: 6, cd: 58, power: 305, desc: '一矛贯穿，龙吟不止。' }
+    ]
+  },
+
+  modao: {
+    name: '魔道学者', school: '法师系', color: '#c8a13c', main: 'int',
+    role: '道具 · 控场', body: 'mage', weapon: { t: 'broom', len: 78 },
+    base: { str: 3, agi: 5, int: 9, con: 4 },
+    desc: '一半是学者，一半是疯子。酸雨、烧瓶、反重力——魔道学者的战斗就是把实验室搬到战场上。',
+    skills: [
+      { id: 'md_ray', name: '魔法射线', mp: 8, cast: 2, rec: 3, cd: 14, power: 115, desc: '指尖射出一道紫光。' },
+      { id: 'md_acid', name: '酸雨干冰', mp: 14, cast: 3, rec: 4, cd: 30, power: 165, desc: '酸雨倾泻，腐蚀护甲。' },
+      { id: 'md_flask', name: '熔岩烧瓶', mp: 18, cast: 3, rec: 5, cd: 40, power: 200, desc: '砸碎烧瓶，岩浆四溅。' },
+      { id: 'md_gravity', name: '万有引力', mp: 30, cast: 5, rec: 6, cd: 60, power: 300, desc: '改写重力，把人按进地里。' }
+    ]
+  },
+
+  yuansu: {
+    name: '元素法师', school: '法师系', color: '#b07cf0', main: 'int',
+    role: '范围 · 爆发', body: 'mage', weapon: { t: 'orbstaff', len: 88 },
+    base: { str: 3, agi: 4, int: 10, con: 4 },
+    desc: '玻璃大炮。读条最长，伤害最高，血最少。站桩输出是它的极致，被人近身就是它的终点。',
+    skills: [
+      { id: 'ys_fire', name: '火球术', mp: 8, cast: 2, rec: 3, cd: 14, power: 125, desc: '最基础，也最实用。' },
+      { id: 'ys_thunder', name: '雷电贯穿', mp: 16, cast: 3, rec: 4, cd: 30, power: 185, desc: '一道雷，从头顶劈下来。' },
+      { id: 'ys_ice', name: '冰墙', mp: 12, cast: 1, rec: 2, cd: 45, util: true, buff: { guard: 45 }, desc: '冰墙护身，减伤 45%。' },
+      { id: 'ys_skyfire', name: '天雷地火', mp: 34, cast: 6, rec: 6, cd: 66, power: 340, desc: '天地之间只剩火与雷。' }
+    ]
+  },
+
+  zhaohuan: {
+    name: '召唤师', school: '法师系', color: '#4ad0c0', main: 'int',
+    role: '召唤 · 消耗', body: 'mage', weapon: { t: 'orbstaff', len: 82, orb: '#4ad0c0' },
+    base: { str: 3, agi: 4, int: 9, con: 6 },
+    desc: '自己不动手。哥布林、冰晶精灵、精灵王——召唤师打的是耐心，等你被耗死的时候，他还站在原地。',
+    skills: [
+      { id: 'zh_goblin', name: '召唤·哥布林', mp: 8, cast: 2, rec: 3, cd: 16, power: 110, desc: '一只哥布林扑上去咬。' },
+      { id: 'zh_ice', name: '召唤·冰晶精灵', mp: 14, cast: 3, rec: 4, cd: 30, power: 160, desc: '冰晶炸开，寒气刺骨。' },
+      { id: 'zh_sacrifice', name: '精灵献祭', mp: 12, cast: 1, rec: 2, cd: 45, util: true, heal: 0.15, desc: '献祭精灵，回复 15% 生命。' },
+      { id: 'zh_king', name: '召唤·精灵王', mp: 32, cast: 6, rec: 7, cd: 68, power: 320, desc: '精灵王降临，天地变色。' }
+    ]
+  },
+
+  /* -------------------------------------------------------------- 枪手系 */
+  shenqiang: {
+    name: '神枪手', school: '枪手系', color: '#6fe0d0', main: 'agi',
+    role: '远程 · 点射', body: 'gun', weapon: { t: 'pistols' },
+    base: { str: 4, agi: 9, int: 4, con: 4 },
+    desc: '枪系的天花板，也是最吃手速的职业。走位、点射、拉枪线——真正的高手，很少让人近得了身。',
+    skills: [
+      { id: 'sq_slide', name: '滑铲', mp: 6, cast: 1, rec: 3, cd: 14, power: 110, desc: '低身滑出，抬枪就打。' },
+      { id: 'sq_stomp', name: '踏射', mp: 10, cast: 2, rec: 3, cd: 24, power: 155, desc: '踩踏后仰，贴脸一枪。' },
+      { id: 'sq_wild', name: '乱射', mp: 18, cast: 2, rec: 5, cd: 42, power: 75, hits: 4, desc: '四连点射，压得人抬不起头。' },
+      { id: 'sq_barrett', name: '巴雷特狙击', mp: 30, cast: 5, rec: 7, cd: 62, power: 340, pierce: 0.25, desc: '一枪，穿过一切。' }
+    ]
+  },
+
+  danyao: {
+    name: '弹药专家', school: '枪手系', color: '#e0a04a', main: 'agi',
+    role: '属性弹 · 控场', body: 'gun', weapon: { t: 'pistols', grenade: true },
+    base: { str: 4, agi: 7, int: 6, con: 5 },
+    desc: '打的不只是子弹，是效果。冰冻、感电、燃烧——弹药专家不在乎伤害数字，在乎的是你接下来几秒还能不能动。',
+    skills: [
+      { id: 'dy_ice', name: '冰冻弹', mp: 8, cast: 1, rec: 3, cd: 18, power: 115, desc: '命中减速，寒气入骨。' },
+      { id: 'dy_shock', name: '感电手雷', mp: 14, cast: 2, rec: 4, cd: 30, power: 165, desc: '感电，持续掉血。' },
+      { id: 'dy_burn', name: '燃烧弹', mp: 16, cast: 3, rec: 4, cd: 38, power: 190, desc: '燃烧，火舌舔上护甲。' },
+      { id: 'dy_barrage', name: '弹幕轰炸', mp: 30, cast: 5, rec: 6, cd: 62, power: 300, hits: 3, desc: '弹幕覆盖，无处可躲。' }
+    ]
+  },
+
+  jixie: {
+    name: '机械师', school: '枪手系', color: '#7fc0e0', main: 'int',
+    role: '机械 · 布置', body: 'gun', weapon: { t: 'gadget' },
+    base: { str: 3, agi: 6, int: 8, con: 5 },
+    desc: '一个人就是一支军队。飞爪、炮台、空投、机械军团——机械师打的是布局，你打的是他布好的局。',
+    skills: [
+      { id: 'jx_claw', name: '机械飞爪', mp: 8, cast: 1, rec: 3, cd: 16, power: 110, desc: '飞爪抓取，拉近距离。' },
+      { id: 'jx_cannon', name: '毒蛇炮', mp: 14, cast: 2, rec: 4, cd: 30, power: 160, desc: '架起炮台，自动开火。' },
+      { id: 'jx_supply', name: '空投支援', mp: 12, cast: 1, rec: 2, cd: 45, util: true, heal: 0.1, buff: { guard: 25 }, desc: '空投补给，回血减伤。' },
+      { id: 'jx_army', name: '机械军团', mp: 32, cast: 5, rec: 6, cd: 64, power: 300, hits: 2, desc: '机械倾巢而出。' }
+    ]
+  },
+
+  qiangpao: {
+    name: '枪炮师', school: '枪手系', color: '#e0605a', main: 'str',
+    role: '重火器 · 压制', body: 'gun', weapon: { t: 'cannon' },
+    base: { str: 7, agi: 4, int: 5, con: 7 },
+    desc: '枪炮师不瞄准，枪炮师覆盖。喷火器、榴弹、激光、卫星——它的词典里没有「精准」这个词。',
+    skills: [
+      { id: 'qp_flame', name: '聚焦喷火器', mp: 10, cast: 2, rec: 4, cd: 20, power: 130, desc: '烈焰持续喷射。' },
+      { id: 'qp_grenade', name: '榴弹炮', mp: 14, cast: 3, rec: 4, cd: 32, power: 175, desc: '榴弹落地，爆开一片。' },
+      { id: 'qp_guard', name: '重甲戒备', mp: 12, cast: 1, rec: 2, cd: 45, util: true, buff: { guard: 40 }, desc: '架起重甲，减伤 40%。' },
+      { id: 'qp_laser', name: '卫星射线', mp: 34, cast: 6, rec: 7, cd: 68, power: 330, desc: '天上一道白光，地上没了。' }
+    ]
+  },
+
+  /* -------------------------------------------------------------- 格斗系 */
+  quanfa: {
+    name: '拳法家', school: '格斗系', color: '#e8834a', main: 'str',
+    role: '贴身 · 硬直', body: 'fighter', weapon: { t: 'fists' },
+    base: { str: 8, agi: 5, int: 2, con: 8 },
+    desc: '拳脚就是武器。近身之后一套连招能把人打得站不起来——前提是你能贴上去。',
+    skills: [
+      { id: 'qf_crash', name: '崩山击', mp: 8, cast: 2, rec: 3, cd: 16, power: 135, desc: '一记直拳，砸在胸口。' },
+      { id: 'qf_eagle', name: '鹰踏', mp: 10, cast: 2, rec: 3, cd: 24, power: 95, hits: 2, desc: '连环两段，脚脚到肉。' },
+      { id: 'qf_whirl', name: '旋风腿', mp: 14, cast: 3, rec: 4, cd: 34, power: 165, desc: '旋身扫堂，扫倒一片。' },
+      { id: 'qf_emperor', name: '霸皇拳', mp: 30, cast: 5, rec: 7, cd: 62, power: 315, desc: '一拳下去，空气都在响。' }
+    ]
+  },
+
+  liumang: {
+    name: '流氓', school: '格斗系', color: '#c0b060', main: 'str',
+    role: '阴招 · 干扰', body: 'fighter', weapon: { t: 'brick' },
+    base: { str: 8, agi: 7, int: 2, con: 6 },
+    desc: '板砖、沙土、勾拳、毒针。流氓没有武德，只有胜负。看不起它的人，通常都被一块砖拍在脸上。',
+    skills: [
+      { id: 'lm_brick', name: '板砖', mp: 6, cast: 1, rec: 3, cd: 14, power: 120, desc: '一块砖，糊脸。' },
+      { id: 'lm_sand', name: '抛沙', mp: 8, cast: 1, rec: 2, cd: 22, power: 90, desc: '一把沙子，迷眼。打断效果极强。' },
+      { id: 'lm_hook', name: '勾拳', mp: 14, cast: 2, rec: 4, cd: 32, power: 170, desc: '从下往上，勾下巴。' },
+      { id: 'lm_street', name: '街头风暴', mp: 28, cast: 5, rec: 6, cd: 60, power: 300, hits: 2, desc: '抄起什么砸什么。' }
+    ]
+  },
+
+  roudao: {
+    name: '柔道', school: '格斗系', color: '#6a90e0', main: 'str',
+    role: '抓取 · 投技', body: 'fighter', weapon: { t: 'fists' },
+    base: { str: 8, agi: 5, int: 3, con: 8 },
+    desc: '不挥拳，只借力。抓、摔、抛、绞——柔道的每一招都来自对手自己的力量。',
+    skills: [
+      { id: 'rd_throw', name: '背摔', mp: 9, cast: 2, rec: 3, cd: 18, power: 130, desc: '抓腕，过肩，砸地。' },
+      { id: 'rd_toss', name: '抛投', mp: 12, cast: 2, rec: 4, cd: 28, power: 165, desc: '连人带甲抛出去。' },
+      { id: 'rd_neck', name: '折颈', mp: 11, cast: 1, rec: 2, cd: 40, util: true, stun: 2, desc: '锁喉折颈，硬直 2 拍。' },
+      { id: 'rd_comet', name: '螺旋彗星落', mp: 30, cast: 6, rec: 6, cd: 64, power: 320, desc: '抱住对手从空中砸落。' }
+    ]
+  },
+
+  qigong: {
+    name: '气功师', school: '格斗系', color: '#4fe3c8', main: 'int',
+    role: '念气 · 中距离', body: 'fighter', weapon: { t: 'qiorb' },
+    base: { str: 5, agi: 6, int: 8, con: 6 },
+    desc: '把气推到体外，化成拳、化成罩、化成龙。气功师是格斗系里唯一一个能站在中距离打人的。',
+    skills: [
+      { id: 'qg_wave', name: '念气波', mp: 8, cast: 2, rec: 3, cd: 14, power: 120, desc: '一团念气推出，空气都在抖。' },
+      { id: 'qg_shield', name: '念气罩', mp: 12, cast: 1, rec: 2, cd: 45, util: true, buff: { guard: 45 }, desc: '念气护体，减伤 45%。' },
+      { id: 'qg_thunder', name: '雷霆万钧', mp: 16, cast: 3, rec: 4, cd: 32, power: 180, desc: '雷霆落下，范围击退。' },
+      { id: 'qg_dragon', name: '念龙波', mp: 30, cast: 5, rec: 6, cd: 60, power: 305, desc: '念气化龙，一往无前。' }
+    ]
+  },
+
+  /* -------------------------------------------------------------- 暗夜系 */
+  renzhe: {
+    name: '忍者', school: '暗夜系', color: '#d05a8a', main: 'agi',
+    role: '忍术 · 爆发', body: 'night', weapon: { t: 'kunai' },
+    base: { str: 5, agi: 9, int: 5, con: 4 },
+    desc: '手里剑、影分身、火遁雷遁。忍者打的是「看不见」——你打中的那个，通常只是分身。',
+    skills: [
+      { id: 'rz_shuriken', name: '手里剑', mp: 6, cast: 1, rec: 2, cd: 12, power: 105, desc: '一枚手里剑，划破空气。' },
+      { id: 'rz_clone', name: '影分身', mp: 10, cast: 1, rec: 2, cd: 40, util: true, buff: { dodge: 45 }, desc: '分出残影，闪避 +45%。' },
+      { id: 'rz_fire', name: '火遁·火龙炎弹', mp: 16, cast: 3, rec: 4, cd: 32, power: 185, desc: '一条火龙，贴地而来。' },
+      { id: 'rz_thunder', name: '雷遁·雷虎', mp: 30, cast: 5, rec: 6, cd: 62, power: 315, desc: '雷虎扑出，天地皆白。' }
+    ]
+  },
+
+  daozei: {
+    name: '盗贼', school: '暗夜系', color: '#90c04a', main: 'agi',
+    role: '陷阱 · 偷取', body: 'night', weapon: { t: 'kunai' },
+    base: { str: 5, agi: 8, int: 5, con: 5 },
+    desc: '盗贼不跟你正面打。布好陷阱，撒上毒，扔个烟雾弹，然后从背后把东西拿走。',
+    skills: [
+      { id: 'dz_poison', name: '毒刃', mp: 7, cast: 1, rec: 2, cd: 14, power: 110, desc: '刀上淬毒，持续掉血。' },
+      { id: 'dz_smoke', name: '烟雾弹', mp: 9, cast: 1, rec: 2, cd: 38, util: true, buff: { dodge: 40 }, desc: '一团烟，人影全无。' },
+      { id: 'dz_trap', name: '爆炎陷阱', mp: 15, cast: 2, rec: 4, cd: 34, power: 190, desc: '埋好了，就等你踩。' },
+      { id: 'dz_steal', name: '偷天换日', mp: 28, cast: 4, rec: 6, cd: 60, power: 300, desc: '一击得手，顺走一件。' }
+    ]
+  },
+
+  cike: {
+    name: '刺客', school: '暗夜系', color: '#e0557a', main: 'agi',
+    role: '暴击 · 收割', body: 'night', weapon: { t: 'daggers' },
+    base: { str: 5, agi: 10, int: 3, con: 4 },
+    desc: '要么一套秒人，要么一套之后自己躺下。玩刺客的人多少有点赌性。',
+    skills: [
+      { id: 'ck_arc', name: '弧光闪', mp: 7, cast: 1, rec: 2, cd: 12, power: 115, desc: '一道弧光，快得看不见。' },
+      { id: 'ck_throat', name: '割喉', mp: 13, cast: 2, rec: 3, cd: 26, power: 165, crit: 25, desc: '暴击率 +25%。' },
+      { id: 'ck_blink', name: '瞬身', mp: 10, cast: 1, rec: 2, cd: 40, util: true, buff: { dodge: 45 }, desc: '瞬移，闪避 +45%。' },
+      { id: 'ck_trade', name: '舍命一击', mp: 26, cast: 4, rec: 6, cd: 58, power: 350, selfDmg: 0.08, desc: '自损 8%，换 350% 的一击。' }
+    ]
+  },
+
+  shushi: {
+    name: '术士', school: '暗夜系', color: '#9050d0', main: 'int',
+    role: '诅咒 · 吸蚀', body: 'night', weapon: { t: 'curseorb' },
+    base: { str: 3, agi: 5, int: 9, con: 6 },
+    desc: '术士不打你，术士诅咒你。等你发现血条在掉的时候，诅咒已经叠了三层。',
+    skills: [
+      { id: 'ss_arrow', name: '暗影箭', mp: 8, cast: 2, rec: 3, cd: 14, power: 120, desc: '一支黑箭，无声无息。' },
+      { id: 'ss_bind', name: '死亡缠绕', mp: 14, cast: 2, rec: 3, cd: 28, power: 160, desc: '黑藤缠身，吸取生命。' },
+      { id: 'ss_fear', name: '恐惧术', mp: 12, cast: 1, rec: 2, cd: 44, util: true, stun: 2, desc: '恐惧，硬直 2 拍。' },
+      { id: 'ss_curse', name: '血之诅咒', mp: 32, cast: 5, rec: 6, cd: 64, power: 310, desc: '血咒缠身，无处可逃。' }
+    ]
+  },
+
+  /* -------------------------------------------------------------- 圣职系 */
+  mushi: {
+    name: '牧师', school: '圣职系', color: '#e8e0b0', main: 'int',
+    role: '治疗 · 续航', body: 'holy', weapon: { t: 'holystaff' },
+    base: { str: 3, agi: 4, int: 9, con: 7 },
+    desc: '输出最弱的职业之一，但没有牧师的一方，通常活不到最后。',
+    skills: [
+      { id: 'ms_bolt', name: '圣光弹', mp: 7, cast: 2, rec: 3, cd: 14, power: 110, desc: '一团柔和的圣光。' },
+      { id: 'ms_heal', name: '治疗术', mp: 12, cast: 2, rec: 3, cd: 40, util: true, heal: 0.22, desc: '回复 22% 生命。' },
+      { id: 'ms_purify', name: '净化之光', mp: 10, cast: 1, rec: 2, cd: 46, util: true, buff: { guard: 35 }, heal: 0.08, desc: '净化，减伤并回血。' },
+      { id: 'ms_pray', name: '神圣祈祷', mp: 26, cast: 5, rec: 6, cd: 62, power: 240, heal: 0.15, desc: '圣光降临，伤害并回复 15%。' }
+    ]
+  },
+
+  qishi: {
+    name: '骑士', school: '圣职系', color: '#e8c25c', main: 'con',
+    role: '坦克 · 冲锋', body: 'holy', weapon: { t: 'shieldsword' },
+    base: { str: 6, agi: 4, int: 4, con: 10 },
+    desc: '最厚的那堵墙。血最多、防最高、最能扛——但别指望它快速解决战斗。',
+    skills: [
+      { id: 'qs_charge', name: '冲锋', mp: 8, cast: 1, rec: 3, cd: 18, power: 120, desc: '顶盾冲撞，撞开一条路。' },
+      { id: 'qs_bash', name: '盾击', mp: 12, cast: 2, rec: 3, cd: 28, power: 160, desc: '盾面拍脸，附带硬直。' },
+      { id: 'qs_oath', name: '守护誓约', mp: 12, cast: 1, rec: 2, cd: 45, util: true, buff: { guard: 50 }, desc: '誓约护体，减伤 50%。' },
+      { id: 'qs_cross', name: '圣光十字斩', mp: 28, cast: 5, rec: 6, cd: 60, power: 300, desc: '十字圣光，劈开前方。' }
+    ]
+  },
+
+  shouhu: {
+    name: '守护天使', school: '圣职系', color: '#a8d8ff', main: 'int',
+    role: '护盾 · 复活', body: 'holy', weapon: { t: 'wings' },
+    base: { str: 3, agi: 5, int: 9, con: 7 },
+    desc: '整个荣耀里唯一能让人「再站起来一次」的职业。它自己打不死人，但它能让队友不死。',
+    skills: [
+      { id: 'sh_wing', name: '天使之翼', mp: 10, cast: 2, rec: 3, cd: 22, power: 115, desc: '羽翼展开，光刃扫过。' },
+      { id: 'sh_shield', name: '圣光庇护', mp: 12, cast: 1, rec: 2, cd: 40, util: true, buff: { guard: 55 }, desc: '圣光庇护，减伤 55%。' },
+      { id: 'sh_song', name: '净化圣歌', mp: 14, cast: 2, rec: 3, cd: 46, util: true, heal: 0.25, desc: '圣歌，回复 25% 生命。' },
+      { id: 'sh_revive', name: '神圣复苏', mp: 32, cast: 5, rec: 6, cd: 70, power: 250, heal: 0.3, desc: '圣光重生，回复 30%。' }
+    ]
+  },
+
+  qumo: {
+    name: '驱魔师', school: '圣职系', color: '#e07050', main: 'int',
+    role: '符咒 · 退魔', body: 'holy', weapon: { t: 'talisman' },
+    base: { str: 4, agi: 6, int: 8, con: 6 },
+    desc: '画符、念咒、请式神。驱魔师打的是「退治」——专克鬼剑士这一类带着鬼气的东西。',
+    skills: [
+      { id: 'qm_fu', name: '驱魔符', mp: 8, cast: 1, rec: 3, cd: 14, power: 115, desc: '一张黄符贴上去，烧穿。' },
+      { id: 'qm_thunder', name: '落雷符', mp: 14, cast: 2, rec: 4, cd: 30, power: 170, desc: '符纸引雷，当头劈下。' },
+      { id: 'qm_shiki', name: '式神·白虎', mp: 18, cast: 3, rec: 4, cd: 38, power: 195, desc: '白虎式神，扑杀。' },
+      { id: 'qm_five', name: '五雷正法', mp: 32, cast: 5, rec: 6, cd: 64, power: 320, desc: '五雷齐落，邪祟尽散。' }
+    ]
+  }
+};
+
+/* ---------------------------------------------------------------- 索引 */
+const SKILLS = {};
+const SCHOOLS = ['散人', '剑士系', '法师系', '枪手系', '格斗系', '暗夜系', '圣职系'];
+
+Object.keys(CLASSES).forEach(cid => {
+  const c = CLASSES[cid];
+  c.id = cid;
+  c.skillIds = c.skills.map(s => s.id);
+  c.chain = c.freeChain ? [] : c.skills.filter(s => !s.util).map(s => s.id);
+  c.skills.forEach(s => {
+    SKILLS[s.id] = Object.assign({ cls: cid, color: c.color, owner: c.name }, s);
+    SKILLS[s.id].school = s.school2 || c.school;
+  });
+});
+
+function classList(school) {
+  return Object.keys(CLASSES).filter(k => !school || CLASSES[k].school === school);
+}
+
+</script>
+<script>
+/* ==========================================================================
+   荣耀 · 第十区  —   散人技能库
+   --------------------------------------------------------------------------
+   六大派系 × 20 个低阶小技能 = 120 个。
+   散人没有固定连招：技能栏里相邻两招来自不同派系就能接上（+15%）。
+   技能栏 10 格，战斗外可随时换。
+
+   字段顺序：[id, 名称, 源职业, 派系, MP, 前摇, 后摇, CD, 伤害%, 描述, 额外]
+   额外可写：{ hits, util, buff:{dodge|guard|power}, heal, stun, pierce, crit, scale }
+   ========================================================================== */
+
+const SANREN_MAX = 10;
+
+const SCALE_OF = {
+  '剑士系': 'str', '法师系': 'int', '枪手系': 'agi',
+  '格斗系': 'str', '暗夜系': 'agi', '圣职系': 'str'
+};
+
+const SANREN_SKILLS = [
+
+  /* ================= 剑士系 20 ================= */
+  ['sr_jk_moon',  '银光落刃',   '剑客', '剑士系', 7, 1, 2, 10, 110, '剑光斜落，一道银线。'],
+  ['sr_jk_draw',  '拔刀斩',     '剑客', '剑士系', 9, 2, 3, 16, 130, '蓄力拔刀，破空而至。'],
+  ['sr_jk_three', '三段斩',     '剑客', '剑士系', 8, 1, 3, 14,  55, '连斩三下。', { hits: 3 }],
+  ['sr_jk_step',  '剑影步',     '剑客', '剑士系', 6, 1, 1, 30,   0, '身法虚化，闪避 +30%。', { util: true, buff: { dodge: 30 } }],
+
+  ['sr_kj_blood', '血气之刃',   '狂剑士', '剑士系', 8, 1, 2, 12, 115, '刀身带血，越痛越快。'],
+  ['sr_kj_crack', '崩山裂地斩', '狂剑士', '剑士系', 10, 2, 3, 18, 135, '砸地，地裂。'],
+  ['sr_kj_heavy', '重斩',       '狂剑士', '剑士系', 7, 2, 2, 14, 120, '大开大合的一刀。'],
+  ['sr_kj_rage',  '暴走',       '狂剑士', '剑士系', 10, 1, 1, 40,  0, '进入暴走，伤害 +30%。', { util: true, buff: { power: 30 } }],
+
+  ['sr_mj_frost', '冰霜剑气',   '魔剑士', '剑士系', 8, 1, 2, 12, 110, '剑气凝霜。', { scale: 'int' }],
+  ['sr_mj_fire',  '烈焰剑气',   '魔剑士', '剑士系', 8, 1, 2, 12, 110, '剑气带火。', { scale: 'int' }],
+  ['sr_mj_ripple','裂波斩',     '魔剑士', '剑士系', 9, 2, 3, 16, 125, '剑气成波，撕裂空气。', { scale: 'int' }],
+  ['sr_mj_guard', '剑气护体',   '魔剑士', '剑士系', 7, 1, 1, 32,   0, '剑气环绕，减伤 35%。', { util: true, buff: { guard: 35 }, scale: 'int' }],
+
+  ['sr_zg_slash', '鬼斩',       '鬼剑士·斩鬼', '剑士系', 8, 1, 2, 12, 115, '刀上缠着鬼气。'],
+  ['sr_zg_moon',  '月光斩',     '鬼剑士·斩鬼', '剑士系', 9, 2, 3, 16, 125, '月牙形的刀光。'],
+  ['sr_zg_shadow','鬼影闪',     '鬼剑士·斩鬼', '剑士系', 6, 1, 1, 30,   0, '化影而行，闪避 +35%。', { util: true, buff: { dodge: 35 } }],
+  ['sr_zg_burst', '鬼气爆发',   '鬼剑士·斩鬼', '剑士系', 11, 2, 3, 20, 130, '鬼气炸开，穿透护甲。', { pierce: 0.2 }],
+
+  ['sr_zz_frost', '冰霜鬼阵',   '鬼剑士·阵鬼', '剑士系', 8, 1, 2, 14, 105, '阵内结霜。', { scale: 'int' }],
+  ['sr_zz_erode', '侵蚀鬼阵',   '鬼剑士·阵鬼', '剑士系', 9, 1, 2, 14, 110, '鬼气侵蚀，持续掉血。', { scale: 'int' }],
+  ['sr_zz_calm',  '镇魂',       '鬼剑士·阵鬼', '剑士系', 8, 1, 1, 36,   0, '回复 12% 生命。', { util: true, heal: 0.12, scale: 'int' }],
+  ['sr_zz_rift',  '鬼阵·裂',    '鬼剑士·阵鬼', '剑士系', 11, 2, 3, 20, 130, '阵纹裂开，鬼神出手。', { scale: 'int' }],
+
+  /* ================= 法师系 20 ================= */
+  ['sr_zf_dragon','龙牙',       '战斗法师', '法师系', 7, 1, 2, 12, 110, '矛尖如龙牙，突刺。'],
+  ['sr_zf_sky',   '天击',       '战斗法师', '法师系', 6, 1, 2, 12, 105, '上挑，把人挑离地面。'],
+  ['sr_zf_palm',  '落花掌',     '战斗法师', '法师系', 6, 1, 2, 12, 100, '掌风如落花。'],
+  ['sr_zf_meteor','流星赶月',   '战斗法师', '法师系', 9, 2, 3, 18, 125, '一矛追月。'],
+  ['sr_zf_will',  '斗者意志',   '战斗法师', '法师系', 10, 1, 1, 40,  0, '意志燃烧，伤害 +30%。', { util: true, buff: { power: 30 } }],
+
+  ['sr_md_ray',   '魔法射线',   '魔道学者', '法师系', 6, 1, 2, 10, 105, '指尖射出一道紫光。'],
+  ['sr_md_acid',  '酸雨干冰',   '魔道学者', '法师系', 9, 2, 3, 16, 115, '酸雨倾泻。'],
+  ['sr_md_flask', '熔岩烧瓶',   '魔道学者', '法师系', 9, 2, 3, 16, 120, '砸碎烧瓶，岩浆四溅。'],
+  ['sr_md_frost', '寒冰粉',     '魔道学者', '法师系', 7, 1, 2, 14, 100, '冰粉散开，减速。'],
+  ['sr_md_purge', '驱散粉',     '魔道学者', '法师系', 7, 1, 1, 32,   0, '减伤 35%。', { util: true, buff: { guard: 35 } }],
+
+  ['sr_ys_fire',  '火球术',     '元素法师', '法师系', 6, 1, 2, 10, 110, '最基础，也最实用。'],
+  ['sr_ys_snow',  '冰霜雪雨',   '元素法师', '法师系', 8, 1, 3, 14, 105, '雪雨落下，寒气刺骨。'],
+  ['sr_ys_thunder','雷电贯穿',  '元素法师', '法师系', 9, 2, 3, 16, 125, '一道雷，从头顶劈下来。'],
+  ['sr_ys_flame', '烈焰冲击',   '元素法师', '法师系', 9, 2, 3, 16, 115, '烈焰从脚下窜起。'],
+  ['sr_ys_ice',   '冰墙',       '元素法师', '法师系', 7, 1, 1, 32,   0, '冰墙护身，减伤 40%。', { util: true, buff: { guard: 40 } }],
+
+  ['sr_zh_goblin','召唤·哥布林', '召唤师', '法师系', 6, 1, 2, 12, 105, '一只哥布林扑上去咬。'],
+  ['sr_zh_ice',   '召唤·冰晶精灵','召唤师','法师系', 8, 1, 3, 14, 115, '冰晶炸开。'],
+  ['sr_zh_drake', '召唤·小火龙','召唤师', '法师系', 9, 2, 3, 16, 110, '一口火喷过来。'],
+  ['sr_zh_dark',  '召唤·暗精灵','召唤师', '法师系', 8, 1, 2, 14, 105, '暗影啃噬。'],
+  ['sr_zh_sac',   '精灵献祭',   '召唤师', '法师系', 8, 1, 1, 36,   0, '献祭精灵，回复 15% 生命。', { util: true, heal: 0.15 }],
+
+  /* ================= 枪手系 20 ================= */
+  ['sr_sq_slide', '滑铲',       '神枪手', '枪手系', 5, 1, 2,  8, 100, '低身滑出，抬枪就打。'],
+  ['sr_sq_stomp', '踏射',       '神枪手', '枪手系', 7, 1, 2, 10, 115, '踩踏后仰，贴脸一枪。'],
+  ['sr_sq_tap',   '点射',       '神枪手', '枪手系', 5, 1, 2,  8, 105, '两发点射。'],
+  ['sr_sq_silver','银弹',       '神枪手', '枪手系', 7, 1, 2, 12, 110, '银弹破甲。', { pierce: 0.15 }],
+  ['sr_sq_head',  '爆头',       '神枪手', '枪手系', 10, 2, 3, 20, 130, '一枪爆头。', { crit: 20 }],
+
+  ['sr_dy_ice',   '冰冻弹',     '弹药专家', '枪手系', 6, 1, 2, 10, 105, '命中减速。'],
+  ['sr_dy_shock', '感电手雷',   '弹药专家', '枪手系', 8, 1, 3, 14, 115, '感电，持续掉血。'],
+  ['sr_dy_burn',  '燃烧弹',     '弹药专家', '枪手系', 8, 1, 3, 14, 110, '燃烧，火舌舔上护甲。'],
+  ['sr_dy_flash', '闪光弹',     '弹药专家', '枪手系', 7, 1, 2, 30,  70, '致盲，硬直 2 拍。', { stun: 2 }],
+  ['sr_dy_cross', '交叉射击',   '弹药专家', '枪手系', 9, 2, 3, 16, 120, '左右交叉的弹线。'],
+
+  ['sr_jx_claw',  '机械飞爪',   '机械师', '枪手系', 6, 1, 2, 10, 105, '飞爪抓取。'],
+  ['sr_jx_snake', '毒蛇炮',     '机械师', '枪手系', 8, 1, 3, 14, 110, '架起炮台，自动开火。'],
+  ['sr_jx_bomb',  '自爆机器人', '机械师', '枪手系', 9, 2, 3, 16, 120, '机器人扑上去自爆。'],
+  ['sr_jx_emp',   '电磁波',     '机械师', '枪手系', 8, 1, 2, 14, 115, '电磁震荡，打断施法。'],
+  ['sr_jx_shield','机械护盾',   '机械师', '枪手系', 7, 1, 1, 32,   0, '展开护盾，减伤 40%。', { util: true, buff: { guard: 40 } }],
+
+  ['sr_qp_flame', '聚焦喷火器', '枪炮师', '枪手系', 8, 1, 3, 12, 110, '烈焰持续喷射。'],
+  ['sr_qp_gren',  '榴弹炮',     '枪炮师', '枪手系', 9, 2, 3, 16, 120, '榴弹落地，爆开一片。'],
+  ['sr_qp_cannon','加农炮',     '枪炮师', '枪手系', 10, 2, 3, 18, 125, '重炮轰击。'],
+  ['sr_qp_heavy', '重甲戒备',   '枪炮师', '枪手系', 7, 1, 1, 32,   0, '架起重甲，减伤 40%。', { util: true, buff: { guard: 40 } }],
+  ['sr_qp_sat',   '卫星定位',   '枪炮师', '枪手系', 11, 2, 3, 22, 130, '天上一道白光。'],
+
+  /* ================= 格斗系 20 ================= */
+  ['sr_qf_crash', '崩山击',     '拳法家', '格斗系', 7, 1, 2, 10, 115, '一记直拳，砸在胸口。'],
+  ['sr_qf_eagle', '鹰踏',       '拳法家', '格斗系', 7, 1, 2, 12,  70, '连环两段，脚脚到肉。', { hits: 2 }],
+  ['sr_qf_whirl', '旋风腿',     '拳法家', '格斗系', 9, 2, 3, 16, 120, '旋身扫堂。'],
+  ['sr_qf_back',  '通背拳',     '拳法家', '格斗系', 8, 1, 2, 14, 110, '一力贯穿。'],
+  ['sr_qf_inch',  '寸劲',       '拳法家', '格斗系', 9, 1, 3, 18, 125, '短距离爆发的极致。'],
+
+  ['sr_lm_brick', '板砖',       '流氓', '格斗系', 5, 1, 2,  8, 110, '一块砖，糊脸。'],
+  ['sr_lm_sand',  '抛沙',       '流氓', '格斗系', 5, 1, 1, 24,  90, '一把沙子迷眼，硬直 1 拍。', { stun: 1 }],
+  ['sr_lm_hook',  '勾拳',       '流氓', '格斗系', 8, 1, 2, 14, 115, '从下往上，勾下巴。'],
+  ['sr_lm_needle','毒针',       '流氓', '格斗系', 6, 1, 1, 16, 100, '一根毒针，扎进护甲缝里。'],
+  ['sr_lm_swag',  '街头气势',   '流氓', '格斗系', 8, 1, 1, 36,   0, '气焰嚣张，伤害 +25%。', { util: true, buff: { power: 25 } }],
+
+  ['sr_rd_throw', '背摔',       '柔道', '格斗系', 7, 1, 2, 12, 115, '抓腕，过肩，砸地。'],
+  ['sr_rd_toss',  '抛投',       '柔道', '格斗系', 9, 2, 3, 16, 120, '连人带甲抛出去。'],
+  ['sr_rd_neck',  '折颈',       '柔道', '格斗系', 7, 1, 1, 30,  60, '锁喉折颈，硬直 2 拍。', { util: true, stun: 2 }],
+  ['sr_rd_hammer','空绞锤',     '柔道', '格斗系', 10, 2, 3, 18, 125, '从空中砸下。'],
+  ['sr_rd_drop',  '千斤坠',     '柔道', '格斗系', 8, 1, 3, 14, 110, '整个人压下去。'],
+
+  ['sr_qg_wave',  '念气波',     '气功师', '格斗系', 7, 1, 2, 10, 110, '一团念气推出。', { scale: 'int' }],
+  ['sr_qg_shield','念气罩',     '气功师', '格斗系', 7, 1, 1, 32,   0, '念气护体，减伤 40%。', { util: true, buff: { guard: 40 }, scale: 'int' }],
+  ['sr_qg_slam',  '雷霆背摔',   '气功师', '格斗系', 9, 2, 3, 16, 120, '带电的过肩摔。', { scale: 'int' }],
+  ['sr_qg_bomb',  '念气弹',     '气功师', '格斗系', 8, 1, 2, 14, 115, '压缩后的念气炸开。', { scale: 'int' }],
+  ['sr_qg_roar',  '狮子吼',     '气功师', '格斗系', 10, 2, 3, 20, 125, '一声怒吼，震退四周。', { scale: 'int' }],
+
+  /* ================= 暗夜系 20 ================= */
+  ['sr_rz_shuri', '手里剑',     '忍者', '暗夜系', 5, 1, 1,  8,  95, '一枚手里剑，划破空气。'],
+  ['sr_rz_clone', '影分身',     '忍者', '暗夜系', 7, 1, 1, 30,   0, '分出残影，闪避 +45%。', { util: true, buff: { dodge: 45 } }],
+  ['sr_rz_fire',  '火遁·豪火球','忍者', '暗夜系', 9, 2, 3, 16, 120, '一团火球贴地而来。'],
+  ['sr_rz_earth', '雷遁·地走',  '忍者', '暗夜系', 9, 1, 3, 16, 115, '电流沿着地面爬过去。'],
+  ['sr_rz_kunai', '苦无连投',   '忍者', '暗夜系', 8, 1, 3, 14,  65, '三连苦无。', { hits: 3 }],
+
+  ['sr_dz_poison','毒刃',       '盗贼', '暗夜系', 6, 1, 2, 12, 100, '刀上淬毒。'],
+  ['sr_dz_smoke', '烟雾弹',     '盗贼', '暗夜系', 7, 1, 1, 30,   0, '一团烟，人影全无。', { util: true, buff: { dodge: 40 } }],
+  ['sr_dz_trap',  '爆炎陷阱',   '盗贼', '暗夜系', 9, 1, 3, 18, 120, '埋好了，就等你踩。'],
+  ['sr_dz_steal', '偷窃',       '盗贼', '暗夜系', 6, 1, 2, 20,  90, '顺手牵羊，还能捞点银币。'],
+  ['sr_dz_stab',  '匕首突刺',   '盗贼', '暗夜系', 7, 1, 2, 12, 115, '又快又短的一刀。'],
+
+  ['sr_ck_arc',   '弧光闪',     '刺客', '暗夜系', 6, 1, 2, 10, 110, '一道弧光，快得看不见。'],
+  ['sr_ck_throat','割喉',       '刺客', '暗夜系', 9, 1, 3, 16, 125, '暴击率 +20%。', { crit: 20 }],
+  ['sr_ck_blink', '瞬身',       '刺客', '暗夜系', 7, 1, 1, 30,   0, '瞬移，闪避 +45%。', { util: true, buff: { dodge: 45 } }],
+  ['sr_ck_shadow','影袭',       '刺客', '暗夜系', 8, 1, 2, 14, 115, '从影子里刺出来。'],
+  ['sr_ck_fatal', '致命一击',   '刺客', '暗夜系', 11, 2, 3, 22, 135, '一次机会，只有一次。', { crit: 30 }],
+
+  ['sr_ss_arrow', '暗影箭',     '术士', '暗夜系', 7, 1, 2, 10, 105, '一支黑箭，无声无息。', { scale: 'int' }],
+  ['sr_ss_bind',  '死亡缠绕',   '术士', '暗夜系', 8, 1, 3, 14, 115, '黑藤缠身，吸取生命。', { scale: 'int' }],
+  ['sr_ss_fear',  '恐惧术',     '术士', '暗夜系', 7, 1, 1, 30,  60, '恐惧，硬直 2 拍。', { util: true, stun: 2, scale: 'int' }],
+  ['sr_ss_curse', '诅咒',       '术士', '暗夜系', 8, 1, 2, 14, 110, '诅咒缠身，防御下降。', { scale: 'int' }],
+  ['sr_ss_blood', '血之献祭',   '术士', '暗夜系', 10, 2, 3, 22, 130, '以血换血。', { scale: 'int' }],
+
+  /* ================= 圣职系 20 ================= */
+  ['sr_ms_bolt',  '圣光弹',     '牧师', '圣职系', 6, 1, 2, 10, 100, '一团柔和的圣光。', { scale: 'int' }],
+  ['sr_ms_heal',  '治疗术',     '牧师', '圣职系', 8, 1, 1, 34,   0, '回复 22% 生命。', { util: true, heal: 0.22, scale: 'int' }],
+  ['sr_ms_purify','净化',       '牧师', '圣职系', 7, 1, 1, 32,   0, '减伤 35% 并回复 8%。', { util: true, buff: { guard: 35 }, heal: 0.08, scale: 'int' }],
+  ['sr_ms_shock', '神圣冲击',   '牧师', '圣职系', 9, 1, 3, 16, 115, '圣光化作冲击。', { scale: 'int' }],
+  ['sr_ms_word',  '圣言',       '牧师', '圣职系', 10, 2, 3, 20, 120, '一句话，压得人抬不起头。', { scale: 'int' }],
+
+  ['sr_qs_charge','冲锋',       '骑士', '圣职系', 6, 1, 2, 10, 110, '顶盾冲撞。', { scale: 'con' }],
+  ['sr_qs_bash',  '盾击',       '骑士', '圣职系', 8, 1, 2, 14, 115, '盾面拍脸。', { scale: 'con' }],
+  ['sr_qs_oath',  '守护誓约',   '骑士', '圣职系', 7, 1, 1, 32,   0, '誓约护体，减伤 45%。', { util: true, buff: { guard: 45 }, scale: 'con' }],
+  ['sr_qs_light', '圣光斩',     '骑士', '圣职系', 9, 2, 3, 16, 125, '剑上覆着圣光。', { scale: 'con' }],
+  ['sr_qs_trample','战马践踏',  '骑士', '圣职系', 9, 2, 3, 18, 120, '连人带马碾过去。', { scale: 'con' }],
+
+  ['sr_sh_wing',  "天使之翼",   '守护天使', '圣职系', 7, 1, 2, 12, 105, '羽翼展开，光刃扫过。', { scale: 'int' }],
+  ['sr_sh_guard', '圣光庇护',   '守护天使', '圣职系', 7, 1, 1, 32,   0, '减伤 50%。', { util: true, buff: { guard: 50 }, scale: 'int' }],
+  ['sr_sh_song',  '净化圣歌',   '守护天使', '圣职系', 8, 1, 1, 36,   0, '回复 25% 生命。', { util: true, heal: 0.25, scale: 'int' }],
+  ['sr_sh_judge', '光之审判',   '守护天使', '圣职系', 10, 2, 3, 20, 120, '一道光柱落下。', { scale: 'int' }],
+  ['sr_sh_feather','羽刃',      '守护天使', '圣职系', 8, 1, 2, 14, 115, '羽毛化作刀片。', { scale: 'int' }],
+
+  ['sr_qm_fu',    '驱魔符',     '驱魔师', '圣职系', 6, 1, 2, 10, 105, '一张黄符贴上去，烧穿。', { scale: 'int' }],
+  ['sr_qm_thunder','落雷符',    '驱魔师', '圣职系', 8, 1, 3, 14, 115, '符纸引雷。', { scale: 'int' }],
+  ['sr_qm_shiki', '式神·白虎',  '驱魔师', '圣职系', 9, 2, 3, 18, 125, '白虎式神，扑杀。', { scale: 'int' }],
+  ['sr_qm_strike','退魔击',     '驱魔师', '圣职系', 7, 1, 2, 12, 110, '专打邪祟的一击。', { scale: 'int' }],
+  ['sr_qm_purge', '净世咒',     '驱魔师', '圣职系', 10, 2, 3, 22, 130, '咒文铺开，邪祟尽散。', { scale: 'int' }]
+];
+
+/* ------------------------------------------------------------- 注册 */
+SANREN_SKILLS.forEach(function (row) {
+  const x = row[10] || {};
+  const s = {
+    id: row[0], name: row[1], owner: row[2], school: row[3],
+    mp: row[4], cast: row[5], rec: row[6], cd: row[7],
+    power: row[8] || 0, desc: row[9] || '',
+    scale: x.scale || SCALE_OF[row[3]] || 'str',
+    sanren: true
+  };
+  if (x.hits) s.hits = x.hits;
+  if (x.util) s.util = true;
+  if (x.buff) s.buff = x.buff;
+  if (x.heal) s.heal = x.heal;
+  if (x.stun) s.stun = x.stun;
+  if (x.pierce) s.pierce = x.pierce;
+  if (x.crit) s.crit = x.crit;
+  SKILLS[s.id] = s;
+});
+
+/* ==========================================================================
+   千机伞 · 12 形态
+   --------------------------------------------------------------------------
+   每一种形态对应一组职业的技能。160 个低阶技能全部可用，不需要预选装配。
+   战斗中随时变形；变形免费，但**只有换过形态，下一招才能接上连招**。
+   ========================================================================== */
+
+const UMBRELLA_FORMS = [
+  { id: 'sword',  name: '剑',     desc: '轻剑 · 太刀 · 符文剑', cls: ['剑客', '魔剑士', '鬼剑士·斩鬼'] },
+  { id: 'great',  name: '大剑',   desc: '重剑 · 鬼阵',         cls: ['狂剑士', '鬼剑士·阵鬼'] },
+  { id: 'spear',  name: '战矛',   desc: '长兵 · 道具',         cls: ['战斗法师', '魔道学者'] },
+  { id: 'staff',  name: '法杖',   desc: '元素 · 召唤',         cls: ['元素法师', '召唤师'] },
+  { id: 'pistol', name: '双枪',   desc: '点射 · 属性弹',       cls: ['神枪手', '弹药专家'] },
+  { id: 'cannon', name: '手炮',   desc: '重火器 · 机械',       cls: ['枪炮师', '机械师'] },
+  { id: 'fist',   name: '拳套',   desc: '拳脚 · 投技',         cls: ['拳法家', '柔道'] },
+  { id: 'claw',   name: '爪',     desc: '街斗 · 念气',         cls: ['流氓', '气功师'] },
+  { id: 'dagger', name: '匕首',   desc: '暴击 · 陷阱',         cls: ['刺客', '盗贼'] },
+  { id: 'kunai',  name: '苦无',   desc: '忍术 · 诅咒',         cls: ['忍者', '术士'] },
+  { id: 'cross',  name: '十字架', desc: '治疗 · 庇护',         cls: ['牧师', '守护天使'] },
+  { id: 'shield', name: '盾',     desc: '防守 · 符咒',         cls: ['骑士', '驱魔师'] }
+];
+
+const FORM_OF_CLASS = {};
+UMBRELLA_FORMS.forEach(function (f) {
+  f.cls.forEach(function (c) { FORM_OF_CLASS[c] = f.id; });
+});
+
+const FORM_SKILLS = {};
+UMBRELLA_FORMS.forEach(function (f) { FORM_SKILLS[f.id] = []; });
+
+SANREN_SKILLS.forEach(function (row) {
+  const fid = FORM_OF_CLASS[row[2]];
+  if (fid) FORM_SKILLS[fid].push(row[0]);
+});
+
+const FORM_NAME = {};
+UMBRELLA_FORMS.forEach(function (f) { FORM_NAME[f.id] = f.name; });
+
+/* 散人默认从「剑」形态起手 */
+CLASSES.sanren.form = 'sword';
+CLASSES.sanren.skillIds = FORM_SKILLS.sword.slice();
+</script>
+<script>
+/* ==========================================================================
+   荣耀 · 第十区  —   角色立绘（参数化生成）
+   7 种体型 × 11 种头部 × 18 种武器 × 职业主色 = 26 个职业的剪影
+   纯 SVG，无外部图源，任意尺寸不糊。
+   ========================================================================== */
+
+/* ------------------------------------------------------------ 头部样式 */
+const PT_HEADS = {
+  ponytail: (pb, c) => `
+    <path d="M80 72 C58 68 42 90 46 114 C48 128 38 138 28 136 C44 150 64 138 66 118 C68 100 70 84 86 80 Z"
+          fill="${pb}" stroke="${c}" stroke-opacity=".35" stroke-width="1.1"/>`,
+  long: (pb, c) => `
+    <path d="M74 76 C70 108 66 140 60 168 L84 160 C86 132 86 104 88 82 Z"
+          fill="${pb}" stroke="${c}" stroke-opacity=".3" stroke-width="1"/>
+    <path d="M126 76 C130 108 134 140 140 168 L116 160 C114 132 114 104 112 82 Z"
+          fill="${pb}" stroke="${c}" stroke-opacity=".3" stroke-width="1"/>`,
+  spiky: (pb, c) => `
+    <path d="M76 76 L82 52 L88 68 L96 44 L102 66 L110 50 L116 68 L124 58 L124 80
+             C124 84 118 78 100 78 C82 78 76 84 76 76 Z"
+          fill="${c}" fill-opacity=".3"/>`,
+  hood: (pb, c) => `
+    <path d="M100 42 C126 42 143 68 143 96 L143 108 L100 120 L57 108 L57 96 C57 68 74 42 100 42 Z"
+          fill="${pb}" stroke="${c}" stroke-opacity=".5" stroke-width="1.2"/>`,
+  hat: (pb, c) => `
+    <path d="M100 28 L126 62 L74 62 Z" fill="${pb}" stroke="${c}" stroke-opacity=".6" stroke-width="1.2"/>
+    <path d="M64 62 L136 62 L136 69 L64 69 Z" fill="${pb}" stroke="${c}" stroke-opacity=".55" stroke-width="1.2"/>
+    <path d="M100 34 L112 62" stroke="${c}" stroke-opacity=".3" stroke-width="1.1"/>`,
+  goggles: (pb, c) => `
+    <rect x="77" y="76" width="46" height="12" rx="6" fill="${c}" fill-opacity=".5"
+          stroke="${c}" stroke-opacity=".8" stroke-width="1.1"/>
+    <path d="M100 76 L100 88" stroke="#030707" stroke-opacity=".9" stroke-width="1.8"/>`,
+  helmet: (pb, c) => `
+    <path d="M76 74 C76 52 124 52 124 74 L124 88 L76 88 Z" fill="${pb}"
+          stroke="${c}" stroke-opacity=".75" stroke-width="1.4"/>
+    <path d="M94 62 L100 46 L106 62 Z" fill="${c}" fill-opacity=".85"/>
+    <rect x="97" y="66" width="6" height="26" rx="3" fill="${c}" fill-opacity=".4"/>`,
+  bandana: (pb, c) => `
+    <path d="M76 78 C76 68 124 68 124 78 L124 86 L76 86 Z" fill="${c}" fill-opacity=".5"/>
+    <path d="M124 80 C136 82 142 92 140 102 L132 96 Z" fill="${c}" fill-opacity=".4"/>`,
+  short: (pb, c) => `
+    <path d="M78 74 C78 56 122 56 122 74 C122 66 114 62 100 62 C86 62 78 66 78 74 Z"
+          fill="${c}" fill-opacity=".3"/>`,
+  bald: (pb, c) => `
+    <path d="M80 66 A22 26 0 0 1 120 66" fill="none" stroke="${c}" stroke-opacity=".55" stroke-width="2"/>`,
+  halo: (pb, c) => `
+    <ellipse cx="100" cy="52" rx="26" ry="7" fill="none" stroke="${c}" stroke-opacity=".75" stroke-width="2"/>`
+};
+
+/* ------------------------------------------------------------ 体型 */
+const PT_BODIES = {
+  sanren: (pb, c) => `
+    <path d="M48 262 C48 206 56 170 65 152 C75 132 86 124 100 124 C114 124 125 132 135 152
+             C144 170 152 206 152 262 Z" fill="${pb}" stroke="${c}" stroke-opacity=".45" stroke-width="1.2"/>
+    <path d="M90 86 L110 86 L112 126 L88 126 Z" fill="${pb}"/>`,
+  sword: (pb, c) => `
+    <path d="M40 262 C38 198 48 156 68 138 L132 138 C152 156 162 198 160 262 Z"
+          fill="${c}" fill-opacity=".07"/>
+    <path d="M50 262 C50 208 56 172 64 154 C74 134 86 126 100 126 C114 126 126 134 136 154
+             C144 172 150 208 150 262 Z" fill="${pb}" stroke="${c}" stroke-opacity=".45" stroke-width="1.2"/>
+    <path d="M90 88 L110 88 L112 126 L88 126 Z" fill="${pb}"/>
+    <path d="M66 160 C78 172 88 180 100 196 C112 180 122 172 134 160"
+          fill="none" stroke="${c}" stroke-opacity=".2" stroke-width="1.2"/>`,
+  gun: (pb, c) => `
+    <path d="M48 262 C48 206 55 168 65 150 C76 132 87 124 100 124 C113 124 124 132 135 150
+             C145 168 152 206 152 262 L136 250 L120 262 L100 248 L80 262 L64 250 Z"
+          fill="${pb}" stroke="${c}" stroke-opacity=".45" stroke-width="1.2"/>
+    <path d="M82 118 L118 118 L122 140 L78 140 Z" fill="${c}" fill-opacity=".1"
+          stroke="${c}" stroke-opacity=".3" stroke-width="1.1"/>
+    <path d="M100 148 L100 248" stroke="${c}" stroke-opacity=".18" stroke-width="1.2"/>`,
+  mage: (pb, c) => `
+    <path d="M40 262 C42 202 54 166 66 148 C78 130 88 122 100 122
+             C112 122 122 130 134 148 C146 166 158 202 160 262 Z"
+          fill="${pb}" stroke="${c}" stroke-opacity=".45" stroke-width="1.2"/>
+    <path d="M62 150 C44 164 34 196 34 228 L56 224 C54 198 60 172 72 158 Z"
+          fill="${c}" fill-opacity=".1" stroke="${c}" stroke-opacity=".28" stroke-width="1.1"/>
+    <path d="M138 150 C156 164 166 196 166 228 L144 224 C146 198 140 172 128 158 Z"
+          fill="${c}" fill-opacity=".1" stroke="${c}" stroke-opacity=".28" stroke-width="1.1"/>
+    <path d="M100 138 C94 172 92 216 94 262 M100 138 C106 172 108 216 106 262"
+          fill="none" stroke="${c}" stroke-opacity=".18" stroke-width="1.2"/>`,
+  fighter: (pb, c) => `
+    <path d="M62 162 C46 154 34 140 32 120" fill="none" stroke="${pb}" stroke-width="22" stroke-linecap="round"/>
+    <path d="M138 162 C154 154 166 140 168 120" fill="none" stroke="${pb}" stroke-width="22" stroke-linecap="round"/>
+    <path d="M62 162 C46 154 34 140 32 120" fill="none" stroke="${c}" stroke-opacity=".2" stroke-width="1.2"/>
+    <path d="M138 162 C154 154 166 140 168 120" fill="none" stroke="${c}" stroke-opacity=".2" stroke-width="1.2"/>
+    <path d="M38 262 C40 204 48 166 58 148 C70 130 84 122 100 122
+             C116 122 130 130 142 148 C152 166 160 204 162 262 Z"
+          fill="${pb}" stroke="${c}" stroke-opacity=".45" stroke-width="1.2"/>
+    <circle cx="32" cy="114" r="13" fill="${pb}" stroke="${c}" stroke-opacity=".6" stroke-width="1.3"/>
+    <circle cx="168" cy="114" r="13" fill="${pb}" stroke="${c}" stroke-opacity=".6" stroke-width="1.3"/>
+    <path d="M72 146 C82 158 90 164 100 165 C110 164 118 158 128 146"
+          fill="none" stroke="${c}" stroke-opacity=".28" stroke-width="1.4"/>`,
+  night: (pb, c) => `
+    <path d="M42 262 C42 202 50 160 62 142 L138 142 C150 160 158 202 158 262
+             L144 252 L130 262 L114 250 L98 262 L82 250 L66 262 L54 252 Z"
+          fill="${pb}" stroke="${c}" stroke-opacity=".45" stroke-width="1.2"/>`,
+  holy: (pb, c) => `
+    <path d="M38 262 C40 202 50 164 60 148 C72 130 86 122 100 122
+             C114 122 128 130 140 148 C150 164 160 202 162 262 Z"
+          fill="${pb}" stroke="${c}" stroke-opacity=".45" stroke-width="1.2"/>
+    <path d="M26 158 C26 136 44 124 62 130 L64 160 C48 166 32 166 26 158 Z"
+          fill="${pb}" stroke="${c}" stroke-opacity=".65" stroke-width="1.3"/>
+    <path d="M174 158 C174 136 156 124 138 130 L136 160 C152 166 168 166 174 158 Z"
+          fill="${pb}" stroke="${c}" stroke-opacity=".65" stroke-width="1.3"/>`
+};
+
+/* ------------------------------------------------------------ 武器 */
+const PT_WEAPONS = {
+  umbrella: (pb, c) => `
+    <g transform="translate(152 208) rotate(11)">
+      <rect x="-3" y="-124" width="6" height="160" rx="3" fill="#0e1720"
+            stroke="${c}" stroke-opacity=".7" stroke-width="1.2"/>
+      <path d="M-13 -106 C-17 -46 -11 26 -4 52 L4 52 C11 26 17 -46 13 -106
+               C6 -116 -6 -116 -13 -106 Z"
+            fill="${pb}" stroke="${c}" stroke-opacity=".7" stroke-width="1.3"/>
+      <path d="M0 -112 L0 50 M-9 -60 L9 -60 M-11 -10 L11 -10"
+            stroke="${c}" stroke-opacity=".3" stroke-width="1.1"/>
+      <path d="M0 -124 L0 -138" stroke="${c}" stroke-opacity=".75" stroke-width="2.4"/>
+      <rect x="-5" y="52" width="10" height="18" rx="4" fill="#0e1720"
+            stroke="${c}" stroke-opacity=".6" stroke-width="1.1"/>
+    </g>`,
+
+  blade: (pb, c, w) => {
+    const L = w.len || 74, W = (w.w || 5) / 2, cv = w.curve || 0;
+    const tip = `M${-W} -34 L${W} -34 L${W * 0.8} ${L - 12} L0 ${L} L${-W * 0.8} ${L - 12} Z`;
+    return `
+    <g transform="translate(100 198) rotate(38)">
+      <path d="${cv ? `M${-W} -34 Q${cv} ${L / 2} 0 ${L} Q${-cv} ${L / 2} ${-W} -34 Z` : tip}"
+            fill="${pb}" stroke="${c}" stroke-opacity=".55" stroke-width="1.2"/>
+      <path d="M0 -30 L1 ${L - 14}" stroke="${c}" stroke-opacity=".45" stroke-width="1"/>
+      <rect x="-16" y="-40" width="32" height="${W + 3}" rx="2.5"
+            fill="#0e1720" stroke="${c}" stroke-opacity=".65" stroke-width="1.2"/>
+      <rect x="-4.5" y="-78" width="9" height="40" rx="3" fill="#0e1720"
+            stroke="${c}" stroke-opacity=".5" stroke-width="1"/>
+      <circle cx="0" cy="-82" r="4" fill="${c}" fill-opacity=".6"/>
+      ${w.rune ? `<circle cx="0" cy="10" r="7" fill="none" stroke="${c}" stroke-opacity=".7" stroke-width="1.4"/>
+                  <circle cx="0" cy="46" r="5" fill="none" stroke="${c}" stroke-opacity=".5" stroke-width="1.2"/>` : ''}
+      ${w.glow ? `<path d="M-2 -20 L2 40" stroke="${c}" stroke-opacity=".5" stroke-width="3" filter="blur(2px)"/>` : ''}
+    </g>`;
+  },
+
+  spear: (pb, c, w) => {
+    const L = w.len || 92;
+    return `
+    <g transform="translate(104 200) rotate(20)">
+      <rect x="-3" y="-${L}" width="6" height="${L + 90}" rx="3" fill="#0e1720"
+            stroke="${c}" stroke-opacity=".6" stroke-width="1.2"/>
+      <path d="M0 -${L - 20} L10 -${L - 6} L0 -${L + 22} L-10 -${L - 6} Z"
+            fill="${pb}" stroke="${c}" stroke-opacity=".75" stroke-width="1.3"/>
+      <path d="M-9 -${L - 12} L9 -${L - 12}" stroke="${c}" stroke-opacity=".6" stroke-width="1.4"/>
+    </g>`;
+  },
+
+  broom: (pb, c, w) => `
+    <g transform="translate(158 232) rotate(8)">
+      <rect x="-3" y="-118" width="6" height="130" rx="3" fill="#0e1720"
+            stroke="${c}" stroke-opacity=".6" stroke-width="1.2"/>
+      <path d="M-16 6 L16 6 L24 46 L-22 46 Z" fill="${pb}"
+            stroke="${c}" stroke-opacity=".6" stroke-width="1.3"/>
+      <path d="M-16 6 L-22 46 M0 6 L0 46 M16 6 L22 46"
+            stroke="${c}" stroke-opacity=".35" stroke-width="1.1"/>
+    </g>`,
+
+  orbstaff: (pb, c, w) => {
+    const L = w.len || 88, oc = w.orb || c;
+    return `
+    <g transform="translate(164 246) rotate(9)">
+      <rect x="-3" y="-${L}" width="6" height="${L + 8}" rx="3" fill="#0e1720"
+            stroke="${c}" stroke-opacity=".55" stroke-width="1.2"/>
+      <circle cx="0" cy="-${L + 14}" r="28" fill="${oc}" fill-opacity=".16"/>
+      <circle cx="0" cy="-${L + 14}" r="12" fill="${oc}" fill-opacity=".9"/>
+      <path d="M-14 -${L + 14} Q0 -${L + 32} 14 -${L + 14}" fill="none"
+            stroke="${c}" stroke-opacity=".85" stroke-width="1.4"/>
+    </g>`;
+  },
+
+  pistols: (pb, c, w) => `
+    <g transform="translate(36 152) rotate(-32)">
+      <path d="M-6 -6 L14 -6 L14 3 L4 3 L4 26 L-6 26 L-6 3 L-13 3 Z" fill="${pb}"
+            stroke="${c}" stroke-opacity=".7" stroke-width="1.3"/>
+      <path d="M-6 -6 L-6 -13 L3 -13 L3 -6 Z" fill="${c}" fill-opacity=".35"/>
+      <path d="M14 -2 L26 -2" stroke="${c}" stroke-opacity=".6" stroke-width="2"/>
+    </g>
+    <g transform="translate(164 152) rotate(32) scale(-1 1)">
+      <path d="M-6 -6 L14 -6 L14 3 L4 3 L4 26 L-6 26 L-6 3 L-13 3 Z" fill="${pb}"
+            stroke="${c}" stroke-opacity=".7" stroke-width="1.3"/>
+      <path d="M-6 -6 L-6 -13 L3 -13 L3 -6 Z" fill="${c}" fill-opacity=".35"/>
+      <path d="M14 -2 L26 -2" stroke="${c}" stroke-opacity=".6" stroke-width="2"/>
+    </g>
+    ${w && w.grenade ? `<circle cx="176" cy="206" r="9" fill="${pb}" stroke="${c}" stroke-opacity=".65" stroke-width="1.2"/>
+      <path d="M176 197 L176 190" stroke="${c}" stroke-opacity=".6" stroke-width="1.4"/>` : ''}`,
+
+  gadget: (pb, c) => `
+    <g transform="translate(160 130)">
+      <rect x="-12" y="-8" width="24" height="16" rx="4" fill="${pb}"
+            stroke="${c}" stroke-opacity=".7" stroke-width="1.3"/>
+      <circle cx="0" cy="0" r="4" fill="${c}" fill-opacity=".8"/>
+      <path d="M-20 0 L-12 0 M12 0 L20 0" stroke="${c}" stroke-opacity=".5" stroke-width="1.6"/>
+      <path d="M0 -8 L0 -20" stroke="${c}" stroke-opacity=".4" stroke-width="1.2"/>
+    </g>
+    <g transform="translate(34 168) rotate(-20)">
+      <rect x="-5" y="-5" width="30" height="11" rx="3" fill="${pb}"
+            stroke="${c}" stroke-opacity=".65" stroke-width="1.2"/>
+      <rect x="18" y="-2" width="10" height="4" rx="2" fill="${c}" fill-opacity=".55"/>
+    </g>`,
+
+  cannon: (pb, c) => `
+    <g transform="translate(38 176) rotate(-16)">
+      <rect x="-22" y="-15" width="70" height="30" rx="7" fill="${pb}"
+            stroke="${c}" stroke-opacity=".7" stroke-width="1.4"/>
+      <rect x="44" y="-9" width="26" height="18" rx="4" fill="${pb}"
+            stroke="${c}" stroke-opacity=".7" stroke-width="1.3"/>
+      <circle cx="-12" cy="0" r="8" fill="${c}" fill-opacity=".28"/>
+      <path d="M-22 15 L-30 34 M64 9 L70 26" stroke="${c}" stroke-opacity=".45" stroke-width="2"/>
+    </g>`,
+
+  fists: (pb, c) => `
+    <path d="M26 106 L42 106 M25 113 L43 113 M26 120 L42 120" stroke="${c}" stroke-opacity=".45" stroke-width="1.3"/>
+    <path d="M158 106 L174 106 M157 113 L175 113 M158 120 L174 120" stroke="${c}" stroke-opacity=".45" stroke-width="1.3"/>`,
+
+  brick: (pb, c) => `
+    <g transform="translate(166 186) rotate(-14)">
+      <rect x="-14" y="-9" width="28" height="18" rx="2" fill="${pb}"
+            stroke="${c}" stroke-opacity=".7" stroke-width="1.3"/>
+      <path d="M-14 -3 L14 -3 M0 -9 L0 9" stroke="${c}" stroke-opacity=".4" stroke-width="1"/>
+    </g>`,
+
+  qiorb: (pb, c) => `
+    <circle cx="100" cy="176" r="34" fill="${c}" fill-opacity=".1"/>
+    <circle cx="100" cy="176" r="20" fill="${c}" fill-opacity=".55"/>
+    <circle cx="100" cy="176" r="28" fill="none" stroke="${c}" stroke-opacity=".6" stroke-width="1.4"
+            stroke-dasharray="5 6"/>
+    <circle cx="62" cy="150" r="12" fill="${pb}" stroke="${c}" stroke-opacity=".5" stroke-width="1.2"/>
+    <circle cx="138" cy="150" r="12" fill="${pb}" stroke="${c}" stroke-opacity=".5" stroke-width="1.2"/>`,
+
+  kunai: (pb, c) => `
+    <g transform="translate(74 176) rotate(-34)">
+      <path d="M-5 -10 L5 -10 L2 30 L0 40 L-2 30 Z" fill="${pb}"
+            stroke="${c}" stroke-opacity=".75" stroke-width="1.2"/>
+      <rect x="-3" y="-26" width="6" height="16" rx="2" fill="#0e0609"
+            stroke="${c}" stroke-opacity=".5" stroke-width="1"/>
+      <circle cx="0" cy="-28" r="4" fill="none" stroke="${c}" stroke-opacity=".6" stroke-width="1.2"/>
+    </g>`,
+
+  daggers: (pb, c) => `
+    <g transform="translate(74 188) rotate(-40)">
+      <path d="M-5 -8 L5 -8 L3 38 L0 48 L-3 38 Z" fill="${pb}"
+            stroke="${c}" stroke-opacity=".8" stroke-width="1.3"/>
+      <rect x="-13" y="-15" width="26" height="7" rx="2.5" fill="#0e0609"
+            stroke="${c}" stroke-opacity=".75" stroke-width="1.2"/>
+    </g>
+    <g transform="translate(126 188) rotate(40)">
+      <path d="M-5 -8 L5 -8 L3 38 L0 48 L-3 38 Z" fill="${pb}"
+            stroke="${c}" stroke-opacity=".8" stroke-width="1.3"/>
+      <rect x="-13" y="-15" width="26" height="7" rx="2.5" fill="#0e0609"
+            stroke="${c}" stroke-opacity=".75" stroke-width="1.2"/>
+    </g>`,
+
+  curseorb: (pb, c) => `
+    <g transform="translate(150 132)">
+      <circle cx="0" cy="0" r="22" fill="${c}" fill-opacity=".12"/>
+      <circle cx="0" cy="0" r="13" fill="${c}" fill-opacity=".65"/>
+      <path d="M0 -26 C-18 -14 -18 14 0 26 M0 -26 C18 -14 18 14 0 26"
+            fill="none" stroke="${c}" stroke-opacity=".5" stroke-width="1.2"/>
+      <circle cx="0" cy="0" r="19" fill="none" stroke="${c}" stroke-opacity=".45"
+              stroke-width="1.2" stroke-dasharray="4 6"/>
+    </g>`,
+
+  holystaff: (pb, c) => `
+    <g transform="translate(160 244) rotate(8)">
+      <rect x="-3" y="-130" width="6" height="138" rx="3" fill="#0e1720"
+            stroke="${c}" stroke-opacity=".6" stroke-width="1.2"/>
+      <path d="M0 -156 L0 -118 M-19 -137 L19 -137" stroke="${c}" stroke-opacity=".85" stroke-width="4"/>
+      <circle cx="0" cy="-137" r="26" fill="${c}" fill-opacity=".1"/>
+    </g>`,
+
+  shieldsword: (pb, c) => `
+    <g transform="translate(38 216)">
+      <path d="M-22 -36 L22 -36 L22 14 L0 34 L-22 14 Z" fill="${pb}"
+            stroke="${c}" stroke-opacity=".75" stroke-width="1.5"/>
+      <path d="M0 -24 L0 22 M-13 0 L13 0" stroke="${c}" stroke-opacity=".6" stroke-width="2.4"/>
+    </g>
+    <g transform="translate(150 178) rotate(24)">
+      <path d="M-5 -30 L5 -30 L3 40 L0 52 L-3 40 Z" fill="${pb}"
+            stroke="${c}" stroke-opacity=".7" stroke-width="1.2"/>
+      <rect x="-13" y="-36" width="26" height="7" rx="2" fill="#0e1720"
+            stroke="${c}" stroke-opacity=".65" stroke-width="1.1"/>
+    </g>`,
+
+  wings: (pb, c) => `
+    <path d="M50 150 C20 130 8 96 16 66 C36 82 56 112 62 142 Z" fill="${c}" fill-opacity=".14"
+          stroke="${c}" stroke-opacity=".4" stroke-width="1.2"/>
+    <path d="M150 150 C180 130 192 96 184 66 C164 82 144 112 138 142 Z" fill="${c}" fill-opacity=".14"
+          stroke="${c}" stroke-opacity=".4" stroke-width="1.2"/>
+    <path d="M40 128 L62 104 M36 108 L58 88" stroke="${c}" stroke-opacity=".3" stroke-width="1.1"/>
+    <path d="M160 128 L138 104 M164 108 L142 88" stroke="${c}" stroke-opacity=".3" stroke-width="1.1"/>`,
+
+  talisman: (pb, c) => `
+    <g transform="translate(150 128)">
+      <rect x="-9" y="-26" width="18" height="52" rx="2" fill="${c}" fill-opacity=".14"
+            stroke="${c}" stroke-opacity=".7" stroke-width="1.3"/>
+      <path d="M0 -18 L0 18 M-5 -8 L5 -8 M-5 4 L5 4" stroke="${c}" stroke-opacity=".7" stroke-width="1.3"/>
+    </g>
+    <g transform="translate(52 158) rotate(-12)">
+      <rect x="-7" y="-20" width="14" height="40" rx="2" fill="${c}" fill-opacity=".1"
+            stroke="${c}" stroke-opacity=".5" stroke-width="1.2"/>
+      <path d="M0 -14 L0 14" stroke="${c}" stroke-opacity=".5" stroke-width="1.2"/>
+    </g>`
+};
+
+/* ------------------------------------------------------------ 组装 */
+const PT_HEAD_OF = {
+  sanren: 'hood', jianke: 'ponytail', kuangjian: 'spiky', mojian: 'long',
+  zhangui: 'long', zhengui: 'hood',
+  zhanfa: 'ponytail', modao: 'hat', yuansu: 'hood', zhaohuan: 'hood',
+  shenqiang: 'goggles', danyao: 'goggles', jixie: 'goggles', qiangpao: 'helmet',
+  quanfa: 'spiky', liumang: 'bandana', roudao: 'short', qigong: 'bald',
+  renzhe: 'hood', daozei: 'hood', cike: 'hood', shushi: 'hood',
+  mushi: 'halo', qishi: 'helmet', shouhu: 'halo', qumo: 'bandana'
+};
+
+let ptSeq = 0;
+
+function portraitSVG(clsId, mode) {
+  const c = CLASSES[clsId];
+  if (!c) return '';
+
+  const sfx = ++ptSeq;
+  const pb = `url(#ptb-${sfx})`;
+  const col = c.color;
+
+  const headKey = PT_HEAD_OF[clsId] || 'short';
+  const head = (PT_HEADS[headKey] || PT_HEADS.short)(pb, col);
+  const body = (PT_BODIES[c.body] || PT_BODIES.sword)(pb, col);
+  const weapon = (PT_WEAPONS[c.weapon.t] || PT_WEAPONS.blade)(pb, col, c.weapon);
+  const faceDark = (c.body === 'mage' || c.body === 'night' || headKey === 'hood')
+    ? `<ellipse cx="100" cy="88" rx="16" ry="19" fill="#050308"/>
+       <circle cx="94" cy="85" r="2" fill="${col}"/><circle cx="106" cy="85" r="2" fill="${col}"/>`
+    : '';
+
+  const vb = mode === 'face' ? '46 26 108 108' : '0 0 200 260';
+
+  return `<svg class="pt-svg" viewBox="${vb}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="ptg-${sfx}" cx="50%" cy="36%" r="64%">
+      <stop offset="0" stop-color="${col}" stop-opacity=".40"/>
+      <stop offset="1" stop-color="${col}" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ptb-${sfx}" x1=".2" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="${shade(col, 0.55)}"/>
+      <stop offset=".45" stop-color="${shade(col, 0.16)}"/>
+      <stop offset="1" stop-color="#04070b"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="260" fill="url(#ptg-${sfx})"/>
+  <circle cx="100" cy="110" r="78" fill="none" stroke="${col}" stroke-opacity=".12"/>
+  <circle cx="100" cy="110" r="96" fill="none" stroke="${col}" stroke-opacity=".055"/>
+  ${weaponBehind(c, pb, col)}
+  <path d="M90 86 L110 86 L112 126 L88 126 Z" fill="${pb}"/>
+  ${body}
+  <ellipse cx="100" cy="86" rx="22" ry="26" fill="${pb}"
+           stroke="${col}" stroke-opacity=".45" stroke-width="1.2"/>
+  ${faceDark}
+  ${head}
+  ${weaponFront(c, pb, col)}
+</svg>`;
+}
+
+/* 武器画在身体前面还是后面 */
+function weaponBehind(c, pb, col) {
+  const t = c.weapon.t;
+  if (t === 'wings') return PT_WEAPONS.wings(pb, col);
+  if (t === 'curseorb' || t === 'talisman' || t === 'gadget') return PT_WEAPONS[t](pb, col);
+  return '';
+}
+function weaponFront(c, pb, col) {
+  const t = c.weapon.t;
+  if (t === 'wings' || t === 'curseorb' || t === 'talisman' || t === 'gadget') return '';
+  return (PT_WEAPONS[t] || PT_WEAPONS.blade)(pb, col, c.weapon);
+}
+
+/* 颜色明暗 */
+function shade(hex, k) {
+  const n = parseInt(hex.slice(1), 16);
+  const r = Math.round(((n >> 16) & 255) * k);
+  const g = Math.round(((n >> 8) & 255) * k);
+  const b = Math.round((n & 255) * k);
+  return '#' + [r, g, b].map(v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0')).join('');
+}
+
+function portraitColor(clsId) {
+  const c = CLASSES[clsId];
+  return c ? c.color : '#4fe3c8';
+}
+
+function portraitName(clsId) {
+  const c = CLASSES[clsId];
+  return c ? c.name : '';
+}
+
+</script>
+<script>
+/* ==========================================================================
+   荣耀 · 第十区  —   世界数据
+   物品 / 敌人 / 副本 / 榜单 / 剧情
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ 物品 */
+const ITEMS = {
+  potion_s:  { name: '小红药', type: 'consume', heal: 70,  price: 30,  desc: '恢复 70 点生命。' },
+  potion_m:  { name: '中红药', type: 'consume', heal: 180, price: 80,  desc: '恢复 180 点生命。' },
+  potion_l:  { name: '大红药', type: 'consume', heal: 420, price: 200, desc: '恢复 420 点生命。' },
+  potion_mp: { name: '蓝药',   type: 'consume', mana: 70,  price: 40,  desc: '恢复 70 点法力。' },
+
+  w_wood:  { name: '新手木剑', type: 'equip', slot: 'weapon', bonus: { atk: 4 }, price: 10, desc: '削得歪歪扭扭，但总比空手强。' },
+  w_iron:  { name: '精铁长剑', type: 'equip', slot: 'weapon', bonus: { atk: 16, crit: 2 }, price: 260, desc: '铁匠铺的标准货，剑身有一道流水纹。' },
+  w_bone:  { name: '白骨长刃', type: 'equip', slot: 'weapon', bonus: { atk: 26, crit: 3 }, price: 800, desc: '埋骨之地出产，刀身泛着散不掉的冷光。' },
+  w_frost: { name: '银武 · 霜寒', type: 'equip', slot: 'weapon', bonus: { atk: 38, crit: 6, spd: 4 }, price: 2400, desc: '银武。剑身覆着一层化不开的白霜。' },
+
+  a_cloth:   { name: '粗布衣',   type: 'equip', slot: 'armor', bonus: { def: 3 }, price: 20, desc: '聊胜于无。' },
+  a_leather: { name: '硬皮甲',   type: 'equip', slot: 'armor', bonus: { def: 9, hp: 40 }, price: 300, desc: '鞣制过的野猪皮，还算结实。' },
+  a_bone:    { name: '白骨胸甲', type: 'equip', slot: 'armor', bonus: { def: 15, hp: 80 }, price: 700, desc: '不知是哪副骨架上的。' },
+  a_chain:   { name: '锁子甲',   type: 'equip', slot: 'armor', bonus: { def: 20, hp: 120 }, price: 1000, desc: '一环扣一环，沉得压肩。' },
+
+  mat_scale: { name: '蜥蜴鳞片', type: 'material', price: 8, desc: '可以卖钱，也可以留着交任务。' },
+  mat_bone:  { name: '白骨碎片', type: 'material', price: 15, desc: '埋骨之地的特产。' },
+  mat_core:  { name: '魂晶', type: 'material', price: 120, desc: '白骨骑士的核心，幽蓝幽蓝的。' },
+  mat_frost: { name: '霜核', type: 'material', price: 90, desc: '冰霜巨魔的心脏，摸上去扎手。' }
+};
+
+/* ------------------------------------------------------------------ 敌人 */
+/* 敌人技能也走实时轴：cast 前摇 / rec 后摇 / cd 冷却（tick） */
+function es(name, power, cast, rec, cd) {
+  return { name: name, power: power, cast: cast, rec: rec, cd: cd };
+}
+
+const ENEMIES = {
+  lizard: {
+    name: '沼泽蜥蜴', level: 2, hp: 300, atk: 11, def: 5, spd: 8, exp: 55, gold: 14,
+    skills: [es('撕咬', 105, 3, 4, 18), es('尾扫', 90, 2, 3, 14)],
+    loot: [{ id: 'mat_scale', n: 2, p: 1 }, { id: 'potion_s', n: 1, p: .3 }]
+  },
+  boar: {
+    name: '铁鬃野猪', level: 4, hp: 460, atk: 15, def: 9, spd: 6, exp: 95, gold: 22,
+    skills: [es('冲撞', 120, 4, 5, 20), es('獠牙挑', 100, 2, 3, 14)],
+    loot: [{ id: 'mat_scale', n: 1, p: .8 }, { id: 'potion_s', n: 1, p: .35 }]
+  },
+  wolf: {
+    name: '霜狼', level: 6, hp: 560, atk: 18, def: 10, spd: 14, exp: 150, gold: 40,
+    skills: [es('扑咬', 120, 2, 4, 16), es('霜息', 100, 3, 3, 18)],
+    loot: [{ id: 'potion_m', n: 1, p: .5 }, { id: 'mat_bone', n: 1, p: .7 }]
+  },
+  skeleton: {
+    name: '骷髅战士', level: 7, hp: 620, atk: 20, def: 12, spd: 7, exp: 130, gold: 30,
+    skills: [es('骨刃劈砍', 115, 3, 4, 16), es('亡灵嘶吼', 95, 4, 5, 22)],
+    loot: [{ id: 'mat_bone', n: 2, p: 1 }, { id: 'potion_s', n: 1, p: .4 }]
+  },
+  lord: {
+    name: '沼泽领主', level: 8, hp: 1300, atk: 20, def: 13, spd: 9, exp: 260, gold: 120, boss: true,
+    skills: [es('泥沼吐息', 130, 4, 5, 20), es('鳞甲横扫', 115, 3, 4, 16),
+             { name: '狂性', buff: true, cast: 2, rec: 2, cd: 45 }],
+    loot: [{ id: 'w_iron', n: 1, p: 1 }, { id: 'potion_m', n: 2, p: 1 }]
+  },
+  boneknight: {
+    name: '白骨骑士', level: 11, hp: 1900, atk: 24, def: 18, spd: 10, exp: 420, gold: 200, boss: true,
+    skills: [es('死亡冲锋', 140, 5, 6, 24), es('骨刺突袭', 120, 3, 4, 18),
+             { name: '亡者之怒', buff: true, cast: 2, rec: 2, cd: 50 }],
+    loot: [{ id: 'w_bone', n: 1, p: 1 }, { id: 'a_bone', n: 1, p: 1 },
+           { id: 'mat_core', n: 1, p: 1 }, { id: 'potion_m', n: 2, p: 1 }]
+  },
+  troll: {
+    name: '冰霜巨魔', level: 13, hp: 2200, atk: 27, def: 20, spd: 8, exp: 520, gold: 260, boss: true,
+    skills: [es('碎冰重锤', 150, 5, 6, 26), es('寒冰吐息', 125, 4, 5, 20),
+             { name: '冰甲', buff: true, cast: 2, rec: 2, cd: 40 }],
+    loot: [{ id: 'a_chain', n: 1, p: 1 }, { id: 'mat_frost', n: 1, p: 1 }, { id: 'potion_l', n: 2, p: 1 }]
+  },
+  shadow: {
+    name: '暗影祭司', level: 15, hp: 2600, atk: 30, def: 17, spd: 13, exp: 640, gold: 320, boss: true,
+    skills: [es('暗影箭', 130, 3, 4, 16), es('死亡缠绕', 145, 4, 5, 22),
+             { name: '黑暗仪式', buff: true, cast: 2, rec: 2, cd: 45 }],
+    loot: [{ id: 'w_frost', n: 1, p: .35 }, { id: 'potion_l', n: 3, p: 1 }]
+  },
+
+  arena1: {
+    name: '路人 · 枪手', level: 5, hp: 520, atk: 16, def: 8, spd: 12, exp: 90, gold: 60,
+    skills: [es('点射', 110, 2, 3, 12), es('滑铲', 100, 2, 3, 16)]
+  },
+  arena2: {
+    name: '青训 · 拳家', level: 8, hp: 760, atk: 21, def: 13, spd: 9, exp: 160, gold: 120,
+    skills: [es('崩拳', 125, 3, 3, 14), es('鹰踏', 90, 2, 3, 12)]
+  },
+  arena3: {
+    name: '青训 · 剑客', level: 11, hp: 1050, atk: 26, def: 16, spd: 14, exp: 280, gold: 240,
+    skills: [es('拔刀斩', 150, 3, 4, 16), es('三段斩', 70, 2, 3, 12)]
+  }
+};
+
+/* ------------------------------------------------------------------ 副本 */
+/* board = 系统榜单（NPC 记录，单位：秒）；par = 参考耗时 */
+const DUNGEONS = {
+  qianbo: {
+    name: '千波湖 · 沼泽深处', lv: 'Lv.6', boss: 'lord', par: 55, need: 4,
+    desc: '第十区最早开放的副本。三只蜥蜴、一只领主，是所有人第一次知道「BOSS 会打架」的地方。',
+    board: [
+      { name: '夜雨声烦', time: 31.4 },
+      { name: '一叶之秋', time: 33.8 },
+      { name: '大漠孤烟', time: 36.2 },
+      { name: '索克萨尔', time: 39.5 },
+      { name: '王不留行', time: 42.1 }
+    ]
+  },
+  baigu: {
+    name: '埋骨之地', lv: 'Lv.10', boss: 'boneknight', par: 80, need: 9,
+    desc: '城墙都是用骨头砌的。白骨骑士站在大厅正中，两团蓝火从头盔里看着每一个进来的人。',
+    board: [
+      { name: '一叶之秋', time: 44.9 },
+      { name: '索克萨尔', time: 48.3 },
+      { name: '夜雨声烦', time: 51.0 },
+      { name: '沐雨橙风', time: 55.6 },
+      { name: '大漠孤烟', time: 58.2 }
+    ]
+  },
+  bingshuang: {
+    name: '冰霜裂谷', lv: 'Lv.13', boss: 'troll', par: 110, need: 12,
+    desc: '谷底的寒气能把血冻住。冰霜巨魔一锤子下去，地面会裂开三丈。',
+    board: [
+      { name: '大漠孤烟', time: 61.7 },
+      { name: '一叶之秋', time: 64.2 },
+      { name: '王不留行', time: 69.8 },
+      { name: '索克萨尔', time: 73.4 },
+      { name: '沐雨橙风', time: 78.9 }
+    ]
+  },
+  shenzhi: {
+    name: '神之领域 · 残响', lv: 'Lv.16', boss: 'shadow', par: 140, need: 15,
+    desc: '第十区唯一的隐藏副本。进去的人不多，出来的更少。',
+    board: [
+      { name: '一叶之秋', time: 82.5 },
+      { name: '大漠孤烟', time: 86.1 },
+      { name: '王不留行', time: 91.7 },
+      { name: '索克萨尔', time: 95.3 },
+      { name: '夜雨声烦', time: 99.8 }
+    ]
+  }
+};
+
+const SHOP_STOCK = ['potion_s', 'potion_m', 'potion_mp', 'a_leather',
+  'w_iron', 'w_bone', 'a_bone', 'a_chain', 'w_frost'];
+
+/* ==========================================================================
+   剧情
+   ========================================================================== */
+const SCENES = {
+
+  s_open: {
+    chapter: '序章 · 第十区开服',
+    art: 'night',
+    text:
+`凌晨零点整。
+
+荣耀第十区，准时开服。
+
+登录队列第 42,117 位。屏幕上滚动着公告：「第十区为全新服务器，所有玩家从零开始，不继承任何区服数据。」
+
+四年，七个区，十一个号。最长的一次坚持到 47 级，然后在一个下雨的夜里把鼠标摔了。
+
+这一次不太一样——S10 赛季的转会期刚过，三个老牌战队都在找新人。而新区，是唯一还会给路人机会的地方。
+
+【系统】创建角色成功。祝你好运。`,
+    choices: [{ label: '登录', to: 's_arrive' }]
+  },
+
+  s_arrive: {
+    chapter: '第一章 · 千波湖',
+    art: 'lake',
+    text:
+`白光散去。
+
+你在千波湖的滩涂上站定，脚下是潮湿的黑土，远处芦苇被风吹得沙沙响。
+
+【系统】当前区域：千波湖。推荐等级 1–6。
+【系统】右侧面板「技能」页可以看到你的连招顺序——先看一遍，再看风景。
+
+一个灰袍引导员飘过来，笑得很职业：
+
+【新手引导】荣耀的战斗没有回合。你出手有前摇，收手有后摇。前摇被打中会断招，后摇被人抓住就是破绽。`,
+    choices: [
+      { label: '打开技能面板，记住连招', to: 's_tutorial' },
+      { label: '不用了，直接上', to: 's_hub' }
+    ]
+  },
+
+  s_tutorial: {
+    chapter: '第一章 · 千波湖',
+    art: 'lake',
+    instant: true,
+    text:
+`面板展开。
+
+【连招】每个职业都有一条固定的连招链。按顺序打，后摇只有 55%，伤害一层比一层高。
+【断连】不按顺序放，后摇变成 160%，全程挂「破绽」——对面打你会更疼。这就是不背连招的代价。
+【预输入】收招的时候可以先把下一招点下去，它会在硬直结束的瞬间自动接上。高手都是这么打的。
+【打断】对面头顶有一条红色施法条。在前摇结束前打中他，技能直接没了，还会进入硬直。
+
+【新手引导】记住一句话：看对面的条，算自己的条。`,
+    choices: [{ label: '明白了', to: 's_hub' }]
+  },
+
+  s_hub: {
+    chapter: '第一章 · 第十区',
+    art: 'city',
+    instant: true,
+    text: (S) =>
+`空积城，中央广场。
+
+喷泉边上永远蹲着三个挂机的。城门口永远有人在喊「收材料」。世界频道在刷屏：
+
+　　[世界] 千波湖沼泽深处副本 首杀还空着，有队吗
+　　[世界] 埋骨之地 48 秒通关，队里还缺一个
+　　[世界] 收霜核，价格好说
+
+你的知名度：${S.fame || 0}。
+
+【提示】首杀和刷新记录都会上系统榜单，也会涨知名度。知名度过关，才有人会来找你。`,
+    choices: (S) => {
+      const c = [];
+      if (!S.flags.ch1) c.push({ label: '▶ 下千波湖副本', hint: '主线 · 需 Lv.4', req: S => S.level >= 4, reqText: 'Lv.4', to: 's_dungeon_qb' });
+      else if (!S.flags.ch2) c.push({ label: '▶ 去挑战赛报名处看看', hint: '主线 · 需知名度 60', req: S => (S.fame || 0) >= 60, reqText: '知名度 60', to: 's_qualify' });
+      c.push({ label: '去千波湖刷怪', hint: '练级', run: () => {
+        const pool = S.level >= 6 ? ['boar', 'wolf', 'wolf'] : ['lizard', 'lizard', 'boar'];
+        startCombat(pool[Math.floor(Math.random() * pool.length)], { win: 's_hub', lose: 's_death' });
+      } });
+      c.push({ label: '下副本', hint: '支线 · 刷榜', to: 's_dungeons' });
+      c.push({ label: '系统榜单', hint: '看排名', to: 's_board' });
+      c.push({ label: '去竞技场', to: 's_arena' });
+      c.push({ label: '逛交易所', to: 's_shop' });
+      c.push({ label: '回客栈休息', hint: '回满状态', to: 's_rest' });
+      return c;
+    }
+  },
+
+  /* ------------------------------------------------------------ 副本入口 */
+  s_dungeons: {
+    chapter: '第一章 · 第十区',
+    art: 'tomb',
+    instant: true,
+    text:
+`副本入口的石碑上刻着「荣耀」两个字，被摸得发亮。
+
+每个副本都有三条记录：首杀、最快通关、以及你自己的最好成绩。`,
+    choices: (S) => {
+      const c = Object.keys(DUNGEONS).map(id => {
+        const d = DUNGEONS[id];
+        const rec = S.records && S.records[id];
+        return {
+          label: d.name,
+          hint: d.lv + (rec ? ' · 我的记录 ' + rec.best.toFixed(1) + 's' : ' · 未通关'),
+          req: S => S.level >= (d.need || 1),
+          reqText: 'Lv.' + (d.need || 1),
+          to: DUNGEON_SCENE[id]
+        };
+      });
+      c.push({ label: '回广场', to: 's_hub' });
+      return c;
+    }
+  },
+
+  s_dungeon_qb: {
+    chapter: '第一章 · 千波湖',
+    art: 'lake',
+    text:
+`沼泽深处的入口是一道裂开的地缝，里面往外冒白气。
+
+【系统】副本「千波湖 · 沼泽深处」 Lv.6
+【系统】首杀：空缺。
+
+公告栏上这句话已经挂了六个小时。六个小时里，第十区还没有一个人把它拿下来。
+
+你看了看自己的血条，走了进去。`,
+    choices: [
+      { label: '进入副本', hint: 'BOSS · 计时开始', combat: { enemy: 'lord', win: 's_qb_win', lose: 's_death', dungeon: 'qianbo' } },
+      { label: '再准备一下', to: 's_hub' }
+    ]
+  },
+
+  s_dungeon_baigu: {
+    chapter: '第一章 · 埋骨之地',
+    art: 'tomb',
+    text:
+`埋骨之地，副本门口堆着一地白骨，风一吹，骨粉打着旋往人脸上扑。
+
+【系统】副本「埋骨之地」 Lv.10
+【系统】当前最快：一叶之秋 · 44.9 秒。`,
+    choices: [
+      { label: '进入副本', hint: 'BOSS · 计时开始', combat: { enemy: 'boneknight', win: 's_bg_win', lose: 's_death', dungeon: 'baigu' } },
+      { label: '退回去', to: 's_dungeons' }
+    ]
+  },
+
+  s_dungeon_bingshuang: {
+    chapter: '第一章 · 冰霜裂谷',
+    art: 'snow',
+    text:
+`裂谷底部的寒气能把血冻住。
+
+【系统】副本「冰霜裂谷」 Lv.13
+【系统】当前最快：大漠孤烟 · 61.7 秒。`,
+    choices: [
+      { label: '进入副本', hint: 'BOSS · 计时开始', combat: { enemy: 'troll', win: 's_bs_win', lose: 's_death', dungeon: 'bingshuang' } },
+      { label: '退回去', to: 's_dungeons' }
+    ]
+  },
+
+  s_dungeon_shenzhi: {
+    chapter: '第一章 · 神之领域',
+    art: 'night',
+    text:
+`隐藏副本。地图上根本找不到这个地方，是一个 NPC 在城门口小声告诉你的。
+
+【系统】副本「神之领域 · 残响」 Lv.16
+【系统】当前最快：一叶之秋 · 82.5 秒。`,
+    choices: [
+      { label: '进入副本', hint: '隐藏 BOSS · 计时开始', combat: { enemy: 'shadow', win: 's_sz_win', lose: 's_death', dungeon: 'shenzhi' } },
+      { label: '退回去', to: 's_dungeons' }
+    ]
+  },
+
+  s_qb_win: {
+    chapter: '第一章 · 千波湖',
+    art: 'lake',
+    text: (S) => `沼泽领主轰然倒进泥里。
+
+【系统】首杀达成！${S.lastRecord || ''}
+
+公告栏上那行挂了一整晚的字，变成了你的名字。
+
+【世界】？？？千波湖首杀被拿了
+【世界】谁啊，没听说过
+【世界】一个人？`,
+    choices: [{ label: '回广场', to: 's_hub' }]
+  },
+
+  s_bg_win: {
+    chapter: '第一章 · 埋骨之地',
+    art: 'tomb',
+    text: (S) => `白骨骑士跪了下去，铠甲一节节垮成废铁。
+
+【系统】${S.lastRecord || '通关'}
+
+【世界】埋骨之地有人进前五了
+【世界】ID 没见过，新号？`,
+    choices: [{ label: '回广场', to: 's_hub' }]
+  },
+
+  s_bs_win: {
+    chapter: '第一章 · 冰霜裂谷',
+    art: 'snow',
+    text: (S) => `冰霜巨魔砸进冰里，裂谷震了一下。
+
+【系统】${S.lastRecord || '通关'}`,
+    choices: [{ label: '回广场', to: 's_hub' }]
+  },
+
+  s_sz_win: {
+    chapter: '第一章 · 神之领域',
+    art: 'night',
+    text: (S) => `暗影祭司化成一团黑雾散了。
+
+【系统】${S.lastRecord || '通关'}
+
+你站在空荡荡的厅里，听见自己心跳的声音。`,
+    choices: [{ label: '回广场', to: 's_hub' }]
+  },
+
+  /* ------------------------------------------------------------ 榜单 */
+  s_board: {
+    chapter: '第一章 · 第十区',
+    art: 'city',
+    instant: true,
+    text: (S) => buildBoardText(S),
+    choices: [{ label: '回广场', to: 's_hub' }]
+  },
+
+  s_qualify: {
+    chapter: '第二章 · 挑战赛',
+    art: 'arena',
+    text: (S) =>
+`挑战赛报名处在竞技场后门，一张桌子，一块牌子。
+
+桌子后面坐着个打瞌睡的工作人员。他抬眼看了看你的资料：
+
+「第十区，知名度 ${S.fame || 0}。够了。」
+
+他把一张表格推过来：「职业战队青训的选拔赛，三轮。赢了进名单，输了回去继续刷副本。」
+
+「想好了？」
+
+【系统】挑战赛 · 第一轮对手：路人 · 枪手`,
+    choices: [
+      { label: '报名', combat: { enemy: 'arena1', win: 's_ch1_next', lose: 's_death' } },
+      { label: '再等等', to: 's_hub' }
+    ]
+  },
+
+  s_ch1_next: {
+    chapter: '第二章 · 挑战赛',
+    art: 'arena',
+    text:
+`第一轮赢了。
+
+对手从地上爬起来，冲你抱了个拳，没说话。
+
+第二轮名单贴出来的时候，你在上面看到了几个熟悉的名字——都是别的区的老人，来第十区重新开号的。
+
+【系统】第二轮对手：青训 · 拳家`,
+    choices: [
+      { label: '打第二轮', combat: { enemy: 'arena2', win: 's_ch2_next', lose: 's_death' } },
+      { label: '先缓缓', to: 's_hub' }
+    ]
+  },
+
+  s_ch2_next: {
+    chapter: '第二章 · 挑战赛',
+    art: 'arena',
+    text:
+`第二轮也赢了。
+
+看台上开始有人议论。你听见有人念你的 ID，念了两遍才对上音。
+
+【系统】第三轮对手：青训 · 剑客`,
+    choices: [
+      { label: '打第三轮', combat: { enemy: 'arena3', win: 's_ch2_end', lose: 's_death' } },
+      { label: '先缓缓', to: 's_hub' }
+    ]
+  },
+
+  s_ch2_end: {
+    chapter: '第二章 · 完',
+    art: 'arena',
+    text: (S) =>
+`第三轮，你赢了。
+
+场地安静了两秒，然后才响起来。
+
+工作人员把一份文件推过来，上面印着某支战队的队徽。
+
+「签吧。」他说，「从今天起你不是路人了。」
+
+【第二章 · 完】
+
+——当前：Lv.${S.level} · 知名度 ${S.fame || 0} · 击杀 ${S.kills} · 银币 ${S.gold}`,
+    onEnter: S => { S.flags.ch2 = true; },
+    choices: [{ label: '回广场', to: 's_hub' }]
+  },
+
+  /* ------------------------------------------------------------ 其它 */
+  s_arena: {
+    chapter: '第一章 · 空积城',
+    art: 'arena',
+    text:
+`竞技场在西边。
+
+石碑上刻着一行字：「胜负之外，皆是虚名。」
+
+报名处的 NPC 抬头看了你一眼：「单人竞技，随机匹配。打吗？」`,
+    choices: [
+      { label: '打一场', hint: 'PVP', combat: { enemy: 'arena1', win: 's_arena_win', lose: 's_death' } },
+      { label: '回去', to: 's_hub' }
+    ]
+  },
+
+  s_arena_win: {
+    chapter: '第一章 · 空积城',
+    art: 'arena',
+    text: `对手化作一道白光。
+
+【系统】竞技积分 +12。知名度 +4。
+
+竞技场的对手和野怪不一样——它们会跑、会躲，会在你以为占了上风的时候突然反打。`,
+    onEnter: S => { S.fame = (S.fame || 0) + 4; },
+    choices: [
+      { label: '再来一场', combat: { enemy: 'arena2', win: 's_arena_win2', lose: 's_death' } },
+      { label: '回广场', to: 's_hub' }
+    ]
+  },
+
+  s_arena_win2: {
+    chapter: '第一章 · 空积城',
+    art: 'arena',
+    text: `第二场赢得很勉强。
+
+【系统】竞技积分 +28。知名度 +6。`,
+    onEnter: S => { S.fame = (S.fame || 0) + 6; },
+    choices: [
+      { label: '打第三场', combat: { enemy: 'arena3', win: 's_arena_win3', lose: 's_death' } },
+      { label: '见好就收', to: 's_hub' }
+    ]
+  },
+
+  s_arena_win3: {
+    chapter: '第一章 · 空积城',
+    art: 'arena',
+    text: `第三场，你赢了。
+
+【系统】段位提升。
+【系统】获得 400 银币。`,
+    onEnter: S => { S.gold += 400; S.fame = (S.fame || 0) + 10; },
+    choices: [{ label: '回广场', to: 's_hub' }]
+  },
+
+  s_shop: {
+    chapter: '第一章 · 空积城',
+    art: 'city',
+    instant: true,
+    text:
+`交易所。两排摊位从街口排到城墙根。
+
+穿灰袍的老头冲你招手：「新人？都是实在价。」`,
+    choices: (S) => {
+      const c = SHOP_STOCK.map(id => {
+        const it = ITEMS[id];
+        return {
+          label: it.name, hint: it.price + ' 银 · ' + it.desc,
+          run: () => {
+            if (S.gold < it.price) { toast('银币不够。'); return; }
+            S.gold -= it.price; addItem(id, 1);
+            toast('购入 ' + it.name); saveGame(); updateUI();
+          }
+        };
+      });
+      c.push({ label: '离开', to: 's_hub' });
+      return c;
+    }
+  },
+
+  s_rest: {
+    chapter: '第一章 · 空积城',
+    art: 'city',
+    text: `城门边的客栈。一百文一晚，床板硬得能敲出声。
+
+【系统】生命与法力已恢复。`,
+    onEnter: S => { S.hp = 99999; S.mp = 99999; },
+    choices: [{ label: '回广场', to: 's_hub' }]
+  },
+
+  s_death: {
+    chapter: '—',
+    art: 'night',
+    text: `视野褪成灰色。
+
+【系统】你已死亡。
+【系统】3 秒后在最近的主城复活，损失 10% 银币。`,
+    onEnter: S => { S.gold = Math.max(0, Math.floor(S.gold * 0.9)); S.hp = 99999; S.mp = 99999; },
+    choices: [{ label: '复活', to: 's_hub' }]
+  }
+};
+
+/* 副本场景 id 映射 */
+const DUNGEON_SCENE = {
+  qianbo: 's_dungeon_qb',
+  baigu: 's_dungeon_baigu',
+  bingshuang: 's_dungeon_bingshuang',
+  shenzhi: 's_dungeon_shenzhi'
+};
+
+</script>
+<script>
+/* ==========================================================================
+   荣耀 · 第十区  —   实时战斗内核
+   --------------------------------------------------------------------------
+   1 tick = 200ms，双方同时跑自己的时间轴：
+     cast  前摇  —— 这段时间被打中会被「打断」，技能直接没了
+     rec   后摇  —— 收招硬直，此时是「破绽」，受到伤害 +45%
+     stun  硬直  —— 被打断之后动不了
+   · 连招接上了：后摇只有 55%，伤害逐层+18%
+   · 没接上就放：后摇 160%，全程挂「破绽」——这就是不看连招的代价
+   · 后摇期间可以预输入下一招，收招瞬间自动接上
+   ========================================================================== */
+
+const Combat = (function () {
+
+const TICK = 200;              // 每拍毫秒
+const OPENING_DMG = 1.45;      // 破绽增伤
+const LINK_REC = 0.55;         // 接上连招的后摇系数
+const MISS_REC = 1.6;          // 没接上的后摇系数
+
+let api = null;                // GameAPI
+let P = null, E = null;        // 双方运行时
+let timer = null;
+let running = false;
+let onEndCb = null;
+let startTime = 0;
+let lastSecs = 0;
+let lastResult = null;
+
+/* ---------------------------------------------------------------- 启动 */
+function configure(a) { api = a; }
+
+function start(enemyId, opts) {
+  const tpl = ENEMIES[enemyId];
+  if (!tpl) { console.warn('没有这个敌人', enemyId); return; }
+
+  const S = api.S;
+  const d = api.derived(S);
+  S.hp = Math.min(S.hp, d.maxHp);
+
+  P = {
+    state: 'idle', t: 0, cd: {}, buffs: {},
+    combo: 0, lastIdx: -1, lastSchool: null, lastForm: null, queue: null,
+    form: S.form || 'sword', castForm: null, castInfo: null,
+    pending: null, mul: 1, recMod: 1, penalty: false,
+    spdMod: 1 - Math.min(0.22, S.agi * 0.005)
+  };
+  S.skills.forEach(id => { P.cd[id] = 0; });
+
+  const e = JSON.parse(JSON.stringify(tpl));
+  E = {
+    id: enemyId, name: e.name, level: e.level, boss: !!e.boss,
+    hp: e.hp, maxHp: e.hp, atk: e.atk, def: e.def, spd: e.spd,
+    exp: e.exp || 0, gold: e.gold || 0, loot: e.loot || [],
+    skills: e.skills || [], cd: {}, buffs: {},
+    state: 'idle', t: 0, atkUp: 0, defDown: 0
+  };
+  (e.skills || []).forEach((s, i) => { E.cd[i] = 0; });
+
+  lastResult = null;
+  running = true;
+  startTime = Date.now();
+
+  buildBattleUI();
+  api.openOverlay();
+  log('遭遇 ' + E.name + '（Lv.' + E.level + '）', 'mute');
+  render();
+  clearInterval(timer);
+  timer = setInterval(tick, TICK);
+  tick();                     // 立刻走一拍，避免开战静止
+}
+
+/* ---------------------------------------------------------------- 主循环 */
+function tick() {
+  if (!running) return;
+  const S = api.S;
+
+  stepPlayer(S);
+  stepEnemy(S);
+  regen(S);
+  render();
+  checkEnd(S);
+}
+
+function stepPlayer(S) {
+  if (P.state === 'idle') return;
+  P.t--;
+  if (P.t > 0) return;
+
+  if (P.state === 'cast') {
+    resolvePlayerCast(S);
+  } else {
+    // rec / stun 结束
+    P.state = 'idle';
+    P.penalty = false;
+    if (P.queue) {
+      const q = P.queue;
+      P.queue = null;
+      tryCast(S, q);
+    }
+  }
+}
+
+function stepEnemy(S) {
+  if (E.state === 'idle') { enemyDecide(S); return; }
+  E.t--;
+  if (E.t > 0) return;
+
+  if (E.state === 'cast') {
+    resolveEnemyCast(S);
+  } else {
+    E.state = 'idle';
+  }
+}
+
+function regen(S) {
+  const d = api.derived(S);
+  S.mp = Math.min(d.maxMp, S.mp + (1.4 + S.int * 0.1) * (TICK / 1000));
+  // 冷却
+  for (const k in P.cd) if (P.cd[k] > 0) P.cd[k]--;
+  for (const k in E.cd) if (E.cd[k] > 0) E.cd[k]--;
+  for (const k in P.buffs) if (--P.buffs[k] <= 0) delete P.buffs[k];
+  if (E.atkUp > 0) E.atkUp--;
+  if (E.defDown > 0) E.defDown--;
+}
+
+/* ---------------------------------------------------------------- 玩家 */
+function tryCast(S, id) {
+  const sk = SKILLS[id];
+  if (!sk) return false;
+  if (P.state !== 'idle') { P.queue = id; return false; }
+  if (S.mp < sk.mp) { api.toast('法力不足'); return false; }
+  if ((P.cd[id] || 0) > 0) { api.toast('冷却中'); return false; }
+
+  S.mp -= sk.mp;
+  P.cd[id] = sk.cd;
+
+  // —— 连招判定 ——
+  const cls = api.classOf(S.cls);
+  const info = chainInfo(cls, id);
+
+  let mul = 1;
+  let recMod = MISS_REC;
+  let penalty = false;
+
+  if (info.util) {
+    recMod = 1;
+  } else if (cls.freeChain) {
+    if (!P.lastSchool) { recMod = 1; mul = 1; }
+    else if (info.link) { recMod = LINK_REC; mul = 1 + 0.15 * (P.combo + 1); }
+    else { recMod = MISS_REC; penalty = true; }
+  } else {
+    if (info.idx === 0) { recMod = 1; mul = 1; }
+    else if (info.link) {
+      recMod = LINK_REC;
+      mul = 1 + 0.18 * (P.combo + 1);
+      if (P.combo + 1 >= cls.chain.length - 1) mul *= 1.3;   // 这一招就是终结
+    }
+    else { recMod = MISS_REC; penalty = true; }
+  }
+
+  P.pending = id;
+  P.castForm = P.form;
+  P.castInfo = info;
+  P.mul = mul;
+  P.recMod = recMod * P.spdMod;
+  P.penalty = penalty;
+  P.state = 'cast';
+  P.t = Math.max(1, Math.round(sk.cast * P.spdMod));
+  P.queue = null;
+
+  if (penalty) log('【' + sk.name + '】硬起手——没有接上连招。', 'warn');
+  else if (info.link) log('连招 · ' + sk.name, 'combo');
+  else log('【' + sk.name + '】', 'good');
+
+  return true;
+}
+
+function chainInfo(cls, id) {
+  const sk = SKILLS[id];
+  if (sk.util) return { util: true, link: false, idx: -1 };
+  if (cls.freeChain) {
+    return { util: false, link: !!P.lastForm && P.form !== P.lastForm, idx: -1 };
+  }
+  const idx = cls.chain.indexOf(id);
+  if (idx < 0) return { util: true, link: false, idx: -1 };
+  return { util: false, link: P.lastIdx === idx - 1, idx: idx };
+}
+
+function resolvePlayerCast(S) {
+  if (P.pending === '__basic') {
+    strikeEnemy({ name: '普通攻击', power: 100 }, S);
+    P.pending = null;
+    P.state = 'rec';
+    P.t = Math.max(1, Math.round(3 * P.recMod));
+    return;
+  }
+  const sk = SKILLS[P.pending];
+  const cls = api.classOf(S.cls);
+  const info = P.castInfo || { util: true, idx: -1 };
+
+  if (sk.buff) {
+    P.buffs[sk.buff.dodge ? 'dodge' : sk.buff.guard ? 'guard' : 'power'] =
+      (sk.buff.dodge || sk.buff.guard || sk.buff.power) + 60;   // 60 tick = 12s
+    log('增益生效。', 'good');
+  }  if (sk.stun) { E.state = 'stun'; E.t = sk.stun; log(E.name + ' 被控住！', 'combo'); }
+  if (sk.power) strikeEnemy(sk, S);
+  if (sk.heal) {
+    const d = api.derived(S);
+    const h = Math.round(d.maxHp * sk.heal);
+    S.hp = Math.min(d.maxHp, S.hp + h);
+    log('回复 ' + h + ' 点生命。', 'heal');
+  }
+  if (sk.selfDmg) {
+    const d = api.derived(S);
+    const h = Math.round(d.maxHp * sk.selfDmg);
+    S.hp = Math.max(1, S.hp - h);
+    log('反噬，损失 ' + h + ' 点生命。', 'hurt');
+  }
+
+  // 提交连招状态
+  if (!info.util) {
+    if (cls.freeChain) {
+      const f = P.castForm || P.form;
+      if (!P.lastForm) P.combo = 0;
+      else if (f !== P.lastForm) P.combo = Math.min(5, P.combo + 1);
+      else P.combo = 0;
+      P.lastForm = f;
+    } else {
+      if (info.link || info.idx === 0) P.combo = info.idx === 0 ? 0 : Math.min(cls.chain.length - 1, P.combo + 1);
+      else P.combo = 0;
+      P.lastIdx = info.idx;
+    }
+  }
+
+  // 终结判定
+  const finished = !cls.freeChain && cls.chain.length > 1 && P.combo >= cls.chain.length - 1 && !info.util;
+  if (finished && sk.power) {
+    log('连招完成！' + cls.chain.map(x => SKILLS[x].name).join(' → '), 'combo');
+    const back = Math.round(sk.mp * 0.5);
+    const d = api.derived(S);
+    S.mp = Math.min(d.maxMp, S.mp + back);
+    E.defDown = 3;
+    log('返灵 ' + back + ' 点法力，' + E.name + ' 破防。', 'combo');
+    P.combo = 0;
+    P.lastIdx = -1;
+  }
+
+  P.state = 'rec';
+  P.t = Math.max(1, Math.round(sk.rec * P.recMod));
+}
+
+function strikeEnemy(sk, S) {
+  const d = api.derived(S);
+  const scale = sk.scale || api.classOf(S.cls).main;
+  const atk = d.atk[scale];
+  const hits = sk.hits || 1;
+
+  // 敌方闪避
+  if (Math.random() * 100 < Math.max(0, E.spd * 0.4 - 1)) {
+    log(E.name + ' 侧身闪开。', 'mute');
+    return;
+  }
+
+  let mult = P.mul;
+  let tag = '';
+  if (E.state === 'cast') { mult *= 1.25; tag = ' · 打断！'; E.state = 'stun'; E.t = 3; log('你打断了 ' + E.name + ' 的施法！', 'combo'); }
+  else if (E.state === 'rec') { mult *= OPENING_DMG; tag = ' · 破绽'; }
+
+  let total = 0, crit = false;
+  for (let i = 0; i < hits; i++) {
+    let dmg = atk * (sk.power / 100) * (0.92 + Math.random() * 0.16) * mult;
+    const def = E.def * (1 - (sk.pierce || 0)) * (1 - (E.defDown > 0 ? 0.25 : 0));
+    dmg *= 100 / (100 + def * 1.6);
+    if (Math.random() * 100 < d.crit + (sk.crit || 0)) { dmg *= 1.8; crit = true; }
+    total += Math.max(1, Math.round(dmg));
+  }
+  E.hp = Math.max(0, E.hp - total);
+  log(sk.name + ' 命中，' + total + ' 伤害' + (crit ? '（暴击）' : '') + tag, crit ? 'crit' : 'dmg');
+}
+
+/* ---------------------------------------------------------------- 敌人 */
+function enemyDecide(S) {
+  if (E.state !== 'idle') return;
+  const d = api.derived(S);
+
+  // 可用技能
+  const pool = E.skills.filter((s, i) => (E.cd[i] || 0) <= 0);
+  if (!pool.length) {
+    // 普攻兜底
+    E.state = 'cast'; E.t = 2; E.pending = { name: '普通攻击', power: 100, cast: 2, rec: 3, cd: 0 };
+    E.castLen = 2;
+    return;
+  }
+
+  // 玩家正在前摇 → 优先用快招打断
+  let pick = null;
+  if (P.state === 'cast') {
+    pick = pool.find(s => (s.cast || 3) <= P.t + 1);
+  }
+  if (!pick) {
+    // 玩家在后摇 → 打重招
+    if (P.state === 'rec') {
+      const heavy = pool.filter(s => (s.power || 0) >= 140);
+      if (heavy.length && Math.random() < 0.7) pick = heavy[Math.floor(Math.random() * heavy.length)];
+    }
+  }
+  if (!pick) pick = pool[Math.floor(Math.random() * pool.length)];
+
+  const idx = E.skills.indexOf(pick);
+  if (idx >= 0) E.cd[idx] = pick.cd || 20;
+  E.pending = pick;
+  E.state = 'cast';
+  E.castLen = Math.max(1, Math.round((pick.cast || 3) * (1 - Math.min(0.2, E.spd * 0.006))));
+  E.t = E.castLen;
+}
+
+function resolveEnemyCast(S) {
+  const sk = E.pending;
+  const d = api.derived(S);
+
+  if (sk.buff) {
+    E.atkUp = 60; log(E.name + ' 气势暴涨。', 'hurt');
+    E.state = 'rec'; E.t = 3;
+    return;
+  }
+
+  // 玩家闪避
+  let dodge = d.dodge + (P.buffs.dodge ? 30 : 0);
+  if (Math.random() * 100 < dodge) {
+    log('你闪开了 ' + E.name + ' 的【' + sk.name + '】。', 'mute');
+    E.state = 'rec'; E.t = 3;
+    return;
+  }
+
+  let mult = 1 + (E.atkUp > 0 ? 0.3 : 0);
+  if (P.state === 'rec') { mult *= OPENING_DMG; log('你露出了破绽！', 'warn'); }
+  if (P.buffs.guard) mult *= 0.55;
+
+  const hits = sk.hits || 1;
+  let total = 0;
+  for (let i = 0; i < hits; i++) {
+    let dmg = E.atk * ((sk.power || 100) / 100) * (0.9 + Math.random() * 0.2) * mult;
+    dmg *= 100 / (100 + d.def * 1.6);
+    total += Math.max(1, Math.round(dmg));
+  }
+
+  S.hp = Math.max(0, S.hp - total);
+  log(E.name + ' 的【' + sk.name + '】命中，你受到 ' + total + ' 点伤害。', 'hurt');
+
+  // 打断玩家前摇
+  if (P.state === 'cast') {
+    P.state = 'stun'; P.t = 3; P.pending = null; P.combo = 0;
+    log('你的施法被打断了！', 'warn');
+  }
+
+  E.state = 'rec';
+  E.t = Math.max(1, Math.round((sk.rec || 4) * (1 - Math.min(0.2, E.spd * 0.006))));
+}
+
+/* ---------------------------------------------------------------- 结算 */
+function checkEnd(S) {
+  if (S.hp <= 0) { end('lose'); return; }
+  if (E.hp <= 0) { end('win'); return; }
+}
+
+function end(result) {
+  if (!running) return;
+  running = false;
+  clearInterval(timer);
+  timer = null;
+  render();
+  lastResult = result;
+
+  const S = api.S;
+  const secs = ((Date.now() - startTime) / 1000).toFixed(1);
+  lastSecs = (Date.now() - startTime) / 1000;
+
+  let html = '';
+  if (result === 'win') {
+    S.kills = (S.kills || 0) + 1;
+    S.gold += E.gold;
+    log('击败 ' + E.name + '。', 'good');
+    log('获得经验 ' + E.exp + '，银币 ' + E.gold + '。', 'sys');
+    (E.loot || []).forEach(l => {
+      if (Math.random() < (l.p == null ? 1 : l.p)) {
+        api.addItem(l.id, l.n || 1);
+        log('获得 ' + ITEMS[l.id].name + ' ×' + (l.n || 1), 'sys');
+      }
+    });
+    api.addExp(E.exp);
+    api.saveGame();
+    api.updateUI();
+    html = '<button class="act-btn" data-act="continue" style="grid-column:1/-1">' +
+           '<span class="an">继 续</span><span class="ac">用时 ' + secs + ' 秒 · 离开战斗</span></button>';
+  } else if (result === 'lose') {
+    S.hp = 1;
+    api.saveGame(); api.updateUI();
+    log('你倒下了。', 'hurt');
+    html = '<button class="act-btn" data-act="continue" style="grid-column:1/-1">' +
+           '<span class="an">复 活</span></button>';
+  } else {
+    api.saveGame();
+    html = '<button class="act-btn" data-act="continue" style="grid-column:1/-1">' +
+           '<span class="an">撤 退</span></button>';
+  }
+
+  const acts = api.el('battle-actions');
+  if (acts) acts.innerHTML = html;
+  const strip = api.el('combo-strip');
+  if (strip) strip.className = 'combo-strip';
+
+  lastSecs = lastSecs || 0;
+  lastResult = { result: result, seconds: lastSecs };
+
+  const btn = acts && acts.querySelector('[data-act="continue"]');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      if (!onEndCb) return;
+      const cb = onEndCb;
+      onEndCb = null;
+      cb(result);
+    });
+  }
+}
+
+/* ---------------------------------------------------------------- 撤退 */
+function flee() {
+  if (!running || P.state !== 'idle') return;
+  const S = api.S;
+  const d = api.derived(S);
+  const ok = Math.random() * 100 < 35 + S.agi * 2;
+  if (ok) { log('你退开了，脱离战斗。', 'good'); end('flee'); }
+  else {
+    log('没能脱身！', 'warn');
+    P.state = 'rec'; P.t = 6; P.penalty = true;
+  }
+}
+
+/* ---------------------------------------------------------------- 渲染 */
+function el(id) { return document.getElementById ? document.getElementById(id) : api.el(id); }
+
+function buildBattleUI() {
+  const S = api.S;
+  api.paintPortrait('self-avatar', S.cls, 'face');
+  renderActions();
+}
+
+/* 技能按钮 + 千机伞形态条 */
+function renderActions() {
+  const S = api.S;
+  const box = api.el('battle-actions');
+  if (!box) return;
+  P.form = P.form || S.form || 'sword';
+
+  let h = '';
+  if (S.cls === 'sanren') {
+    h += '<div class="form-row">';
+    UMBRELLA_FORMS.forEach(f => {
+      h += '<button class="form-chip' + (f.id === P.form ? ' on' : '') + '"' +
+           ' data-form="' + f.id + '">' + f.name + '</button>';
+    });
+    h += '</div>';
+  }
+
+  h += '<button class="act-btn" data-act="attack" data-id="__basic">' +
+       '<span class="an">普通攻击</span><span class="ac">无消耗 · 会断连</span></button>';
+
+  api.skillBarOf(S, P.form).forEach(id => {
+    const sk = SKILLS[id];
+    if (!sk) return;
+    h += '<button class="act-btn skill" data-act="skill" data-id="' + id + '">' +
+         '<i class="cdmask"></i><span class="an">' + sk.name + '</span>' +
+         '<span class="ac">MP ' + sk.mp + '</span></button>';
+  });
+
+  h += '<button class="act-btn" data-act="flee"><span class="an">撤退</span>' +
+       '<span class="ac">敏捷判定</span></button>';
+
+  box.innerHTML = h;
+
+  Array.prototype.forEach.call(box.querySelectorAll('.form-chip'), c => {
+    c.addEventListener('click', () => {
+      if (!running) return;
+      P.form = c.dataset.form;
+      api.S.form = P.form;
+      renderActions();
+      render();
+    });
+  });
+
+  P.btns = Array.prototype.map.call(box.querySelectorAll('.act-btn'), b => ({
+    el: b, act: b.dataset.act, id: b.dataset.id,
+    mask: b.querySelector('.cdmask'), sub: b.querySelector('.ac')
+  }));
+  P.btns.forEach(b => {
+    b.el.addEventListener('click', () => {
+      if (!running) return;
+      if (b.act === 'flee') { flee(); return; }
+      if (b.act === 'attack') { tryBasic(); return; }
+      tryCast(api.S, b.id);
+    });
+  });
+}
+function tryBasic() {
+  if (P.state === 'rec') { P.queue = '__basic'; return; }
+  if (P.state !== 'idle') return;
+  P.queue = null;
+  P.combo = 0; P.lastIdx = -1; P.lastSchool = null; P.lastForm = null;
+  P.pending = '__basic';
+  P.mul = 1; P.recMod = 1 * P.spdMod; P.penalty = false;
+  P.state = 'cast'; P.t = 2;
+  log('普通攻击。', 'mute');
+}
+
+function render() {
+  const S = api.S;
+  const d = api.derived(S);
+  const $ = api.el;
+
+  // 敌人
+  const fn = $('foe-name'), fl = $('foe-lv'), fh = $('foe-hp'), ft = $('foe-hptext');
+  if (fn) fn.textContent = E.name;
+  if (fl) fl.textContent = 'Lv.' + E.level + (E.boss ? ' · BOSS' : '') +
+    (E.defDown > 0 ? ' · 破防' : '') + (E.atkUp > 0 ? ' · 强化' : '');
+  if (fh) fh.style.width = Math.max(0, E.hp / E.maxHp * 100) + '%';
+  if (ft) ft.textContent = Math.max(0, E.hp) + ' / ' + E.maxHp;
+
+  // 敌人施法条
+  const fc = $('foe-cast');
+  if (fc) {
+    if (E.state === 'cast' && E.pending) {
+      const p = 1 - (E.t / (E.castLen || 3));
+      fc.style.opacity = 1;
+      fc.className = 'cast-bar on';
+      fc.querySelector('i').style.width = (p * 100) + '%';
+      fc.querySelector('span').textContent = E.pending.name;
+    } else if (E.state === 'stun') {
+      fc.style.opacity = 1; fc.className = 'cast-bar stun';
+      fc.querySelector('i').style.width = '100%';
+      fc.querySelector('span').textContent = '硬直';
+    } else {
+      fc.style.opacity = 0;
+    }
+  }
+
+  // 玩家
+  const sb = $('self-bars');
+  if (sb) {
+    sb.innerHTML =
+      '<div class="bar hp"><i style="width:' + Math.max(0, S.hp / d.maxHp * 100) + '%"></i>' +
+      '<b>' + Math.round(S.hp) + ' / ' + d.maxHp + '</b></div>' +
+      '<div class="bar mp"><i style="width:' + Math.max(0, S.mp / d.maxMp * 100) + '%"></i>' +
+      '<b>' + Math.round(S.mp) + ' / ' + d.maxMp + '</b></div>';
+  }
+
+  const sc = $('self-cast');
+  if (sc) {
+    if (P.state === 'cast') {
+      const ps = P.pending === '__basic' ? 2 : (SKILLS[P.pending] ? SKILLS[P.pending].cast : 2);
+      sc.className = 'cast-bar on mine';
+      sc.querySelector('i').style.width = ((1 - P.t / Math.max(1, ps)) * 100) + '%';
+      sc.querySelector('span').textContent = '前摇 · ' +
+        (P.pending === '__basic' ? '普通攻击' : (SKILLS[P.pending] ? SKILLS[P.pending].name : ''));
+    } else if (P.state === 'rec') {
+      sc.className = 'cast-bar ' + (P.penalty ? 'warn' : 'rec');
+      sc.querySelector('i').style.width = '100%';
+      sc.querySelector('span').textContent = P.penalty ? '后摇 · 破绽！' : '后摇';
+    } else if (P.state === 'stun') {
+      sc.className = 'cast-bar stun';
+      sc.querySelector('span').textContent = '硬直';
+    } else {
+      sc.className = 'cast-bar idle';
+      sc.querySelector('span').textContent = P.queue ? '已预输入' : '可行动';
+    }
+  }
+
+  // 连招条
+  renderCombo();
+
+  // 按钮
+  const cls = api.classOf(S.cls);
+  (P.btns || []).forEach(b => {
+    if (b.act === 'flee') { b.el.disabled = P.state !== 'idle'; return; }
+    if (b.act === 'attack') { b.el.disabled = P.state === 'stun'; return; }
+    const sk = SKILLS[b.id];
+    const cd = P.cd[b.id] || 0;
+    const noMp = S.mp < sk.mp;
+    const next = isNextSkill(cls, b.id);
+    b.el.disabled = cd > 0 || noMp || P.state === 'stun';
+    b.el.classList.toggle('next', next);
+    if (b.mask) b.mask.style.width = cd > 0 ? Math.min(100, cd / sk.cd * 100) + '%' : '0%';
+    if (b.sub) {
+      b.sub.textContent = cd > 0 ? 'CD ' + (cd / 5).toFixed(1) + 's'
+        : noMp ? '法力不足'
+        : (sk.cast + ' 拍 / ' + sk.rec + ' 拍');
+    }
+  });
+}
+
+function isNextSkill(cls, id) {
+  const sk = SKILLS[id];
+  if (sk.util) return false;
+  if (cls.freeChain) {
+    return !!P.lastForm && P.form !== P.lastForm;
+  }
+  const idx = cls.chain.indexOf(id);
+  if (idx < 0) return false;
+  return idx === P.lastIdx + 1;
+}
+
+function renderCombo() {
+  const box = api.el('combo-strip');
+  if (!box) return;
+  const cls = api.classOf(api.S.cls);
+  let h = '<span class="cb-tag">连招</span>';
+
+  if (cls.freeChain) {
+    const last = P.lastForm ? (FORM_NAME[P.lastForm] + '形态') : '任意起手';
+    const canLink = !P.lastForm || P.form !== P.lastForm;
+    h += '<span class="cb-step ' + (P.lastForm ? 'on' : 'next') + '">' + last + '</span>';
+    h += '<span class="cb-arrow">→</span>';
+    h += '<span class="cb-step ' + (canLink ? 'next' : '') + '">' +
+         (canLink ? '可接' : '换形态可接') + '</span>';
+    if (P.combo > 0) h += '<span class="cb-count">×' + (P.combo + 1) + '</span>';
+  } else {
+    const chain = cls.chain;
+    chain.forEach((sid, i) => {
+      let c = '';
+      if (i <= P.lastIdx) c = 'on';
+      else if (i === P.lastIdx + 1) c = 'next';
+      h += '<span class="cb-step ' + c + '">' + SKILLS[sid].name + '</span>';
+      if (i < chain.length - 1) h += '<span class="cb-arrow">›</span>';
+    });
+    if (P.combo > 0) h += '<span class="cb-count">×' + (P.combo + 1) + '</span>';
+    if (P.penalty) h += '<span class="cb-penalty">断连 · 破绽</span>';
+  }
+
+  box.className = 'combo-strip' + (P.combo > 0 ? ' live' : '');
+  box.innerHTML = h;
+}
+
+/* ---------------------------------------------------------------- 日志 */
+function log(msg, kind) {
+  const box = api.el('battle-log');
+  if (!box) return;
+  const d = document.createElement('div');
+  d.className = 'log-line ' + (kind || '');
+  d.textContent = msg;
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+  while (box.children.length > 60) box.removeChild(box.firstChild);
+}
+
+/* ---------------------------------------------------------------- 对外 */
+return {
+  configure: configure,
+  start: function (enemyId, opts) {
+    onEndCb = opts && opts.onEnd;
+    start(enemyId, opts);
+  },
+  flee: flee,
+  lastSeconds: () => lastSecs,
+  isRunning: () => running
+};
+
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   荣耀 · 第十区  —   引擎
+   场景 / 面板 / 存档 / 副本榜单 / 知名度
+   ========================================================================== */
+'use strict';
+
+(function () {
+
+const $  = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.prototype.slice.call((r || document).querySelectorAll(s));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+const SAVE_KEY = 'glory10.save.v2';
+
+let S = null;
+let curTab = 'attr';
+let selClass = 'jianke';
+let selSchool = '剑士系';
+let curChoices = [];
+
+const classOf = id => CLASSES[id];
+
+/* ---------------------------------------------------------- 派生数值 */
+function derived(st) {
+  const bonus = { atk: 0, def: 0, hp: 0, mp: 0, spd: 0, crit: 0 };
+  ['weapon', 'armor'].forEach(slot => {
+    const id = st.equip && st.equip[slot];
+    const it = id ? ITEMS[id] : null;
+    if (it && it.bonus) for (const k in it.bonus) bonus[k] += it.bonus[k];
+  });
+  const lv = st.level;
+  const atkOf = m => Math.round(10 + st[m] * 2.2 + lv * 2 + bonus.atk);
+  return {
+    maxHp: Math.round(110 + st.con * 13 + lv * 14 + bonus.hp),
+    maxMp: Math.round(50 + st.int * 8 + lv * 5 + bonus.mp),
+    def:   Math.round(4 + st.con * 1.1 + lv * 1 + bonus.def),
+    spd:   Math.round(8 + st.agi * 1.5 + bonus.spd),
+    crit:  Math.round((4 + st.agi * 0.5 + bonus.crit) * 10) / 10,
+    dodge: Math.round((2 + st.agi * 0.3) * 10) / 10,
+    atk: { str: atkOf('str'), agi: atkOf('agi'), int: atkOf('int'), con: atkOf('con') }
+  };
+}
+
+const expNeed = lv => Math.round(90 * Math.pow(1.3, lv - 1));
+
+/* ------------------------------------------------------------------ 提示 */
+let toastTimer = null;
+function toast(msg) {
+  const el = $('#toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+/* -------------------------------------------------------------- 背包 */
+function addItem(id, n) {
+  if (!ITEMS[id]) return;
+  S.inv[id] = (S.inv[id] || 0) + (n || 1);
+}
+function removeItem(id, n) {
+  n = n || 1;
+  if (!S.inv[id]) return;
+  S.inv[id] -= n;
+  if (S.inv[id] <= 0) delete S.inv[id];
+}
+function sellItem(id) {
+  const it = ITEMS[id];
+  if (!it) return;
+  const price = Math.floor((it.price || 0) * 0.5);
+  removeItem(id, 1);
+  S.gold += price;
+  toast('卖出 ' + it.name + '，+' + price + ' 银币');
+  updateUI(); saveGame();
+}
+
+function addExp(n) {
+  S.exp += n;
+  let up = 0;
+  while (S.exp >= expNeed(S.level)) {
+    S.exp -= expNeed(S.level);
+    S.level++;
+    S.free += 3;
+    up++;
+  }
+  if (up) {
+    const p = derived(S);
+    S.hp = p.maxHp; S.mp = p.maxMp;
+    toast('等级提升！Lv.' + S.level + '　获得 ' + (up * 3) + ' 点自由属性');
+  }
+}
+
+/* -------------------------------------------------------------- 屏幕 */
+function showScreen(id) {
+  $$('.screen').forEach(s => s.classList.remove('show'));
+  $('#' + id).classList.add('show');
+}
+
+/* ---------------------------------------------------------- 打字机 */
+const typing = { text: '', i: 0, timer: null, done: null, active: false };
+
+function typeText(text, done) {
+  clearTimeout(typing.timer);
+  const el = $('#prose');
+  el.textContent = '';
+  $('#choices').innerHTML = '';
+  $('#stage').scrollTop = 0;
+  typing.text = text; typing.i = 0; typing.done = done; typing.active = true;
+
+  const step = () => {
+    if (!typing.active) return;
+    typing.i += 2;
+    if (typing.i >= text.length) { finishTyping(); return; }
+    el.textContent = text.slice(0, typing.i);
+    typing.timer = setTimeout(step, 10);
+  };
+  step();
+}
+
+function finishTyping() {
+  if (!typing.active) return;
+  typing.active = false;
+  clearTimeout(typing.timer);
+  $('#prose').innerHTML = esc(typing.text)
+    .replace(/【([^】\n]*)】/g, '<span class="sys">【$1】</span>');
+  $('#stage').scrollTop = 0;
+  const cb = typing.done; typing.done = null;
+  if (cb) cb();
+}
+
+/* ---------------------------------------------------------- 场景引擎 */
+function go(id) {
+  if (!SCENES[id]) { console.warn('缺少场景：' + id); return; }
+  S.scene = id;
+  const sc = SCENES[id];
+  if (sc.onEnter) sc.onEnter(S);
+
+  const dp = derived(S);
+  S.hp = clamp(S.hp, 0, dp.maxHp);
+  S.mp = clamp(S.mp, 0, dp.maxMp);
+
+  saveGame();
+  renderScene();
+}
+
+function renderScene() {
+  const sc = SCENES[S.scene];
+  if (!sc) return;
+
+  $('#tb-chapter').textContent = sc.chapter || '荣耀 · 第十区';
+  $('#art').className = 'art art-' + (sc.art || 'night');
+  paintPortrait('#art-char', S.cls, 'char');
+  updateUI();
+
+  const text = typeof sc.text === 'function' ? sc.text(S) : (sc.text || '');
+
+  if (sc.instant) {
+    clearTimeout(typing.timer);
+    typing.active = false; typing.text = text; typing.done = null;
+    $('#prose').innerHTML = esc(text).replace(/【([^】\n]*)】/g, '<span class="sys">【$1】</span>');
+    $('#choices').innerHTML = '';
+    $('#stage').scrollTop = 0;
+    renderChoices(sc);
+  } else {
+    typeText(text, () => renderChoices(sc));
+  }
+}
+
+function renderChoices(sc) {
+  const list = typeof sc.choices === 'function' ? sc.choices(S) : (sc.choices || []);
+  curChoices = list;
+  const wrap = $('#choices');
+  wrap.innerHTML = '';
+  list.forEach((ch, i) => {
+    const ok = !ch.req || ch.req(S);
+    const b = document.createElement('button');
+    b.className = 'choice';
+    b.disabled = !ok;
+    b.innerHTML =
+      '<span class="num">' + (i + 1) + '</span>' +
+      '<span class="txt">' + esc(ch.label) + '</span>' +
+      (ch.hint ? '<span class="hint">' + esc(ch.hint) + '</span>' : '') +
+      (!ok && ch.reqText ? '<span class="lock">需 ' + esc(ch.reqText) + '</span>' : '');
+    if (ok) b.addEventListener('click', () => choose(ch));
+    wrap.appendChild(b);
+  });
+}
+
+function choose(ch) {
+  if (ch.req && !ch.req(S)) return;
+  if (ch.combat) {
+    startCombat(ch.combat.enemy, {
+      win: ch.combat.win, lose: ch.combat.lose, flee: ch.combat.flee,
+      dungeon: ch.combat.dungeon
+    });
+    return;
+  }
+  if (ch.run) {
+    const before = S.scene;
+    if (typeof ch.run === 'string') { if (RUN[ch.run]) RUN[ch.run](); }
+    else ch.run();
+    if (S.scene === before) renderChoices(SCENES[S.scene]);
+    return;
+  }
+  if (ch.to) go(ch.to);
+}
+
+const RUN = {};
+
+/* ---------------------------------------------------------- 战斗入口 */
+function startCombat(enemyId, opts) {
+  opts = opts || {};
+  Combat.start(enemyId, {
+    onEnd: function (result) {
+      const ov = $('#overlay');
+      if (ov) ov.hidden = true;
+      if (result === 'win' && opts.dungeon) {
+        recordDungeon(opts.dungeon, Combat.lastSeconds());
+      }
+      const target = result === 'win' ? (opts.win || S.scene)
+                   : result === 'lose' ? (opts.lose || 's_death')
+                   : (opts.flee || S.scene);
+      go(target);
+    }
+  });
+}
+
+/* ---------------------------------------------------------- 副本榜单 */
+function rankOf(did, t) {
+  const d = DUNGEONS[did];
+  if (!d) return 0;
+  return d.board.filter(b => b.time < t).length + 1;
+}
+
+function recordDungeon(did, seconds) {
+  const d = DUNGEONS[did];
+  if (!d) return;
+  S.records = S.records || {};
+  const t = Math.max(1, Math.round(seconds * 10) / 10);
+  const prev = S.records[did];
+  const msg = [];
+
+  if (!prev) {
+    S.records[did] = { best: t, clears: 1 };
+    S.fame = (S.fame || 0) + 50;
+    msg.push('首杀！知名度 +50');
+  } else if (t < prev.best) {
+    const gain = Math.max(3, Math.round((prev.best - t) * 2));
+    S.records[did].best = t;
+    S.records[did].clears = (prev.clears || 1) + 1;
+    S.fame = (S.fame || 0) + gain;
+    msg.push('刷新记录 ' + prev.best.toFixed(1) + 's → ' + t.toFixed(1) + 's，知名度 +' + gain);
+  } else {
+    S.records[did].clears = (prev.clears || 1) + 1;
+    msg.push('通关 ' + t.toFixed(1) + 's（个人最好 ' + prev.best.toFixed(1) + 's）');
+  }
+
+  const rank = rankOf(did, S.records[did].best);
+  msg.push('系统榜单第 ' + rank + ' 位');
+  S.lastRecord = msg.join('　');
+
+  if (did === 'qianbo' && !S.flags.ch1) S.flags.ch1 = true;
+  saveGame();
+  toast(msg[0]);
+}
+
+function buildBoardText(st) {
+  let out = '系统榜单 · 第十区\n';
+  Object.keys(DUNGEONS).forEach(id => {
+    const d = DUNGEONS[id];
+    out += '\n【' + d.name + '】' + d.lv + '\n';
+    const rows = d.board.map(b => ({ name: b.name, time: b.time, mine: false }));
+    const rec = st.records && st.records[id];
+    rows.push(rec ? { name: st.name + '（我）', time: rec.best, mine: true }
+                  : { name: '—— 未上榜 ——', time: null, mine: true });
+    rows.sort((a, b) => (a.time == null ? 1e9 : a.time) - (b.time == null ? 1e9 : b.time));
+    rows.slice(0, 6).forEach((r, i) => {
+      const rank = String(i + 1).padStart(2, ' ');
+      const tm = r.time == null ? '   —   ' : r.time.toFixed(1) + 's';
+      out += '　' + rank + '. ' + r.name.padEnd(12, '　') + tm + (r.mine ? '  ◀' : '') + '\n';
+    });
+  });
+  return out;
+}
+
+function skillBarOf(st, form) {
+  if (st.cls !== 'sanren') return CLASSES[st.cls].skillIds;
+  return FORM_SKILLS[form || st.form || 'sword'] || [];
+}
+
+/* ---------------------------------------------------------- 立绘 */
+function paintPortrait(sel, clsId, mode) {
+  const el = sel.charAt(0) === '#' ? $(sel) : $('#' + sel);
+  if (!el) return;
+  mode = mode || 'full';
+  const key = clsId + '|' + mode;
+  if (el.dataset.cls === key) return;
+  el.dataset.cls = key;
+  el.innerHTML = portraitSVG(clsId, mode);
+  el.style.setProperty('--pc', portraitColor(clsId));
+}
+
+/* ---------------------------------------------------------- 面板 */
+function barHtml(cls, v, max) {
+  const pct = clamp(v / max * 100, 0, 100);
+  return '<div class="bar ' + cls + '"><i style="width:' + pct + '%"></i>' +
+         '<b>' + Math.round(v) + ' / ' + Math.round(max) + '</b></div>';
+}
+
+function updateUI() {
+  if (!S) return;
+  const p = derived(S);
+  S.hp = clamp(S.hp, 0, p.maxHp);
+  S.mp = clamp(S.mp, 0, p.maxMp);
+
+  $('#tb-name').textContent = S.name;
+  $('#tb-class').textContent = CLASSES[S.cls].name;
+  $('#tb-gold').textContent = S.gold + ' 银';
+  const fam = $('#tb-fame');
+  if (fam) fam.textContent = '知名度 ' + (S.fame || 0);
+
+  $('#p-name').textContent = S.name;
+  $('#p-meta').textContent = 'Lv.' + S.level + ' · ' + CLASSES[S.cls].name;
+
+  paintPortrait('#p-portrait', S.cls, 'face');
+
+  $('#p-bars').innerHTML =
+    barHtml('hp', S.hp, p.maxHp) + barHtml('mp', S.mp, p.maxMp) +
+    barHtml('xp', S.exp, expNeed(S.level));
+
+  renderTab();
+}
+
+function row(k, v) {
+  return '<div class="stat-row"><span class="k">' + k + '</span><span class="v">' + v + '</span></div>';
+}
+
+function sanrenSkillTab() {
+  const cur = S.form || 'sword';
+  let h = '<div class="sec-title">千机伞 · 12 形态</div>';
+  h += '<p class="chain-note">散人没有固定技能栏：伞换个形态就是换一整套技能，120 个低阶技能全部可用。' +
+       '战斗中随时变形，<b>换过形态的下一招必定接上连招</b>（+15%）；同一个形态连打会断连。</p>';
+  UMBRELLA_FORMS.forEach(f => {
+    const on = f.id === cur;
+    h += '<div class="form-card' + (on ? ' on' : '') + '" data-formset="' + f.id + '">' +
+         '<div class="fc-h"><b>' + f.name + '形态</b><span>' + f.desc + '</span>' +
+         (on ? '<em>当前</em>' : '') + '</div>' +
+         '<div class="fc-sk">' + FORM_SKILLS[f.id].map(id => SKILLS[id].name).join('　') + '</div>' +
+         '</div>';
+  });
+  return h;
+}
+
+function setSanrenForm(id) {
+  if (!FORM_SKILLS[id]) return;
+  S.form = id;
+  S.skills = FORM_SKILLS[id].slice();
+  saveGame();
+  renderTab();
+  toast('千机伞 · ' + FORM_NAME[id] + '形态');
+}
+function renderTab() {
+  const body = $('#p-body');
+  const p = derived(S);
+  const cls = CLASSES[S.cls];
+  let h = '';
+
+  if (curTab === 'attr') {
+    h += '<div class="sec-title">基础属性</div>';
+    if (S.free > 0) h += '<div class="free-pt">可分配点数：' + S.free + '</div>';
+    const rows = [['str', '力量'], ['agi', '敏捷'], ['int', '智力'], ['con', '体质']];
+    rows.forEach(r => {
+      h += '<div class="stat-row"><span class="k">' + r[1] + (cls.main === r[0] ? ' <em>主</em>' : '') +
+        '</span><span class="v">' + S[r[0]] +
+        (S.free > 0 ? ' <button class="plus" data-plus="' + r[0] + '">+</button>' : '') +
+        '</span></div>';
+    });
+    h += '<div class="sec-title">战斗数值</div>';
+    h += row('攻击', p.atk[cls.main]);
+    h += row('防御', p.def);
+    h += row('生命', p.maxHp);
+    h += row('法力', p.maxMp);
+    h += row('速度', p.spd);
+    h += row('暴击', p.crit + '%');
+    h += row('闪避', p.dodge + '%');
+    h += '<div class="sec-title">档案</div>';
+    h += row('派系', cls.school);
+    h += row('定位', cls.role);
+    h += row('知名度', S.fame || 0);
+    h += row('击杀', S.kills || 0);
+  }
+
+  if (curTab === 'bag') {
+    h += '<div class="sec-title">装备中</div>';
+    const slotName = { weapon: '武器', armor: '防具' };
+    ['weapon', 'armor'].forEach(slot => {
+      const id = S.equip[slot];
+      const it = id ? ITEMS[id] : null;
+      h += '<div class="item-row"><span class="nm">' + (it ? it.name : '（空）') +
+           '<small>' + slotName[slot] + '</small></span></div>';
+    });
+    h += '<div class="sec-title">背包</div>';
+    const ids = Object.keys(S.inv).filter(id => S.inv[id] > 0);
+    if (!ids.length) h += '<div class="empty">空空如也。</div>';
+    ids.forEach(id => {
+      const it = ITEMS[id];
+      if (!it) return;
+      let btn = '';
+      if (it.type === 'consume') btn = '<button class="mini" data-use="' + id + '">使用</button>';
+      else if (it.type === 'equip') btn = '<button class="mini" data-equip="' + id + '">装备</button>';
+      else btn = '<button class="mini" data-sell="' + id + '">卖出</button>';
+      h += '<div class="item-row"><span class="nm">' + it.name +
+           '<small>' + it.desc + '</small></span>' +
+           '<span class="ct">×' + S.inv[id] + '</span>' + btn + '</div>';
+    });
+  }
+
+  if (curTab === 'skill') {
+    if (cls.freeChain) {
+      h += sanrenSkillTab();
+    } else {
+      h += '<div class="sec-title">' + cls.name + ' · 连招链</div>';
+      const chain = cls.chain;
+      h += '<div class="chain-path">' + chain.map((x, i) =>
+        (i ? '<span class="ar">›</span>' : '') +
+        '<span>' + SKILLS[x].name + '</span>').join('') + '</div>';
+      h += '<p class="chain-note">按顺序命中后摇只有 55%，伤害逐层 +18%；打满整套额外 +30%、返还一半法力、并使目标破防。不按顺序放，后摇 160% 且挂破绽。</p>';
+      h += '<div class="sec-title">技能</div>';
+      cls.skillIds.forEach(id => {
+        const sk = SKILLS[id];
+        const ci = cls.chain.indexOf(id);
+        const pos = ci >= 0 ? (ci + 1) + ' 式' : '辅助';
+        h += '<div class="skill-row"><div class="sn"><b>' + sk.name + '</b>' +
+             '<span>' + pos + ' · ' + sk.cast + '+' + sk.rec + ' 拍</span></div>' +
+             '<p>' + sk.desc + '</p>' +
+             '<p class="chainpos"><span>MP ' + sk.mp + ' · CD ' + (sk.cd / 5).toFixed(1) + 's</span></p></div>';
+      });
+    }
+  }
+
+  if (curTab === 'sys') {
+    h += '<div class="sec-title">存档</div>';
+    h += '<div class="item-row"><span class="nm">自动存档已开启</span>' +
+         '<button class="mini" data-cmd="save">立即保存</button></div>';
+    h += '<div class="item-row"><span class="nm">读取上次存档</span>' +
+         '<button class="mini" data-cmd="load">读取</button></div>';
+    h += '<div class="item-row"><span class="nm">重新开始</span>' +
+         '<button class="mini" data-cmd="restart">重来</button></div>';
+    h += '<div class="sec-title">记录</div>';
+    h += row('章节', (SCENES[S.scene] && SCENES[S.scene].chapter) || '—');
+    h += row('知名度', S.fame || 0);
+    h += row('击杀', S.kills || 0);
+    Object.keys(S.records || {}).forEach(id => {
+      h += row(DUNGEONS[id] ? DUNGEONS[id].name : id, S.records[id].best.toFixed(1) + 's');
+    });
+  }
+
+  body.innerHTML = h;
+}
+
+/* -------------------------------------------------------------- 物品 */
+function useItem(id) {
+  const it = ITEMS[id];
+  if (!it) return;
+  if (it.type === 'equip') { equipItem(id); return; }
+  if (it.type !== 'consume') return;
+  const p = derived(S);
+  if (it.heal) {
+    if (S.hp >= p.maxHp) { toast('生命已满。'); return; }
+    S.hp = Math.min(p.maxHp, S.hp + it.heal);
+  }
+  if (it.mana) {
+    if (S.mp >= p.maxMp) { toast('法力已满。'); return; }
+    S.mp = Math.min(p.maxMp, S.mp + it.mana);
+  }
+  removeItem(id, 1);
+  toast('使用了 ' + it.name);
+  updateUI(); saveGame();
+}
+
+function equipItem(id) {
+  const it = ITEMS[id];
+  if (!it || it.type !== 'equip' || !S.inv[id]) return;
+  const old = S.equip[it.slot];
+  S.equip[it.slot] = id;
+  removeItem(id, 1);
+  if (old) addItem(old, 1);
+  toast('装备 ' + it.name);
+  updateUI(); saveGame();
+}
+
+function autoEquip() {
+  const worth = it => it
+    ? (it.bonus.atk || 0) * 2 + (it.bonus.def || 0) + (it.bonus.hp || 0) / 10 + (it.bonus.crit || 0)
+    : -1;
+  ['weapon', 'armor'].forEach(slot => {
+    let best = null;
+    let bestV = worth(S.equip[slot] ? ITEMS[S.equip[slot]] : null);
+    Object.keys(S.inv).forEach(id => {
+      const it = ITEMS[id];
+      if (!it || it.type !== 'equip' || it.slot !== slot || !S.inv[id]) return;
+      const v = worth(it);
+      if (v > bestV) { best = id; bestV = v; }
+    });
+    if (best) equipItem(best);
+  });
+}
+
+/* -------------------------------------------------------------- 存档 */
+function saveGame() {
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch (e) { /* 忽略 */ }
+}
+function loadGame() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return false;
+    const o = JSON.parse(raw);
+    if (!o || !o.cls || !CLASSES[o.cls] || !SCENES[o.scene]) return false;
+    S = o;
+    if (!S.records) S.records = {};
+    if (S.fame == null) S.fame = 0;
+    return true;
+  } catch (e) { return false; }
+}
+function hasSave() {
+  try { return !!localStorage.getItem(SAVE_KEY); } catch (e) { return false; }
+}
+
+/* -------------------------------------------------------------- 新建 */
+function newGame() {
+  const name = ($('#inp-name').value || '').trim().slice(0, 8) || '无名氏';
+  const c = CLASSES[selClass];
+  S = {
+    name: name, cls: selClass,
+    level: 1, exp: 0, free: 0,
+    str: c.base.str, agi: c.base.agi, int: c.base.int, con: c.base.con,
+    hp: 1, mp: 1, gold: 300, fame: 0,
+    inv: { potion_s: 3 },
+    equip: { weapon: 'w_wood', armor: null },
+    skills: c.freeChain ? FORM_SKILLS.sword.slice() : c.skillIds.slice(),
+    form: c.freeChain ? 'sword' : null,
+    flags: {}, kills: 0, records: {},
+    scene: 's_open', startedAt: Date.now()
+  };
+  const p = derived(S);
+  S.hp = p.maxHp; S.mp = p.maxMp;
+  showScreen('scr-game');
+  curTab = 'attr';
+  $$('#p-tabs button').forEach(x => x.classList.toggle('on', x.dataset.tab === 'attr'));
+  go('s_open');
+}
+
+/* -------------------------------------------------------------- 建档 */
+function buildSchoolTabs() {
+  const box = $('#school-tabs');
+  box.innerHTML = '';
+  SCHOOLS.forEach(school => {
+    const b = document.createElement('button');
+    b.textContent = school;
+    b.className = school === selSchool ? 'on' : '';
+    b.addEventListener('click', () => { selSchool = school; buildSchoolTabs(); buildClassCards(); });
+    box.appendChild(b);
+  });
+}
+
+function buildClassCards() {
+  const g = $('#class-grid');
+  g.innerHTML = '';
+  const list = classList(selSchool);
+  list.forEach(id => {
+    const c = CLASSES[id];
+    const b = document.createElement('button');
+    b.className = 'class-card' + (id === selClass ? ' on' : '');
+    b.innerHTML =
+      '<div class="cc-cat">' + c.school + '</div>' +
+      '<div class="cc-name">' + c.name + '</div>' +
+      '<div class="cc-tag">' + c.role + '</div>';
+    b.addEventListener('click', () => {
+      selClass = id;
+      buildClassCards();
+      showClassDetail();
+    });
+    g.appendChild(b);
+  });
+  showClassDetail();
+  checkEnter();
+}
+
+function showClassDetail() {
+  const c = CLASSES[selClass];
+  paintPortrait('#c-portrait', selClass, 'full');
+  const list = c.freeChain
+    ? '<em>千机伞 · 12 形态 · 120 个低阶技能</em>　换形态即换技能组'
+    : c.skillIds.map(id => '· <em>' + SKILLS[id].name + '</em>').join('　');
+  $('#class-detail').innerHTML =
+    '<b>' + c.name + '</b>　<span class="cd-school">' + c.school + ' · ' + c.role + '</span><br>' +
+    c.desc.replace(/\n/g, '<br>') +
+    '<br><br>' + list;
+}
+
+function checkEnter() {
+  $('#btn-enter').disabled = ($('#inp-name').value || '').trim().length === 0;
+}
+
+/* -------------------------------------------------------------- 事件 */
+function bindEvents() {
+  $('#btn-new').addEventListener('click', () => {
+    try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+    buildSchoolTabs();
+    buildClassCards();
+    $('#inp-name').value = '';
+    checkEnter();
+    showScreen('scr-create');
+    setTimeout(() => $('#inp-name').focus(), 60);
+  });
+  $('#btn-load').addEventListener('click', () => {
+    if (loadGame()) {
+      showScreen('scr-game');
+      renderScene();
+      toast('读取存档成功。');
+    } else toast('没有可读取的存档。');
+  });
+
+  $('#inp-name').addEventListener('input', checkEnter);
+  $('#inp-name').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !$('#btn-enter').disabled) $('#btn-enter').click();
+  });
+  $('#btn-back').addEventListener('click', () => showScreen('scr-title'));
+  $('#btn-enter').addEventListener('click', newGame);
+
+  $('#stage').addEventListener('click', () => {
+    if (typing.active) finishTyping();
+  });
+
+  $('#btn-panel').addEventListener('click', () => $('#panel').classList.toggle('open'));
+
+  $('#p-tabs').addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    curTab = b.dataset.tab;
+    $$('#p-tabs button').forEach(x => x.classList.toggle('on', x === b));
+    renderTab();
+  });
+
+  $('#p-body').addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    if (b.dataset.plus) {
+      if (S.free > 0) { S[b.dataset.plus]++; S.free--; updateUI(); saveGame(); }
+    } else if (b.dataset.eq) equipSanrenSkill(b.dataset.eq);
+    else if (b.dataset.un) unequipSanrenSkill(b.dataset.un);
+    else if (b.dataset.formset) setSanrenForm(b.dataset.formset);
+    else if (b.dataset.use) useItem(b.dataset.use);
+    else if (b.dataset.equip) equipItem(b.dataset.equip);
+    else if (b.dataset.sell) sellItem(b.dataset.sell);
+    else if (b.dataset.cmd) {
+      const cmd = b.dataset.cmd;
+      if (cmd === 'save') { saveGame(); toast('已保存。'); }
+      if (cmd === 'load') { if (loadGame()) { renderScene(); toast('已读取。'); } else toast('没有存档。'); }
+      if (cmd === 'restart') {
+        if (confirm('清空当前存档，重新开始？')) {
+          try { localStorage.removeItem(SAVE_KEY); } catch (err) {}
+          S = null; showScreen('scr-title'); $('#btn-load').disabled = !hasSave();
+        }
+      }
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT') return;
+    if (!$('#scr-game').classList.contains('show')) return;
+    if (typing.active && (e.key === ' ' || e.key === 'Enter')) { e.preventDefault(); finishTyping(); return; }
+    if (Combat.isRunning()) {
+      const n = parseInt(e.key, 10);
+      if (n >= 1 && n <= 9) {
+        const btns = $$('#battle-actions .act-btn');
+        const b = btns[n - 1];
+        if (b && !b.disabled) b.click();
+      }
+      return;
+    }
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 9) {
+      const btns = $$('#choices .choice');
+      const b = btns[n - 1];
+      if (b && !b.disabled) b.click();
+    }
+  });
+}
+
+/* -------------------------------------------------------------- 启动 */
+function boot() {
+  bindEvents();
+  $('#btn-load').disabled = !hasSave();
+  buildSchoolTabs();
+  buildClassCards();
+
+  window.GameAPI = {
+    get S() { return S; },
+    derived: derived,
+    classOf: classOf,
+    skillBarOf: skillBarOf,
+    addExp: addExp,
+    addItem: addItem,
+    saveGame: saveGame,
+    updateUI: updateUI,
+    toast: toast,
+    go: go,
+    el: id => document.getElementById(id),
+    paintPortrait: paintPortrait,
+    openOverlay: () => { const o = $('#overlay'); if (o) o.hidden = false; }
+  };
+  Combat.configure(window.GameAPI);
+
+  window.addItem = addItem;
+  window.toast = toast;
+  window.saveGame = saveGame;
+  window.updateUI = updateUI;
+  window.startCombat = startCombat;
+  window.autoEquip = autoEquip;
+  window.buildBoardText = buildBoardText;
+  window.Glory = {
+    go: go, startCombat: startCombat, autoEquip: autoEquip,
+    addItem: addItem, toast: toast, saveGame: saveGame, updateUI: updateUI,
+    derived: derived, expNeed: expNeed, recordDungeon: recordDungeon
+  };
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
+}
+
+})();
+
+</script>
+</body>
+</html>

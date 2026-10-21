@@ -1,0 +1,17 @@
+# 开发用，不进仓库
+_dev/
+screenshots/
+
+# 系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器
+.vscode/
+.idea/
+
+# 依赖（本项目其实没有，留着防以后）
+node_modules/
+
+*.log
